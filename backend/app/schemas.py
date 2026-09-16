@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, ConfigDict
 from typing import Optional, List, Dict, Any
 import datetime
 
@@ -31,7 +31,6 @@ class UserCreate(UserBase):
     password: str = Field(..., min_length=6, description="Minimum 6 characters")
     
     # Optional role-specific initialization data
-    # Student
     institution_id: Optional[int] = None
     enrollment_no: Optional[str] = None
     degree: Optional[str] = None
@@ -39,18 +38,15 @@ class UserCreate(UserBase):
     grad_year: Optional[int] = None
     career_interests: Optional[List[str]] = None
 
-    # Industry
     company_name: Optional[str] = None
     industry_sector: Optional[str] = None
     website: Optional[str] = None
     location: Optional[str] = None
 
-    # Academician
     department: Optional[str] = None
     designation: Optional[str] = None
     faculty_id: Optional[str] = None
 
-    # Institution Admin
     institution_name: Optional[str] = None
     institution_code: Optional[str] = None
 
@@ -62,9 +58,7 @@ class UserResponse(UserBase):
     id: int
     is_active: bool
     created_at: datetime.datetime
-
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # --- Student Profile Schemas ---
 class StudentProfileBase(BaseModel):
@@ -93,9 +87,7 @@ class StudentProfileResponse(StudentProfileBase):
     institution_name: Optional[str] = None
     created_at: datetime.datetime
     updated_at: datetime.datetime
-
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # --- Company Profile Schemas ---
 class CompanyBase(BaseModel):
@@ -117,9 +109,7 @@ class CompanyResponse(CompanyBase):
     user_id: int
     created_at: datetime.datetime
     updated_at: datetime.datetime
-
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # --- Institution Schemas ---
 class InstitutionBase(BaseModel):
@@ -135,9 +125,7 @@ class InstitutionCreate(InstitutionBase):
 class InstitutionResponse(InstitutionBase):
     id: int
     created_at: datetime.datetime
-
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # --- Academician Profile Schemas ---
 class AcademicianProfileBase(BaseModel):
@@ -160,9 +148,7 @@ class AcademicianProfileResponse(AcademicianProfileBase):
     institution_name: Optional[str] = None
     created_at: datetime.datetime
     updated_at: datetime.datetime
-
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # --- Skill Schemas ---
 class SkillBase(BaseModel):
@@ -177,23 +163,16 @@ class SkillCreate(SkillBase):
 class SkillResponse(SkillBase):
     id: int
     created_at: datetime.datetime
-
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # --- Skill Assessment & Questionnaires ---
-class QuestionOption(BaseModel):
-    id: str
-    text: str
-    is_correct: bool
-
 class AssessmentQuestion(BaseModel):
     id: int
     skill_id: int
     skill_name: str
     question_text: str
     category: str
-    difficulty: str  # beginner, intermediate, advanced
+    difficulty: str
     options: List[Dict[str, str]]
 
 class AssessmentAnswerSubmission(BaseModel):
@@ -251,7 +230,7 @@ class SkillDemandItem(BaseModel):
     category: str
     frequency_count: int
     companies_requesting: int
-    trend: str # rising, stable, declining
+    trend: str
     benchmark_score: float
 
 class IndustryDemandDataset(BaseModel):
@@ -260,7 +239,7 @@ class IndustryDemandDataset(BaseModel):
     top_demanded_skills: List[SkillDemandItem]
     updated_at: datetime.datetime
 
-# --- Curriculum Feedback Loop (⭐ USP) ---
+# --- Curriculum Feedback Loop ---
 class CurriculumGapReportItem(BaseModel):
     id: int
     institution_id: int
@@ -277,9 +256,7 @@ class CurriculumGapReportItem(BaseModel):
     status: str
     actions_count: int
     updated_at: datetime.datetime
-
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class CurriculumActionCreate(BaseModel):
     action_type: str = Field(..., description="e.g. update_syllabus, workshop_planned, guest_lecture, lab_module")
@@ -295,11 +272,116 @@ class CurriculumActionResponse(BaseModel):
     course_name: str
     action_notes: str
     created_at: datetime.datetime
+    model_config = ConfigDict(from_attributes=True)
 
-    class Config:
-        from_attributes = True
+# --- Opportunities (03-tasks-opportunities) ---
+class RequiredSkillItem(BaseModel):
+    skill_id: int
+    min_proficiency: float = 70.0
+    importance_weight: float = 1.0
 
-# --- Notification Schemas ---
+class RequiredSkillDetail(BaseModel):
+    skill_id: int
+    skill_name: str
+    category: str
+    min_proficiency: float
+    importance_weight: float
+
+class OpportunityCreate(BaseModel):
+    title: str
+    opportunity_type: str # internship, job, apprenticeship, project, fdp, consultancy, sabbatical, research_collab
+    target_role: str = "student" # student or faculty
+    description: Optional[str] = None
+    location: Optional[str] = "Hybrid"
+    stipend_salary: Optional[str] = None
+    deadline: Optional[datetime.datetime] = None
+    required_skills: List[RequiredSkillItem] = []
+
+class OpportunityResponse(BaseModel):
+    id: int
+    company_id: int
+    company_name: str
+    title: str
+    opportunity_type: str
+    target_role: str
+    description: Optional[str]
+    location: Optional[str]
+    stipend_salary: Optional[str]
+    deadline: Optional[datetime.datetime]
+    is_active: bool
+    skills: List[RequiredSkillDetail] = []
+    applicant_match_score: Optional[float] = None
+    created_at: datetime.datetime
+    model_config = ConfigDict(from_attributes=True)
+
+# --- Applications ---
+class ApplicationCreate(BaseModel):
+    cover_note: Optional[str] = None
+
+class ApplicationResponse(BaseModel):
+    id: int
+    opportunity_id: int
+    opportunity_title: str
+    company_name: str
+    user_id: int
+    applicant_name: str
+    applicant_email: str
+    applicant_role: str
+    match_score: float
+    status: str
+    cover_note: Optional[str]
+    resume_link: Optional[str]
+    mentor_rating: Optional[float]
+    mentor_feedback: Optional[str]
+    created_at: datetime.datetime
+    updated_at: datetime.datetime
+    model_config = ConfigDict(from_attributes=True)
+
+class ApplicationStatusUpdate(BaseModel):
+    status: str # applied, shortlisted, interview, offered, rejected, completed
+
+class MentorFeedbackSubmit(BaseModel):
+    mentor_rating: float = Field(..., ge=1.0, le=5.0)
+    mentor_feedback: str
+
+# --- Learning Programs ---
+class ProgramSkillItem(BaseModel):
+    skill_id: int
+    granted_proficiency: float = 85.0
+
+class LearningProgramCreate(BaseModel):
+    title: str
+    program_type: str = "certification" # training, certification, workshop, mentorship
+    description: Optional[str] = None
+    duration_weeks: int = 4
+    skills_covered: List[ProgramSkillItem] = []
+
+class LearningProgramResponse(BaseModel):
+    id: int
+    company_id: int
+    company_name: str
+    title: str
+    program_type: str
+    description: Optional[str]
+    duration_weeks: int
+    is_active: bool
+    skills: List[Dict[str, Any]] = []
+    is_enrolled: Optional[bool] = False
+    enrollment_status: Optional[str] = None
+    created_at: datetime.datetime
+    model_config = ConfigDict(from_attributes=True)
+
+class ProgramEnrollmentResponse(BaseModel):
+    id: int
+    program_id: int
+    program_title: str
+    user_id: int
+    status: str
+    enrolled_at: datetime.datetime
+    completed_at: Optional[datetime.datetime]
+    model_config = ConfigDict(from_attributes=True)
+
+# --- Notifications & Documents ---
 class NotificationResponse(BaseModel):
     id: int
     title: str
@@ -307,11 +389,8 @@ class NotificationResponse(BaseModel):
     category: str
     is_read: bool
     created_at: datetime.datetime
+    model_config = ConfigDict(from_attributes=True)
 
-    class Config:
-        from_attributes = True
-
-# --- Document Schemas ---
 class DocumentResponse(BaseModel):
     id: int
     user_id: int
@@ -322,11 +401,8 @@ class DocumentResponse(BaseModel):
     mime_type: str
     download_url: str
     created_at: datetime.datetime
+    model_config = ConfigDict(from_attributes=True)
 
-    class Config:
-        from_attributes = True
-
-# --- Dashboard Shell Schemas ---
 class DashboardShellResponse(BaseModel):
     role: str
     user_id: int
