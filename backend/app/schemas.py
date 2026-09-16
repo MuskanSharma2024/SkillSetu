@@ -411,3 +411,60 @@ class DashboardShellResponse(BaseModel):
     title: str
     summary: Dict[str, Any]
     available_modules: List[str]
+
+# --- Portfolio ---
+class PortfolioItemResponse(BaseModel):
+    id: int
+    user_id: int
+    item_type: str
+    title: str
+    description: Optional[str]
+    reference_id: Optional[int]
+    created_at: datetime.datetime
+    model_config = ConfigDict(from_attributes=True)
+
+class PortfolioPublicView(BaseModel):
+    user_id: int
+    full_name: str
+    degree: Optional[str]
+    branch: Optional[str]
+    institution_name: Optional[str]
+    verified_skills: List[SkillItemScore]
+    portfolio_items: List[PortfolioItemResponse]
+
+# --- Audit Logs ---
+class AuditLogResponse(BaseModel):
+    id: int
+    user_id: Optional[int]
+    action_type: str
+    details: Optional[str]
+    created_at: datetime.datetime
+    model_config = ConfigDict(from_attributes=True)
+
+# --- Dashboard Analytics ---
+class StudentDashboardAnalytics(BaseModel):
+    total_applications: int
+    active_applications: int
+    enrolled_programs: int
+    completed_programs: int
+    verified_skills_count: int
+
+class ApplicantFunnelItem(BaseModel):
+    opportunity_id: int
+    title: str
+    applied: int
+    shortlisted: int
+    interview: int
+    offered: int
+    rejected: int
+
+class ApplicantFunnelResponse(BaseModel):
+    total_postings: int
+    funnel: List[ApplicantFunnelItem]
+
+class InstitutionAnalyticsSummary(BaseModel):
+    total_students: int
+    students_assessed: int
+    internships_applied: int
+    internships_completed: int
+    active_gap_reports: int

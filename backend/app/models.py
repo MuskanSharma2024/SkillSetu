@@ -28,6 +28,7 @@ class User(Base):
     notifications = relationship("Notification", back_populates="user", cascade="all, delete-orphan")
     applications = relationship("Application", back_populates="user", cascade="all, delete-orphan")
     enrollments = relationship("ProgramEnrollment", back_populates="user", cascade="all, delete-orphan")
+    portfolio_items = relationship("PortfolioItem", back_populates="user", cascade="all, delete-orphan")
 
 class Institution(Base):
     __tablename__ = "institutions"
@@ -293,3 +294,28 @@ class Document(Base):
     created_at = Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
 
     user = relationship("User", back_populates="documents")
+
+class PortfolioItem(Base):
+    __tablename__ = "portfolio_items"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    # Types: skill_verification, program_completion, internship_completion, achievement
+    item_type = Column(String(50), nullable=False)
+    title = Column(String(255), nullable=False)
+    description = Column(Text, nullable=True)
+    reference_id = Column(Integer, nullable=True) # e.g. skill_id, program_id, or application_id
+    created_at = Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
+
+    user = relationship("User", back_populates="portfolio_items")
+
+class AuditLog(Base):
+    __tablename__ = "audit_logs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    action_type = Column(String(100), nullable=False, index=True)
+    details = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
+
+    user = relationship("User")

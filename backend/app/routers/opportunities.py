@@ -274,6 +274,14 @@ def apply_to_opportunity(
     db.commit()
     db.refresh(new_app)
     
+    # Audit Log
+    db.add(AuditLog(
+        user_id=current_user.id,
+        action_type="opportunity_applied",
+        details=f"Applied to opportunity {opp.id} ({opp.title})"
+    ))
+    db.commit()
+    
     # Notify company owner
     comp = db.query(Company).filter(Company.id == opp.company_id).first()
     if comp:
@@ -338,6 +346,13 @@ def update_application_status(
         category="application"
     ))
     
+    # Audit Log
+    db.add(AuditLog(
+        user_id=current_user.id,
+        action_type="application_status_updated",
+        details=f"Updated application {app.id} to {status_update.status}"
+    ))
+    
     db.commit()
     db.refresh(app)
     return _format_application(app, db)
@@ -366,6 +381,22 @@ def submit_mentor_feedback(
         title="Mentor Feedback Received!",
         message=f"You received a mentor rating of {feedback.mentor_rating}/5.0 for '{app.opportunity.title}'.",
         category="portfolio"
+    ))
+    
+    # Portfolio Item for Internship Completion
+    db.add(PortfolioItem(
+        user_id=app.user_id,
+        item_type="internship_completion",
+        title=f"Completed: {app.opportunity.title}",
+        description=f"Received a mentor rating of {feedback.mentor_rating}/5.0. Feedback: {feedback.mentor_feedback}",
+        reference_id=app.id
+    ))
+    
+    # Audit Log
+    db.add(AuditLog(
+        user_id=current_user.id,
+        action_type="feedback_submitted",
+        details=f"Submitted mentor feedback for application {app.id}"
     ))
     
     db.commit()
@@ -549,6 +580,22 @@ def complete_program_enrollment(
             message=f"You successfully completed '{prog.title}'. Verified skills added to your profile: {', '.join(verified_skills)}.",
             category="portfolio"
         ))
+        
+    # Portfolio Item
+    db.add(PortfolioItem(
+        user_id=enrollment.user_id,
+        item_type="program_completion",
+        title=f"Certified: {prog.title}",
+        description=f"Completed {prog.duration_weeks}-week {prog.program_type}. Verified skills: {', '.join(verified_skills)}",
+        reference_id=prog.id
+    ))
+    
+    # Audit Log
+    db.add(AuditLog(
+        user_id=current_user.id,
+        action_type="program_completed",
+        details=f"Completed program {prog.id} for user {enrollment.user_id}"
+    ))
         
     db.commit()
     db.refresh(enrollment)

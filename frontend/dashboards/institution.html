@@ -32,6 +32,9 @@
       <div class="sidebar-link" onclick="switchSection('feedback-summary-section', this)">
         <span>📊</span> Macro Curriculum View
       </div>
+      <div class="sidebar-link" onclick="switchSection('audit-section', this)">
+        <span>🛡️</span> System Audit Logs
+      </div>
 
       <div class="sidebar-heading">Phase 4 Shells</div>
       <div class="sidebar-link" onclick="switchSection('students-shell', this)">
@@ -59,23 +62,22 @@
         </div>
 
         <!-- Metric Cards -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-bottom: 1.75rem;">
-          <div class="glass-card">
-            <div style="font-size: 0.85rem; color: var(--text-secondary);">Enrolled Students</div>
-            <div style="font-size: 2.25rem; font-weight: 800; color: #818cf8; margin: 0.3rem 0;" id="metric-students">0</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Active cohort profiles</div>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.75rem;">
+          <div class="glass-card" style="padding: 1rem; text-align: center;">
+            <div style="font-size: 0.8rem; color: var(--text-secondary);">Enrolled Students</div>
+            <div style="font-size: 1.5rem; font-weight: 700; color: #818cf8;" id="metric-students">0</div>
           </div>
-
-          <div class="glass-card">
-            <div style="font-size: 0.85rem; color: var(--text-secondary);">Faculty Members</div>
-            <div style="font-size: 2.25rem; font-weight: 800; color: #38bdf8; margin: 0.3rem 0;" id="metric-faculty">0</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Affiliated departments</div>
+          <div class="glass-card" style="padding: 1rem; text-align: center;">
+            <div style="font-size: 0.8rem; color: var(--text-secondary);">Students Assessed</div>
+            <div style="font-size: 1.5rem; font-weight: 700; color: #38bdf8;" id="metric-assessed">0</div>
           </div>
-
-          <div class="glass-card">
-            <div style="font-size: 0.85rem; color: var(--text-secondary);">Feedback Loop Status</div>
-            <div style="font-size: 2.25rem; font-weight: 800; color: #34d399; margin: 0.3rem 0;">100%</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Telemetry synchronized</div>
+          <div class="glass-card" style="padding: 1rem; text-align: center;">
+            <div style="font-size: 0.8rem; color: var(--text-secondary);">Internships Applied</div>
+            <div style="font-size: 1.5rem; font-weight: 700; color: #fbbf24;" id="metric-applied">0</div>
+          </div>
+          <div class="glass-card" style="padding: 1rem; text-align: center;">
+            <div style="font-size: 0.8rem; color: var(--text-secondary);">Completed (Verified)</div>
+            <div style="font-size: 1.5rem; font-weight: 700; color: #34d399;" id="metric-completed">0</div>
           </div>
         </div>
 
@@ -127,6 +129,33 @@
               </thead>
               <tbody id="macro-reports-body">
                 <tr><td colspan="5" style="text-align: center;">Loading macro telemetry...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Audit Logs Section -->
+      <section id="audit-section" style="display: none;">
+        <div style="margin-bottom: 1.5rem;">
+          <h2>System Audit Logs</h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">
+            Immutable accountability record of key actions across the platform.
+          </p>
+        </div>
+        <div class="glass-card">
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Action Type</th>
+                  <th>User ID</th>
+                  <th>Details</th>
+                </tr>
+              </thead>
+              <tbody id="audit-table-body">
+                <tr><td colspan="4" style="text-align: center;">Loading audit logs...</td></tr>
               </tbody>
             </table>
           </div>
@@ -185,14 +214,21 @@
       if (element) element.classList.add("active");
 
       if (sectionId === "feedback-summary-section") loadMacroReports();
+      if (sectionId === "audit-section") loadAuditLogs();
     }
 
     async function loadInstitutionDashboard() {
       try {
         const data = await api.get("/dashboards/institution");
         document.getElementById("admin-name-header").innerText = data.full_name;
-        document.getElementById("metric-students").innerText = data.summary.total_registered_students;
-        document.getElementById("metric-faculty").innerText = data.summary.total_faculty_members;
+        
+        // Also fetch macro participation metrics
+        const stats = await api.get("/analytics/institution/summary");
+        document.getElementById("metric-students").innerText = stats.total_students;
+        document.getElementById("metric-assessed").innerText = stats.students_assessed;
+        document.getElementById("metric-applied").innerText = stats.internships_applied;
+        document.getElementById("metric-completed").innerText = stats.internships_completed;
+        
       } catch (err) {
         console.error(err);
       }
@@ -234,6 +270,27 @@
                 ${r.demand_frequency} postings (${r.trend.toUpperCase()})
               </span>
             </td>
+          </tr>
+        `).join("");
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function loadAuditLogs() {
+      try {
+        const logs = await api.get("/analytics/admin/audit-logs");
+        const tbody = document.getElementById("audit-table-body");
+        if (logs.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">No audit logs recorded yet.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = logs.map(log => `
+          <tr>
+            <td>${new Date(log.created_at).toLocaleString()}</td>
+            <td><span class="badge badge-primary">${log.action_type}</span></td>
+            <td>User #${log.user_id}</td>
+            <td>${log.details}</td>
           </tr>
         `).join("");
       } catch (err) {

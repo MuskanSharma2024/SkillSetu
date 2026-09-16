@@ -35,6 +35,9 @@
       <div class="sidebar-link" onclick="switchSection('recommendations-section', this)">
         <span>💼</span> Recommended Matches
       </div>
+      <div class="sidebar-link" onclick="switchSection('portfolio-section', this)">
+        <span>🏆</span> Verified Portfolio
+      </div>
 
       <div class="sidebar-heading">Opportunities</div>
       <div class="sidebar-link" onclick="switchSection('applications-section', this)">
@@ -56,6 +59,26 @@
             <p style="color: var(--text-secondary); font-size: 0.9rem;" id="student-inst-header">Affiliated Institution</p>
           </div>
           <span class="badge badge-primary" id="student-status-badge">Active Student</span>
+        </div>
+
+        <!-- Student Analytics Row -->
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+          <div class="glass-card" style="padding: 1rem; text-align: center;">
+            <div style="font-size: 0.8rem; color: var(--text-secondary);">Applications</div>
+            <div style="font-size: 1.5rem; font-weight: 700; color: #a5b4fc;" id="stat-apps">0</div>
+          </div>
+          <div class="glass-card" style="padding: 1rem; text-align: center;">
+            <div style="font-size: 0.8rem; color: var(--text-secondary);">Verified Skills</div>
+            <div style="font-size: 1.5rem; font-weight: 700; color: #34d399;" id="stat-skills">0</div>
+          </div>
+          <div class="glass-card" style="padding: 1rem; text-align: center;">
+            <div style="font-size: 0.8rem; color: var(--text-secondary);">Programs</div>
+            <div style="font-size: 1.5rem; font-weight: 700; color: #f472b6;" id="stat-progs">0</div>
+          </div>
+          <div class="glass-card" style="padding: 1rem; text-align: center;">
+            <div style="font-size: 0.8rem; color: var(--text-secondary);">Portfolio Items</div>
+            <div style="font-size: 1.5rem; font-weight: 700; color: #fbbf24;" id="stat-portfolio">0</div>
+          </div>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
@@ -176,6 +199,38 @@
         </div>
       </section>
 
+      <!-- Verified Portfolio Section -->
+      <section id="portfolio-section" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1.5rem;">
+          <div>
+            <h2>Verified Portfolio</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">
+              Your immutable record of verified skills, internships, and certifications.
+            </p>
+          </div>
+          <button onclick="sharePortfolio()" class="btn btn-secondary btn-sm">
+            🔗 Share Public Link
+          </button>
+        </div>
+
+        <div class="glass-card">
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Item Type</th>
+                  <th>Title & Description</th>
+                  <th>Date Earned</th>
+                </tr>
+              </thead>
+              <tbody id="portfolio-table-body">
+                <tr><td colspan="3" style="text-align: center;">Loading portfolio items...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
       <!-- Applications Section -->
       <section id="applications-section" style="display: none;">
         <div style="margin-bottom: 1.5rem;">
@@ -275,8 +330,13 @@
       if (target) target.style.display = "block";
       if (element) element.classList.add("active");
 
+      if (sectionId === "profile-section") {
+        loadStudentProfile();
+        loadStudentAnalytics();
+      }
       if (sectionId === "skills-section") loadSkillProfile();
       if (sectionId === "recommendations-section") loadRecommendations();
+      if (sectionId === "portfolio-section") loadPortfolio();
       if (sectionId === "applications-section") loadApplications();
       if (sectionId === "programs-section") {
         loadAvailablePrograms();
@@ -304,6 +364,53 @@
         }
       } catch (err) {
         showToast("Error loading profile: " + err.message, "error");
+      }
+    }
+
+    async function loadStudentAnalytics() {
+      try {
+        const stats = await api.get("/analytics/student");
+        document.getElementById("stat-apps").innerText = stats.total_applications;
+        document.getElementById("stat-skills").innerText = stats.verified_skills_count;
+        document.getElementById("stat-progs").innerText = stats.completed_programs;
+        
+        const port = await api.get("/portfolio/me");
+        document.getElementById("stat-portfolio").innerText = port.length;
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function loadPortfolio() {
+      try {
+        const items = await api.get("/portfolio/me");
+        const tbody = document.getElementById("portfolio-table-body");
+        if (items.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="3" style="text-align: center;">No portfolio items earned yet. Complete assessments or programs!</td></tr>';
+          return;
+        }
+        tbody.innerHTML = items.map(item => `
+          <tr>
+            <td><span class="badge badge-primary">${item.item_type.replace('_', ' ')}</span></td>
+            <td>
+              <div style="font-weight: 600;">${item.title}</div>
+              <div style="font-size: 0.85rem; color: var(--text-secondary);">${item.description}</div>
+            </td>
+            <td>${new Date(item.created_at).toLocaleDateString()}</td>
+          </tr>
+        `).join("");
+      } catch (err) {
+        console.error("Error loading portfolio:", err);
+      }
+    }
+
+    async function sharePortfolio() {
+      try {
+        const profile = await api.get("/students/profile");
+        const link = window.location.origin + `/api/portfolio/${profile.user_id}/public`;
+        prompt("Copy this public link to share your portfolio:", link);
+      } catch(err) {
+        showToast("Failed to generate link.", "error");
       }
     }
 
@@ -582,6 +689,7 @@
 
     document.addEventListener("DOMContentLoaded", () => {
       loadStudentProfile();
+      loadStudentAnalytics();
     });
   </script>
 </body>

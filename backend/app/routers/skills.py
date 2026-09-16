@@ -9,7 +9,7 @@ from app.database import get_db
 from app.models import (
     User, Skill, SkillAssessment, SkillProfile, Opportunity, OpportunitySkill,
     CurriculumGapReport, CurriculumAction, Notification, StudentProfile, Institution, Company,
-    AcademicianProfile
+    AcademicianProfile, PortfolioItem
 )
 from app.schemas import (
     SkillResponse, SkillCreate, AssessmentQuestion, AssessmentSubmission,
@@ -249,6 +249,22 @@ def submit_skill_assessment(
                 last_assessed_at=datetime.datetime.utcnow()
             )
             db.add(new_prof)
+            
+        # Add Portfolio Item if newly verified or already verified but score improved
+        if prof_score >= skill.industry_benchmark:
+            existing_port = db.query(PortfolioItem).filter(
+                PortfolioItem.user_id == current_user.id, 
+                PortfolioItem.reference_id == skill.id,
+                PortfolioItem.item_type == "skill_verification"
+            ).first()
+            if not existing_port:
+                db.add(PortfolioItem(
+                    user_id=current_user.id,
+                    item_type="skill_verification",
+                    title=f"Verified Skill: {skill.name}",
+                    description=f"Achieved {prof_score}% proficiency (Benchmark: {skill.industry_benchmark}%)",
+                    reference_id=skill.id
+                ))
 
     # Store raw assessment in skill_assessments
     assessment_record = SkillAssessment(

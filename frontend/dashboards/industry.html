@@ -84,6 +84,29 @@
             <button type="submit" class="btn btn-primary btn-sm">Save Enterprise Info</button>
           </form>
         </div>
+
+        <!-- Internal Skill Demand Trends (Task 6) -->
+        <div class="glass-card" style="margin-top: 1.5rem;">
+          <h3 style="font-size: 1.15rem; margin-bottom: 1rem;">Internal Skill-Demand Trends</h3>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
+            Skills most frequently required across your own company's opportunity postings.
+          </p>
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Skill</th>
+                  <th>Category</th>
+                  <th>Frequency (Postings)</th>
+                  <th>Internal Trend</th>
+                </tr>
+              </thead>
+              <tbody id="internal-trends-body">
+                <tr><td colspan="4" style="text-align: center;">Loading internal skill trends...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </section>
 
       <!-- Industry Demand Aggregator Section (Task 8 ⭐ USP) -->
@@ -165,6 +188,30 @@
           <h2>Candidate Funnel</h2>
           <p style="color: var(--text-secondary); font-size: 0.9rem;">View applicants, shortlist candidates, and provide mentor feedback for completed internships/projects.</p>
         </div>
+
+        <!-- Applicant Funnel Visualization (Task 5) -->
+        <div class="glass-card" style="margin-bottom: 1.5rem;">
+          <h3 style="font-size: 1.15rem; margin-bottom: 1rem;">Funnel Metrics (All Postings)</h3>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+            <div style="background: rgba(30,41,59,0.5); padding: 1rem; border-radius: var(--radius-md); text-align: center; border-left: 3px solid #94a3b8;">
+              <div style="font-size: 0.85rem; color: var(--text-secondary);">Applied</div>
+              <div style="font-size: 1.5rem; font-weight: 700; color: #f8fafc;" id="funnel-applied">0</div>
+            </div>
+            <div style="background: rgba(30,41,59,0.5); padding: 1rem; border-radius: var(--radius-md); text-align: center; border-left: 3px solid #3b82f6;">
+              <div style="font-size: 0.85rem; color: var(--text-secondary);">Shortlisted / Interview</div>
+              <div style="font-size: 1.5rem; font-weight: 700; color: #60a5fa;" id="funnel-interview">0</div>
+            </div>
+            <div style="background: rgba(30,41,59,0.5); padding: 1rem; border-radius: var(--radius-md); text-align: center; border-left: 3px solid #10b981;">
+              <div style="font-size: 0.85rem; color: var(--text-secondary);">Offered / Accepted</div>
+              <div style="font-size: 1.5rem; font-weight: 700; color: #34d399;" id="funnel-offered">0</div>
+            </div>
+            <div style="background: rgba(30,41,59,0.5); padding: 1rem; border-radius: var(--radius-md); text-align: center; border-left: 3px solid #8b5cf6;">
+              <div style="font-size: 0.85rem; color: var(--text-secondary);">Completed (Certified)</div>
+              <div style="font-size: 1.5rem; font-weight: 700; color: #a78bfa;" id="funnel-completed">0</div>
+            </div>
+          </div>
+        </div>
+
         <div class="glass-card">
           <div class="data-table-container">
             <table class="data-table">
@@ -245,6 +292,8 @@
         document.getElementById("comp-location").value = comp.location || "";
         document.getElementById("comp-website").value = comp.website || "";
         document.getElementById("comp-desc").value = comp.description || "";
+        
+        loadInternalTrends();
       } catch (err) {
         showToast("Error loading company profile: " + err.message, "error");
       }
@@ -265,6 +314,27 @@
         loadCompanyProfile();
       } catch (err) {
         showToast(err.message, "error");
+      }
+    }
+
+    async function loadInternalTrends() {
+      try {
+        const trends = await api.get("/analytics/industry/skill-trends");
+        const tbody = document.getElementById("internal-trends-body");
+        if (trends.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">No skill trends available. Create a posting first.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = trends.map(t => `
+          <tr>
+            <td style="font-weight: 600;">${t.skill_name}</td>
+            <td><span class="badge badge-primary">${t.category}</span></td>
+            <td><strong>${t.frequency} postings</strong></td>
+            <td>${t.trend === 'rising' ? '<span style="color: #34d399;">▲ Rising</span>' : '<span style="color: #94a3b8;">● Stable</span>'}</td>
+          </tr>
+        `).join("");
+      } catch (err) {
+        console.error(err);
       }
     }
 
@@ -351,6 +421,36 @@
             </td>
           </tr>
         `).join("");
+        
+        loadFunnelMetrics();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function loadFunnelMetrics() {
+      try {
+        const data = await api.get("/analytics/industry/funnel");
+        let applied = 0, interview = 0, offered = 0, completed = 0;
+        
+        data.funnel.forEach(f => {
+          applied += f.applied;
+          interview += (f.shortlisted + f.interview);
+          offered += f.offered;
+          // Completed status wasn't tracked explicitly in funnel item schema but we can query applicants directly if needed.
+          // For demo, we just rely on funnel response or applicant table data directly.
+        });
+        
+        // Count 'completed' directly from table data (Task 5 metrics)
+        const apps = await api.get("/opportunities/company/applicants");
+        apps.forEach(app => {
+          if (app.status === 'completed') completed++;
+        });
+
+        document.getElementById("funnel-applied").innerText = applied;
+        document.getElementById("funnel-interview").innerText = interview;
+        document.getElementById("funnel-offered").innerText = offered;
+        document.getElementById("funnel-completed").innerText = completed;
       } catch (err) {
         console.error(err);
       }
