@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Industry Portal — SkillSetu</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="/" class="brand">
+      <div class="brand-icon" style="background: var(--gradient-cyan);">🏢</div>
+      <div>
+        <span class="brand-name">SkillSetu</span>
+        <span class="brand-badge">Industry Partner Hub</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <div id="nav-auth-section"></div>
+    </div>
+  </nav>
+
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-heading">Navigation</div>
+      <div class="sidebar-link active" onclick="switchSection('company-section', this)">
+        <span>🏢</span> Enterprise Profile
+      </div>
+      <div class="sidebar-link" onclick="switchSection('demand-section', this)">
+        <span>📊</span> ⭐ Live Skill Demand
+      </div>
+
+      <div class="sidebar-heading">Recruitment & Training</div>
+      <div class="sidebar-link" onclick="switchSection('postings-section', this)">
+        <span>📢</span> Opportunity Postings
+      </div>
+      <div class="sidebar-link" onclick="switchSection('candidates-section', this)">
+        <span>🎯</span> Candidate Funnel
+      </div>
+      <div class="sidebar-link" onclick="switchSection('programs-section', this)">
+        <span>📚</span> Learning Programs
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      
+      <!-- Company Profile Section -->
+      <section id="company-section">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <div>
+            <h2 id="comp-name-header">Company Profile</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;" id="comp-sector-header">Industry Sector</p>
+          </div>
+          <span class="badge badge-cyan">Verified Recruiter</span>
+        </div>
+
+        <div class="glass-card" style="max-width: 800px;">
+          <h3 style="font-size: 1.15rem; margin-bottom: 1.25rem;">Enterprise Identification</h3>
+          <form onsubmit="handleCompanyUpdate(event)">
+            <div class="form-group">
+              <label class="form-label">Company Name</label>
+              <input type="text" id="comp-name" class="form-input" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Industry Sector</label>
+              <input type="text" id="comp-sector" class="form-input" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Headquarters / Location</label>
+              <input type="text" id="comp-location" class="form-input" placeholder="e.g. Bengaluru, India">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Corporate Website</label>
+              <input type="url" id="comp-website" class="form-input" placeholder="https://company.com">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Company Overview</label>
+              <textarea id="comp-desc" class="form-textarea" rows="3" placeholder="Brief description of enterprise focus areas..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm">Save Enterprise Info</button>
+          </form>
+        </div>
+
+        <!-- Internal Skill Demand Trends (Task 6) -->
+        <div class="glass-card" style="margin-top: 1.5rem;">
+          <h3 style="font-size: 1.15rem; margin-bottom: 1rem;">Internal Skill-Demand Trends</h3>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
+            Skills most frequently required across your own company's opportunity postings.
+          </p>
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Skill</th>
+                  <th>Category</th>
+                  <th>Frequency (Postings)</th>
+                  <th>Internal Trend</th>
+                </tr>
+              </thead>
+              <tbody id="internal-trends-body">
+                <tr><td colspan="4" style="text-align: center;">Loading internal skill trends...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Industry Demand Aggregator Section (Task 8 ⭐ USP) -->
+      <section id="demand-section" style="display: none;">
+        <div style="margin-bottom: 1.5rem;">
+          <span class="badge badge-cyan">⭐ USP Feature</span>
+          <h2 style="margin-top: 0.4rem;">Industry Skill-Demand Aggregation Engine</h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">
+            Real-time telemetry showing skills most requested across all active industry postings. This live demand directly feeds the academician curriculum feedback loop!
+          </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-bottom: 1.75rem;">
+          <div class="glass-card" style="text-align: center;">
+            <div style="font-size: 2.25rem; font-weight: 800; color: #38bdf8;" id="total-postings-metric">0</div>
+            <div style="font-size: 0.85rem; color: var(--text-secondary);">Active Industry Postings</div>
+          </div>
+          <div class="glass-card" style="text-align: center;">
+            <div style="font-size: 2.25rem; font-weight: 800; color: #818cf8;" id="total-companies-metric">0</div>
+            <div style="font-size: 0.85rem; color: var(--text-secondary);">Registered Enterprises</div>
+          </div>
+          <div class="glass-card" style="text-align: center;">
+            <div style="font-size: 2.25rem; font-weight: 800; color: #34d399;">Active</div>
+            <div style="font-size: 0.85rem; color: var(--text-secondary);">Curriculum Sync Status</div>
+          </div>
+        </div>
+
+        <div class="glass-card">
+          <h3 style="font-size: 1.15rem; margin-bottom: 1rem;">Aggregated In-Demand Skills</h3>
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Skill</th>
+                  <th>Category</th>
+                  <th>Postings Requesting</th>
+                  <th>Trend</th>
+                  <th>Benchmark Expected</th>
+                </tr>
+              </thead>
+              <tbody id="demand-table-body">
+                <tr><td colspan="5" style="text-align: center;">Loading industry demand dataset...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Postings Section -->
+      <section id="postings-section" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <h2>Opportunity Postings</h2>
+          <button class="btn btn-primary btn-sm" onclick="showCreatePostingModal()">+ New Opportunity</button>
+        </div>
+        <div class="glass-card">
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Type</th>
+                  <th>Target</th>
+                  <th>Deadline</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="postings-table-body">
+                <tr><td colspan="6" style="text-align: center;">Loading postings...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Candidates Section -->
+      <section id="candidates-section" style="display: none;">
+        <div style="margin-bottom: 1.5rem;">
+          <h2>Candidate Funnel</h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">View applicants, shortlist candidates, and provide mentor feedback for completed internships/projects.</p>
+        </div>
+
+        <!-- Applicant Funnel Visualization (Task 5) -->
+        <div class="glass-card" style="margin-bottom: 1.5rem;">
+          <h3 style="font-size: 1.15rem; margin-bottom: 1rem;">Funnel Metrics (All Postings)</h3>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+            <div style="background: rgba(30,41,59,0.5); padding: 1rem; border-radius: var(--radius-md); text-align: center; border-left: 3px solid #94a3b8;">
+              <div style="font-size: 0.85rem; color: var(--text-secondary);">Applied</div>
+              <div style="font-size: 1.5rem; font-weight: 700; color: #f8fafc;" id="funnel-applied">0</div>
+            </div>
+            <div style="background: rgba(30,41,59,0.5); padding: 1rem; border-radius: var(--radius-md); text-align: center; border-left: 3px solid #3b82f6;">
+              <div style="font-size: 0.85rem; color: var(--text-secondary);">Shortlisted / Interview</div>
+              <div style="font-size: 1.5rem; font-weight: 700; color: #60a5fa;" id="funnel-interview">0</div>
+            </div>
+            <div style="background: rgba(30,41,59,0.5); padding: 1rem; border-radius: var(--radius-md); text-align: center; border-left: 3px solid #10b981;">
+              <div style="font-size: 0.85rem; color: var(--text-secondary);">Offered / Accepted</div>
+              <div style="font-size: 1.5rem; font-weight: 700; color: #34d399;" id="funnel-offered">0</div>
+            </div>
+            <div style="background: rgba(30,41,59,0.5); padding: 1rem; border-radius: var(--radius-md); text-align: center; border-left: 3px solid #8b5cf6;">
+              <div style="font-size: 0.85rem; color: var(--text-secondary);">Completed (Certified)</div>
+              <div style="font-size: 1.5rem; font-weight: 700; color: #a78bfa;" id="funnel-completed">0</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-card">
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Applicant</th>
+                  <th>Opportunity</th>
+                  <th>Match Score</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="candidates-table-body">
+                <tr><td colspan="5" style="text-align: center;">Loading candidates...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Programs Section -->
+      <section id="programs-section" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <h2>Learning & Certification Programs</h2>
+          <button class="btn btn-primary btn-sm" onclick="showCreateProgramModal()">+ New Program</button>
+        </div>
+        <div class="glass-card">
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Program Title</th>
+                  <th>Type</th>
+                  <th>Duration</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="programs-table-body">
+                <tr><td colspan="4" style="text-align: center;">Loading programs...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/app.js"></script>
+  <script>
+    enforceRole(["industry"]);
+
+    function switchSection(sectionId, element) {
+      document.querySelectorAll("main > section").forEach(s => s.style.display = "none");
+      document.querySelectorAll(".sidebar-link").forEach(l => l.classList.remove("active"));
+      
+      const target = document.getElementById(sectionId);
+      if (target) target.style.display = "block";
+      if (element) element.classList.add("active");
+
+      if (sectionId === "demand-section") loadIndustryDemand();
+      if (sectionId === "postings-section") loadPostings();
+      if (sectionId === "candidates-section") loadCandidates();
+      if (sectionId === "programs-section") loadPrograms();
+    }
+
+    async function loadCompanyProfile() {
+      try {
+        const comp = await api.get("/companies/profile");
+        document.getElementById("comp-name-header").innerText = comp.name;
+        document.getElementById("comp-sector-header").innerText = comp.industry_sector;
+
+        document.getElementById("comp-name").value = comp.name || "";
+        document.getElementById("comp-sector").value = comp.industry_sector || "";
+        document.getElementById("comp-location").value = comp.location || "";
+        document.getElementById("comp-website").value = comp.website || "";
+        document.getElementById("comp-desc").value = comp.description || "";
+        
+        loadInternalTrends();
+      } catch (err) {
+        showToast("Error loading company profile: " + err.message, "error");
+      }
+    }
+
+    async function handleCompanyUpdate(e) {
+      e.preventDefault();
+      try {
+        const payload = {
+          name: document.getElementById("comp-name").value,
+          industry_sector: document.getElementById("comp-sector").value,
+          location: document.getElementById("comp-location").value,
+          website: document.getElementById("comp-website").value,
+          description: document.getElementById("comp-desc").value
+        };
+        await api.put("/companies/profile", payload);
+        showToast("Company profile updated successfully!", "success");
+        loadCompanyProfile();
+      } catch (err) {
+        showToast(err.message, "error");
+      }
+    }
+
+    async function loadInternalTrends() {
+      try {
+        const trends = await api.get("/analytics/industry/skill-trends");
+        const tbody = document.getElementById("internal-trends-body");
+        if (trends.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">No skill trends available. Create a posting first.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = trends.map(t => `
+          <tr>
+            <td style="font-weight: 600;">${t.skill_name}</td>
+            <td><span class="badge badge-primary">${t.category}</span></td>
+            <td><strong>${t.frequency} postings</strong></td>
+            <td>${t.trend === 'rising' ? '<span style="color: #34d399;">▲ Rising</span>' : '<span style="color: #94a3b8;">● Stable</span>'}</td>
+          </tr>
+        `).join("");
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function loadIndustryDemand() {
+      try {
+        const data = await api.get("/skills/industry-demand");
+        document.getElementById("total-postings-metric").innerText = data.total_postings;
+        document.getElementById("total-companies-metric").innerText = data.total_companies;
+
+        const tbody = document.getElementById("demand-table-body");
+        tbody.innerHTML = data.top_demanded_skills.map(item => `
+          <tr>
+            <td style="font-weight: 600;">${item.skill_name}</td>
+            <td><span class="badge badge-primary">${item.category}</span></td>
+            <td><strong>${item.frequency_count} postings</strong></td>
+            <td>
+              ${item.trend === 'rising' 
+                ? `<span class="badge badge-emerald">▲ Rising Demand</span>` 
+                : `<span class="badge badge-cyan">● Stable</span>`}
+            </td>
+            <td>${item.benchmark_score}% proficiency</td>
+          </tr>
+        `).join("");
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    // Opportunity Postings
+    async function loadPostings() {
+      try {
+        const opps = await api.get("/opportunities/company/my-postings");
+        const tbody = document.getElementById("postings-table-body");
+        if (opps.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No postings found.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = opps.map(opp => `
+          <tr>
+            <td style="font-weight: 600;">${opp.title}</td>
+            <td><span class="badge badge-primary">${opp.opportunity_type}</span></td>
+            <td><span class="badge badge-cyan">${opp.target_role}</span></td>
+            <td>${opp.deadline || 'N/A'}</td>
+            <td>${opp.is_active ? '<span class="badge badge-emerald">Active</span>' : '<span class="badge badge-error">Closed</span>'}</td>
+            <td><button class="btn btn-sm" onclick="alert('Details UI pending')">View</button></td>
+          </tr>
+        `).join("");
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function showCreatePostingModal() { alert("Modal UI for creating postings pending implementation"); }
+
+    // Candidates Funnel
+    async function loadCandidates() {
+      try {
+        const apps = await api.get("/opportunities/company/applicants");
+        const tbody = document.getElementById("candidates-table-body");
+        if (apps.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No applicants yet.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = apps.map(app => `
+          <tr>
+            <td style="font-weight: 600;">
+              ${app.applicant_name}<br>
+              <span style="font-size: 0.8rem; font-weight: normal; color: var(--text-secondary);">${app.applicant_role}</span>
+            </td>
+            <td>${app.opportunity_title}</td>
+            <td>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div class="progress-bar"><div class="progress-fill" style="width: ${app.match_score}%;"></div></div>
+                <span style="font-size: 0.8rem; font-weight: 600; color: #34d399;">${app.match_score}%</span>
+              </div>
+            </td>
+            <td><span class="badge badge-primary">${app.status}</span></td>
+            <td>
+              ${app.status === 'applied' ? `<button class="btn btn-sm btn-primary" onclick="updateCandidateStatus(${app.id}, 'shortlisted')">Shortlist</button>` : ''}
+              ${app.status === 'shortlisted' ? `<button class="btn btn-sm btn-primary" onclick="updateCandidateStatus(${app.id}, 'interview')">Interview</button>` : ''}
+              ${app.status === 'interview' ? `<button class="btn btn-sm btn-primary" onclick="updateCandidateStatus(${app.id}, 'offered')">Offer</button>` : ''}
+              ${(app.status === 'offered' || app.status === 'accepted') ? `<button class="btn btn-sm btn-primary" onclick="certifyInternship(${app.id})">Certify & Feedback</button>` : ''}
+              ${app.status === 'completed' ? `<span class="badge badge-emerald">Completed</span>` : ''}
+            </td>
+          </tr>
+        `).join("");
+        
+        loadFunnelMetrics();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function loadFunnelMetrics() {
+      try {
+        const data = await api.get("/analytics/industry/funnel");
+        let applied = 0, interview = 0, offered = 0, completed = 0;
+        
+        data.funnel.forEach(f => {
+          applied += f.applied;
+          interview += (f.shortlisted + f.interview);
+          offered += f.offered;
+          // Completed status wasn't tracked explicitly in funnel item schema but we can query applicants directly if needed.
+          // For demo, we just rely on funnel response or applicant table data directly.
+        });
+        
+        // Count 'completed' directly from table data (Task 5 metrics)
+        const apps = await api.get("/opportunities/company/applicants");
+        apps.forEach(app => {
+          if (app.status === 'completed') completed++;
+        });
+
+        document.getElementById("funnel-applied").innerText = applied;
+        document.getElementById("funnel-interview").innerText = interview;
+        document.getElementById("funnel-offered").innerText = offered;
+        document.getElementById("funnel-completed").innerText = completed;
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function updateCandidateStatus(appId, newStatus) {
+      if(!confirm(`Update candidate status to ${newStatus}?`)) return;
+      try {
+        await api.patch(`/opportunities/applications/${appId}/status`, { status: newStatus });
+        showToast("Status updated", "success");
+        loadCandidates();
+      } catch (err) {
+        showToast(err.message, "error");
+      }
+    }
+    
+    async function certifyInternship(appId) {
+      const rating = prompt("Enter mentor rating out of 5 (e.g. 4.5):");
+      if(!rating) return;
+      const feedback = prompt("Enter short feedback for the candidate:");
+      if(!feedback) return;
+      try {
+        await api.post(`/opportunities/applications/${appId}/feedback`, { mentor_rating: parseFloat(rating), mentor_feedback: feedback });
+        showToast("Feedback submitted and internship certified!", "success");
+        loadCandidates();
+      } catch (err) {
+        showToast(err.message, "error");
+      }
+    }
+
+    // Learning Programs
+    async function loadPrograms() {
+      // Re-using the generic /programs endpoint or we could add a /company/my-programs endpoint. 
+      // The generic one works fine for the demo if filtered by company implicitly, but for now we'll just fetch all and let the demo show it.
+      try {
+        const progs = await api.get("/opportunities/programs");
+        const tbody = document.getElementById("programs-table-body");
+        if (progs.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">No programs found.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = progs.map(prog => `
+          <tr>
+            <td style="font-weight: 600;">${prog.title}</td>
+            <td><span class="badge badge-primary">${prog.program_type}</span></td>
+            <td>${prog.duration_weeks} weeks</td>
+            <td>${prog.is_active ? '<span class="badge badge-emerald">Active</span>' : '<span class="badge badge-error">Closed</span>'}</td>
+          </tr>
+        `).join("");
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    
+    function showCreateProgramModal() { alert("Modal UI for creating programs pending implementation"); }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadCompanyProfile();
+    });
+  </script>
+</body>
+</html>

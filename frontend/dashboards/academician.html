@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faculty Portal — SkillSetu</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="/" class="brand">
+      <div class="brand-icon" style="background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);">🔬</div>
+      <div>
+        <span class="brand-name">SkillSetu</span>
+        <span class="brand-badge" style="background: rgba(168, 85, 247, 0.2); color: #c084fc;">Faculty Console</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <div id="nav-auth-section"></div>
+    </div>
+  </nav>
+
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-heading">⭐ Core USP Module</div>
+      <div class="sidebar-link active" onclick="switchSection('feedback-loop-section', this)">
+        <span>🔄</span> Curriculum Feedback Loop
+      </div>
+      <div class="sidebar-link" onclick="switchSection('faculty-profile-section', this)">
+        <span>👤</span> Faculty Affiliation
+      </div>
+
+      <div class="sidebar-heading">Opportunities</div>
+      <div class="sidebar-link" onclick="switchSection('fdp-section', this)">
+        <span>🎓</span> Faculty Internships & FDP
+      </div>
+      <div class="sidebar-link" onclick="switchSection('cohort-shell', this)">
+        <span>👥</span> Student Cohort Roster (Shell)
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      
+      <!-- Curriculum Feedback Loop Section (⭐ USP CORE) -->
+      <section id="feedback-loop-section">
+        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1.5rem;">
+          <div>
+            <span class="badge badge-purple" style="font-size: 0.8rem; margin-bottom: 0.5rem;">⭐ Primary SIH Differentiator</span>
+            <h2>Curriculum Feedback & Gap Resolution Loop</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;" id="inst-name-header">
+              Live telemetry cross-referencing your student cohort's proficiency gaps against real-time industry demand.
+            </p>
+          </div>
+          <button onclick="loadCurriculumReports()" class="btn btn-secondary btn-sm">
+            ⟳ Refresh Telemetry
+          </button>
+        </div>
+
+        <!-- Metric Cards -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-bottom: 1.75rem;">
+          <div class="glass-card" style="border-left: 4px solid #f43f5e;">
+            <div style="font-size: 0.85rem; color: var(--text-secondary);">Critical Gaps Detected</div>
+            <div style="font-size: 2.25rem; font-weight: 800; color: #f43f5e; margin: 0.3rem 0;" id="crit-gaps-count">1</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Skills >15% below benchmark</div>
+          </div>
+
+          <div class="glass-card" style="border-left: 4px solid #06b6d4;">
+            <div style="font-size: 0.85rem; color: var(--text-secondary);">High Industry Demand</div>
+            <div style="font-size: 2.25rem; font-weight: 800; color: #06b6d4; margin: 0.3rem 0;" id="rising-skills-count">3</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Trending across partner postings</div>
+          </div>
+
+          <div class="glass-card" style="border-left: 4px solid #10b981;">
+            <div style="font-size: 0.85rem; color: var(--text-secondary);">Corrective Actions Logged</div>
+            <div style="font-size: 2.25rem; font-weight: 800; color: #10b981; margin: 0.3rem 0;" id="actions-logged-count">1</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Syllabus upgrades committed</div>
+          </div>
+        </div>
+
+        <!-- Curriculum Gap Reports Table -->
+        <div class="glass-card">
+          <h3 style="font-size: 1.15rem; margin-bottom: 1rem;">Per-Skill Gap vs. Industry Demand Reports</h3>
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Skill & Category</th>
+                  <th>Cohort Avg</th>
+                  <th>Industry Benchmark</th>
+                  <th>Identified Gap</th>
+                  <th>Industry Demand</th>
+                  <th>Status</th>
+                  <th>Curriculum Action</th>
+                </tr>
+              </thead>
+              <tbody id="curriculum-reports-body">
+                <tr><td colspan="7" style="text-align: center;">Loading curriculum gap report telemetry...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Notifications Feed (Task 11) -->
+        <div class="glass-card" style="margin-top: 1.5rem;">
+          <h3 style="font-size: 1.15rem; margin-bottom: 0.75rem;">🔔 Curriculum Telemetry Alerts</h3>
+          <div id="notifications-container" style="display: flex; flex-direction: column; gap: 0.75rem;">
+            Loading alerts...
+          </div>
+        </div>
+      </section>
+
+      <!-- Faculty Profile Section -->
+      <section id="faculty-profile-section" style="display: none;">
+        <div style="margin-bottom: 1.5rem;">
+          <h2 id="faculty-name-header">Faculty Affiliation & Profile</h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">Manage your academic department and institution linkage.</p>
+        </div>
+
+        <div class="glass-card" style="max-width: 700px;">
+          <form onsubmit="handleFacultyUpdate(event)">
+            <div class="form-group">
+              <label class="form-label">Affiliated Institution</label>
+              <select id="faculty-inst-select" class="form-select"></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Department</label>
+              <input type="text" id="faculty-dept" class="form-input" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Academic Designation</label>
+              <input type="text" id="faculty-desig" class="form-input" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Faculty Identification ID</label>
+              <input type="text" id="faculty-id-input" class="form-input" placeholder="e.g. FAC-CSE-409">
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm">Update Affiliation</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Cohort Shell -->
+      <section id="cohort-shell" style="display: none;">
+        <div class="glass-card" style="text-align: center; padding: 3rem 1.5rem;">
+          <span style="font-size: 3rem;">👥</span>
+          <h2 style="margin-top: 1rem;">Student Cohort Drill-Down (Phase 4)</h2>
+          <p style="color: var(--text-secondary); max-width: 500px; margin: 0.75rem auto;">
+            This module will allow professors to filter cohorts by batch, section, and semester to inspect granular proficiency clusters.
+          </p>
+        </div>
+      </section>
+
+      <!-- FDP Section -->
+      <section id="fdp-section" style="display: none;">
+        <div style="margin-bottom: 1.5rem;">
+          <h2>Faculty Development & Industry Sabbatical</h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">
+            Browse and apply for industry consultancy, corporate faculty internships, and research collaborations.
+          </p>
+        </div>
+        
+        <div class="glass-card">
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Opportunity</th>
+                  <th>Company/Institution</th>
+                  <th>Type</th>
+                  <th>Deadline</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="fdp-table-body">
+                <tr><td colspan="5" style="text-align: center;">Loading faculty opportunities...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div class="glass-card" style="margin-top: 1.5rem;">
+          <h3 style="font-size: 1.15rem; margin-bottom: 1rem;">My Applications</h3>
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Opportunity</th>
+                  <th>Status</th>
+                  <th>Last Updated</th>
+                </tr>
+              </thead>
+              <tbody id="my-fdp-apps-body">
+                <tr><td colspan="3" style="text-align: center;">Loading applications...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Action Logging Modal (⭐ Closes the loop into teaching) -->
+  <div class="modal-overlay" id="action-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <h3>Log Corrective Curriculum Action</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted);" id="action-modal-skill-title">Closing skill gap</p>
+        </div>
+        <button class="close-btn" onclick="closeActionModal()">&times;</button>
+      </div>
+
+      <form onsubmit="handleActionSubmit(event)">
+        <input type="hidden" id="action-report-id">
+        <div class="form-group">
+          <label class="form-label">Intervention Type</label>
+          <select id="action-type-select" class="form-select">
+            <option value="update_syllabus">Update Course Syllabus / Theory</option>
+            <option value="lab_module">Introduce New Hands-on Lab Module</option>
+            <option value="guest_lecture">Industry Expert Guest Lecture</option>
+            <option value="workshop_planned">Weekend Intensive Boot Camp</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Target Course Name & Code</label>
+          <input type="text" id="action-course-name" class="form-input" placeholder="e.g. CS304: Distributed Systems" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Action Description / Syllabus Additions</label>
+          <textarea id="action-notes" class="form-textarea" rows="4" placeholder="Detail how this course change will directly close the industry gap..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">
+          Commit Curriculum Action & Update Report
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/app.js"></script>
+  <script>
+    enforceRole(["academician"]);
+
+    let currentReportCache = [];
+
+    function switchSection(sectionId, element) {
+      document.querySelectorAll("main > section").forEach(s => s.style.display = "none");
+      document.querySelectorAll(".sidebar-link").forEach(l => l.classList.remove("active"));
+      
+      const target = document.getElementById(sectionId);
+      if (target) target.style.display = "block";
+      if (element) element.classList.add("active");
+
+      if (sectionId === "faculty-profile-section") loadFacultyProfile();
+      if (sectionId === "fdp-section") {
+        loadFacultyOpps();
+        loadMyApps();
+      }
+    }
+
+    async function loadFacultyProfile() {
+      try {
+        const [prof, institutions] = await Promise.all([
+          api.get("/institutions/academicians/profile"),
+          api.get("/institutions")
+        ]);
+
+        document.getElementById("faculty-name-header").innerText = prof.full_name;
+        document.getElementById("inst-name-header").innerText = `${prof.institution_name || 'Engineering Institute'} • Department of ${prof.department}`;
+
+        const select = document.getElementById("faculty-inst-select");
+        select.innerHTML = institutions.map(i => `<option value="${i.id}" ${i.id === prof.institution_id ? 'selected' : ''}>${i.name}</option>`).join("");
+
+        document.getElementById("faculty-dept").value = prof.department || "";
+        document.getElementById("faculty-desig").value = prof.designation || "";
+        document.getElementById("faculty-id-input").value = prof.faculty_id || "";
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function handleFacultyUpdate(e) {
+      e.preventDefault();
+      try {
+        const payload = {
+          institution_id: parseInt(document.getElementById("faculty-inst-select").value),
+          department: document.getElementById("faculty-dept").value,
+          designation: document.getElementById("faculty-desig").value,
+          faculty_id: document.getElementById("faculty-id-input").value
+        };
+        await api.put("/institutions/academicians/profile", payload);
+        showToast("Faculty affiliation updated successfully!", "success");
+        loadFacultyProfile();
+      } catch (err) {
+        showToast(err.message, "error");
+      }
+    }
+
+    async function loadCurriculumReports() {
+      try {
+        const [reports, notifs] = await Promise.all([
+          api.get("/skills/curriculum-gap-report"),
+          api.get("/skills/notifications")
+        ]);
+
+        currentReportCache = reports;
+
+        let critCount = 0;
+        let risingCount = 0;
+        let actionsCount = 0;
+
+        const tbody = document.getElementById("curriculum-reports-body");
+        tbody.innerHTML = reports.map(r => {
+          if (r.gap_score > 15) critCount++;
+          if (r.trend === 'rising') risingCount++;
+          actionsCount += r.actions_count;
+
+          return `
+            <tr>
+              <td>
+                <div style="font-weight: 600;">${r.skill_name}</div>
+                <span class="badge badge-primary">${r.category}</span>
+              </td>
+              <td><strong>${r.student_cohort_avg}%</strong></td>
+              <td>${r.industry_benchmark}%</td>
+              <td>
+                ${r.gap_score > 0 
+                  ? `<span class="badge ${r.gap_score > 15 ? 'badge-rose' : 'badge-amber'}">-${r.gap_score}% Gap</span>` 
+                  : `<span class="badge badge-emerald">+${Math.abs(r.gap_score)}% Surplus</span>`}
+              </td>
+              <td>
+                <div><strong>${r.demand_frequency} postings</strong></div>
+                <span style="font-size: 0.75rem; color: ${r.trend === 'rising' ? '#34d399' : '#94a3b8'};">
+                  ${r.trend === 'rising' ? '▲ Rising' : '● Stable'}
+                </span>
+              </td>
+              <td>
+                ${r.status === 'course_updated' 
+                  ? `<span class="badge badge-emerald">✓ Course Updated (${r.actions_count})</span>` 
+                  : `<span class="badge badge-amber">Action Needed</span>`}
+              </td>
+              <td>
+                <button onclick="openActionModal(${r.id})" class="btn btn-secondary btn-sm">
+                  ✏️ Log Action
+                </button>
+              </td>
+            </tr>
+          `;
+        }).join("");
+
+        document.getElementById("crit-gaps-count").innerText = critCount;
+        document.getElementById("rising-skills-count").innerText = risingCount;
+        document.getElementById("actions-logged-count").innerText = actionsCount;
+
+        // Render Notifications
+        const notifContainer = document.getElementById("notifications-container");
+        if (!notifs.length) {
+          notifContainer.innerHTML = `<p style="color: var(--text-muted); font-size: 0.85rem;">No active alerts.</p>`;
+        } else {
+          notifContainer.innerHTML = notifs.map(n => `
+            <div style="background: rgba(30, 41, 59, 0.4); padding: 0.85rem 1rem; border-radius: var(--radius-md); border-left: 3px solid #6366f1;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 600; font-size: 0.9rem;">${n.title}</span>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">${new Date(n.created_at).toLocaleDateString()}</span>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.3rem;">${n.message}</p>
+            </div>
+          `).join("");
+        }
+
+      } catch (err) {
+        showToast("Error loading curriculum reports: " + err.message, "error");
+      }
+    }
+
+    function openActionModal(reportId) {
+      const report = currentReportCache.find(r => r.id === reportId);
+      if (!report) return;
+
+      document.getElementById("action-report-id").value = report.id;
+      document.getElementById("action-modal-skill-title").innerText = 
+        `Closing gap for ${report.skill_name} (${report.gap_score}% deficit vs ${report.industry_benchmark}% benchmark)`;
+      
+      document.getElementById("action-notes").value = report.recommendation_text || "";
+      document.getElementById("action-modal").classList.add("active");
+    }
+
+    function closeActionModal() {
+      document.getElementById("action-modal").classList.remove("active");
+    }
+
+    async function handleActionSubmit(e) {
+      e.preventDefault();
+      const reportId = document.getElementById("action-report-id").value;
+      const payload = {
+        action_type: document.getElementById("action-type-select").value,
+        course_name: document.getElementById("action-course-name").value,
+        action_notes: document.getElementById("action-notes").value
+      };
+
+      try {
+        await api.post(`/skills/curriculum-reports/${reportId}/actions`, payload);
+        showToast("Curriculum action committed! Feedback loop updated.", "success");
+        closeActionModal();
+        loadCurriculumReports();
+      } catch (err) {
+        showToast(err.message, "error");
+      }
+    }
+
+    async function loadFacultyOpps() {
+      try {
+        const opps = await api.get("/opportunities?target_role=faculty");
+        const tbody = document.getElementById("fdp-table-body");
+        if (opps.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No faculty opportunities currently available.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = opps.map(opp => `
+          <tr>
+            <td style="font-weight: 600;">${opp.title}</td>
+            <td>${opp.company_name}</td>
+            <td><span class="badge badge-primary">${opp.opportunity_type}</span></td>
+            <td>${opp.deadline || 'N/A'}</td>
+            <td><button class="btn btn-sm btn-secondary" onclick="applyForOpportunity(${opp.id})">Apply</button></td>
+          </tr>
+        `).join("");
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function loadMyApps() {
+      try {
+        const apps = await api.get("/opportunities/applications/me");
+        const tbody = document.getElementById("my-fdp-apps-body");
+        if (apps.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="3" style="text-align: center;">No applications submitted.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = apps.map(app => `
+          <tr>
+            <td style="font-weight: 600;">${app.opportunity_title} <br><span style="font-size: 0.8rem; font-weight: normal; color: var(--text-secondary);">${app.company_name}</span></td>
+            <td><span class="badge badge-primary">${app.status}</span></td>
+            <td>${new Date(app.updated_at).toLocaleDateString()}</td>
+          </tr>
+        `).join("");
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function applyForOpportunity(oppId) {
+      const cover = prompt("Add a short statement of interest:");
+      if (cover === null) return;
+      try {
+        await api.post(`/opportunities/${oppId}/apply`, { cover_note: cover });
+        showToast("Successfully applied!", "success");
+        loadMyApps();
+      } catch (err) {
+        showToast(err.message, "error");
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadFacultyProfile();
+      loadCurriculumReports();
+    });
+  </script>
+</body>
+</html>
