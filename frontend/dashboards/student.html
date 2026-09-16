@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Portal — SkillSetu</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="/" class="brand">
+      <div class="brand-icon">⚡</div>
+      <div>
+        <span class="brand-name">SkillSetu</span>
+        <span class="brand-badge">Student Hub</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <div id="nav-auth-section"></div>
+    </div>
+  </nav>
+
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-heading">Navigation</div>
+      <div class="sidebar-link active" onclick="switchSection('profile-section', this)">
+        <span>👤</span> Profile & Resume
+      </div>
+      <div class="sidebar-link" onclick="switchSection('skills-section', this)">
+        <span>⚡</span> Skill Engine & Gaps
+      </div>
+      <div class="sidebar-link" onclick="switchSection('recommendations-section', this)">
+        <span>💼</span> Recommended Matches
+      </div>
+
+      <div class="sidebar-heading">Phase 3 & 4 Shells</div>
+      <div class="sidebar-link" onclick="switchSection('applications-shell', this)">
+        <span>📋</span> Applications (Shell)
+      </div>
+      <div class="sidebar-link" onclick="switchSection('portfolio-shell', this)">
+        <span>🏆</span> Verified Portfolio (Shell)
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      
+      <!-- Profile & Resume Section -->
+      <section id="profile-section">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <div>
+            <h2 id="student-name-header">Student Profile</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;" id="student-inst-header">Affiliated Institution</p>
+          </div>
+          <span class="badge badge-primary" id="student-status-badge">Active Student</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+          <!-- Profile Details Form -->
+          <div class="glass-card">
+            <h3 style="font-size: 1.15rem; margin-bottom: 1.25rem;">Academic Details</h3>
+            <form onsubmit="handleProfileUpdate(event)">
+              <div class="form-group">
+                <label class="form-label">Degree</label>
+                <input type="text" id="prof-degree" class="form-input" placeholder="e.g. B.Tech">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Branch / Specialization</label>
+                <input type="text" id="prof-branch" class="form-input" placeholder="e.g. Computer Science">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Graduation Year</label>
+                <input type="number" id="prof-grad-year" class="form-input" placeholder="2026">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Enrollment / Roll No.</label>
+                <input type="text" id="prof-enroll" class="form-input" placeholder="DTU/2022/CS/104">
+              </div>
+              <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
+            </form>
+          </div>
+
+          <!-- Document Upload Service (Task 9) -->
+          <div class="glass-card">
+            <h3 style="font-size: 1.15rem; margin-bottom: 0.75rem;">Verified Document Vault</h3>
+            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1.25rem;">
+              Upload your official resume for industry partner indexing (PDF or DOCX, max 5MB).
+            </p>
+
+            <form onsubmit="handleResumeUpload(event)">
+              <div class="form-group">
+                <label class="form-label">Select Resume File</label>
+                <input type="file" id="resume-file-input" class="form-input" accept=".pdf,.doc,.docx" required>
+              </div>
+              <button type="submit" class="btn btn-accent btn-sm">Upload to Vault</button>
+            </form>
+
+            <div id="resume-status-card" style="margin-top: 1.5rem; padding: 1rem; background: rgba(30, 41, 59, 0.4); border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 0.85rem; font-weight: 600;">Status:</span>
+                <span id="resume-status-badge" class="badge badge-amber">No Resume Attached</span>
+              </div>
+              <div id="resume-link-container" style="margin-top: 0.75rem; display: none;">
+                <a id="resume-download-link" href="#" target="_blank" class="btn btn-secondary btn-sm" style="width: 100%;">
+                  Download Attached Resume ↗
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skill Engine & Gaps Section (02-tasks-skill-engine) -->
+      <section id="skills-section" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <div>
+            <h2>Skill Engine & Benchmark Radar</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">
+              Take diagnostic assessments to identify proficiency strengths and gaps vs industry benchmarks.
+            </p>
+          </div>
+          <button onclick="startAssessmentModal()" class="btn btn-primary">
+            ⚡ Take Skill Assessment
+          </button>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 280px 1fr; gap: 1.5rem;">
+          <!-- Overall Readiness Summary -->
+          <div class="glass-card" style="text-align: center;">
+            <h3 style="font-size: 1rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Overall Career Readiness</h3>
+            <div id="readiness-score-display" style="font-size: 3rem; font-weight: 800; color: #818cf8; margin: 0.75rem 0;">--%</div>
+            <p style="font-size: 0.8rem; color: var(--text-muted);" id="assessed-count-display">0 skills assessed</p>
+            <div style="margin-top: 1.5rem; text-align: left;">
+              <span class="badge badge-emerald" style="margin-bottom: 0.5rem;">Strengths: Ready for Role</span>
+              <span class="badge badge-rose">Gaps: Needs Module Review</span>
+            </div>
+          </div>
+
+          <!-- Skills Table & Progress -->
+          <div class="glass-card">
+            <h3 style="font-size: 1.15rem; margin-bottom: 1rem;">Skill Proficiencies vs Industry Benchmark</h3>
+            <div class="data-table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Skill</th>
+                    <th>Category</th>
+                    <th>Your Score</th>
+                    <th>Industry Benchmark</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="skills-table-body">
+                  <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Loading skill scores...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Recommendations Section -->
+      <section id="recommendations-section" style="display: none;">
+        <div style="margin-bottom: 1.5rem;">
+          <h2>Matched Opportunities (Recommendation Engine v1)</h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">
+            Rule-based weighted ranking matching your skill vector against active enterprise postings.
+          </p>
+        </div>
+
+        <div id="recommendations-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.25rem;">
+          <div class="glass-card">Loading matching recommendations...</div>
+        </div>
+      </section>
+
+      <!-- Applications Shell -->
+      <section id="applications-shell" style="display: none;">
+        <div class="glass-card" style="text-align: center; padding: 3rem 1.5rem;">
+          <span style="font-size: 3rem;">📋</span>
+          <h2 style="margin-top: 1rem;">Application Tracker Shell (Phase 3)</h2>
+          <p style="color: var(--text-secondary); max-width: 500px; margin: 0.75rem auto;">
+            This module is reserved for Phase 3 (Opportunity apply flow, recruiter shortlist status, and interview pipelines).
+          </p>
+        </div>
+      </section>
+
+      <!-- Portfolio Shell -->
+      <section id="portfolio-shell" style="display: none;">
+        <div class="glass-card" style="text-align: center; padding: 3rem 1.5rem;">
+          <span style="font-size: 3rem;">🏆</span>
+          <h2 style="margin-top: 1rem;">Verified Portfolio Shell (Phase 4)</h2>
+          <p style="color: var(--text-secondary); max-width: 500px; margin: 0.75rem auto;">
+            This module will automatically aggregate verified skills, hackathon achievements, and employer feedback into exportable portfolios.
+          </p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Assessment Modal -->
+  <div class="modal-overlay" id="assessment-modal">
+    <div class="modal-card" style="max-width: 650px;">
+      <div class="modal-header">
+        <div>
+          <h3>Diagnostic Skill Assessment</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Answer questions to benchmark your proficiencies.</p>
+        </div>
+        <button class="close-btn" onclick="closeAssessmentModal()">&times;</button>
+      </div>
+
+      <form id="assessment-form" onsubmit="submitAssessmentForm(event)">
+        <div id="questions-container" style="display: flex; flex-direction: column; gap: 1.5rem; max-height: 60vh; overflow-y: auto; padding-right: 0.5rem;">
+          Loading questions...
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;">
+          Submit & Calculate Skill Profile
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/app.js"></script>
+  <script>
+    enforceRole(["student"]);
+
+    function switchSection(sectionId, element) {
+      document.querySelectorAll("main > section").forEach(s => s.style.display = "none");
+      document.querySelectorAll(".sidebar-link").forEach(l => l.classList.remove("active"));
+      
+      const target = document.getElementById(sectionId);
+      if (target) target.style.display = "block";
+      if (element) element.classList.add("active");
+
+      if (sectionId === "skills-section") loadSkillProfile();
+      if (sectionId === "recommendations-section") loadRecommendations();
+    }
+
+    async function loadStudentProfile() {
+      try {
+        const profile = await api.get("/students/profile");
+        document.getElementById("student-name-header").innerText = profile.full_name || "Student Profile";
+        document.getElementById("student-inst-header").innerText = profile.institution_name || "Affiliated Institution: Pending Link";
+        
+        document.getElementById("prof-degree").value = profile.degree || "";
+        document.getElementById("prof-branch").value = profile.branch || "";
+        document.getElementById("prof-grad-year").value = profile.grad_year || "";
+        document.getElementById("prof-enroll").value = profile.enrollment_no || "";
+
+        if (profile.resume_url) {
+          const badge = document.getElementById("resume-status-badge");
+          badge.className = "badge badge-emerald";
+          badge.innerText = "✓ Resume Attached";
+          document.getElementById("resume-link-container").style.display = "block";
+          document.getElementById("resume-download-link").href = profile.resume_url;
+        }
+      } catch (err) {
+        showToast("Error loading profile: " + err.message, "error");
+      }
+    }
+
+    async function handleProfileUpdate(e) {
+      e.preventDefault();
+      try {
+        const payload = {
+          degree: document.getElementById("prof-degree").value,
+          branch: document.getElementById("prof-branch").value,
+          grad_year: parseInt(document.getElementById("prof-grad-year").value) || null,
+          enrollment_no: document.getElementById("prof-enroll").value
+        };
+        await api.put("/students/profile", payload);
+        showToast("Profile details updated successfully!", "success");
+      } catch (err) {
+        showToast(err.message, "error");
+      }
+    }
+
+    async function handleResumeUpload(e) {
+      e.preventDefault();
+      const fileInput = document.getElementById("resume-file-input");
+      if (!fileInput.files.length) return;
+
+      const formData = new FormData();
+      formData.append("file", fileInput.files[0]);
+      formData.append("document_type", "resume");
+
+      try {
+        showToast("Uploading resume to vault...", "info");
+        const doc = await api.upload("/documents/upload", formData);
+        showToast("Resume uploaded successfully!", "success");
+        
+        const badge = document.getElementById("resume-status-badge");
+        badge.className = "badge badge-emerald";
+        badge.innerText = `✓ ${doc.original_filename}`;
+        document.getElementById("resume-link-container").style.display = "block";
+        document.getElementById("resume-download-link").href = doc.download_url;
+      } catch (err) {
+        showToast("Upload failed: " + err.message, "error");
+      }
+    }
+
+    async function loadSkillProfile() {
+      try {
+        const data = await api.get("/skills/profile/me");
+        document.getElementById("readiness-score-display").innerText = `${data.overall_readiness_score}%`;
+        document.getElementById("assessed-count-display").innerText = `${data.total_skills_assessed} skills assessed`;
+
+        const tbody = document.getElementById("skills-table-body");
+        if (!data.all_skills.length) {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 2rem;">No assessments completed yet. Click 'Take Skill Assessment' above!</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = data.all_skills.map(s => `
+          <tr>
+            <td style="font-weight: 600;">${s.skill_name}</td>
+            <td><span class="badge badge-primary">${s.category}</span></td>
+            <td><strong>${s.proficiency_score}%</strong></td>
+            <td>${s.industry_benchmark}%</td>
+            <td>
+              ${s.is_gap 
+                ? `<span class="badge badge-rose">Gap (${s.gap_score}% below)</span>` 
+                : `<span class="badge badge-emerald">✓ Meets Industry</span>`}
+            </td>
+          </tr>
+        `).join("");
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function loadRecommendations() {
+      try {
+        const recs = await api.get("/skills/recommendations/me");
+        const container = document.getElementById("recommendations-container");
+        if (!recs.length) {
+          container.innerHTML = `<div class="glass-card">No opportunities posted yet.</div>`;
+          return;
+        }
+
+        container.innerHTML = recs.map(r => `
+          <div class="glass-card glass-card-interactive">
+            <div style="display: flex; justify-content: space-between; align-items: start;">
+              <div>
+                <span class="badge badge-cyan">${r.opportunity_type.toUpperCase()}</span>
+                <h3 style="font-size: 1.15rem; margin-top: 0.5rem;">${r.title}</h3>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">${r.company_name} • ${r.location || 'Remote'}</p>
+              </div>
+              <div style="text-align: right;">
+                <span style="font-size: 1.3rem; font-weight: 800; color: #10b981;">${r.match_percentage}%</span>
+                <span style="display: block; font-size: 0.7rem; color: var(--text-muted);">Match Fit</span>
+              </div>
+            </div>
+
+            <div style="margin-top: 1rem;">
+              <span style="font-size: 0.8rem; color: var(--text-muted);">Matched Skills:</span>
+              <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.3rem;">
+                ${r.matched_skills.map(m => `<span class="badge badge-emerald">${m}</span>`).join('')}
+              </div>
+            </div>
+
+            ${r.missing_skills.length ? `
+              <div style="margin-top: 0.75rem;">
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Skills to Polish:</span>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.3rem;">
+                  ${r.missing_skills.map(m => `<span class="badge badge-rose">${m}</span>`).join('')}
+                </div>
+              </div>
+            ` : ''}
+
+            <div style="margin-top: 1.25rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-weight: 600; font-size: 0.9rem; color: #a5b4fc;">${r.stipend_salary || 'Stipend Disclosed Upon Apply'}</span>
+              <button class="btn btn-secondary btn-sm" onclick="showToast('Application flow activates in Phase 3!', 'info')">Apply</button>
+            </div>
+          </div>
+        `).join("");
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function startAssessmentModal() {
+      try {
+        const questions = await api.get("/skills/questionnaire");
+        const container = document.getElementById("questions-container");
+        container.innerHTML = questions.map((q, idx) => `
+          <div style="background: rgba(30, 41, 59, 0.4); padding: 1.2rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span class="badge badge-primary">${q.skill_name}</span>
+              <span style="font-size: 0.75rem; color: var(--text-muted);">Q${idx + 1} • ${q.difficulty.toUpperCase()}</span>
+            </div>
+            <p style="font-weight: 500; font-size: 0.95rem; margin-bottom: 0.75rem;">${q.question_text}</p>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+              ${q.options.map(opt => `
+                <label style="display: flex; align-items: center; gap: 0.6rem; cursor: pointer; font-size: 0.9rem;">
+                  <input type="radio" name="question_${q.id}" value="${opt.id}" data-skill-id="${q.skill_id}" required>
+                  <span><strong>${opt.id})</strong> ${opt.text}</span>
+                </label>
+              `).join('')}
+            </div>
+          </div>
+        `).join("");
+
+        document.getElementById("assessment-modal").classList.add("active");
+      } catch (err) {
+        showToast("Error loading questionnaire: " + err.message, "error");
+      }
+    }
+
+    function closeAssessmentModal() {
+      document.getElementById("assessment-modal").classList.remove("active");
+    }
+
+    async function submitAssessmentForm(e) {
+      e.preventDefault();
+      const form = e.target;
+      const inputs = form.querySelectorAll("input[type='radio']:checked");
+      const answers = [];
+
+      inputs.forEach(input => {
+        const qId = parseInt(input.name.replace("question_", ""));
+        const sId = parseInt(input.getAttribute("data-skill-id"));
+        answers.push({
+          question_id: qId,
+          skill_id: sId,
+          selected_option: input.value
+        });
+      });
+
+      try {
+        showToast("Evaluating skills and computing benchmark gaps...", "info");
+        const res = await api.post("/skills/assessments", {
+          assessment_type: "diagnostic",
+          answers: answers
+        });
+
+        showToast("Skill profile computed successfully!", "success");
+        closeAssessmentModal();
+        loadSkillProfile();
+      } catch (err) {
+        showToast("Assessment submission failed: " + err.message, "error");
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadStudentProfile();
+    });
+  </script>
+</body>
+</html>

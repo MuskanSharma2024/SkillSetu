@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Institution Administration — SkillSetu</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="/" class="brand">
+      <div class="brand-icon" style="background: var(--gradient-amber);">🏛️</div>
+      <div>
+        <span class="brand-name">SkillSetu</span>
+        <span class="brand-badge" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24;">Admin Console</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <div id="nav-auth-section"></div>
+    </div>
+  </nav>
+
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-heading">Governance</div>
+      <div class="sidebar-link active" onclick="switchSection('overview-section', this)">
+        <span>🏛️</span> Institution Overview
+      </div>
+      <div class="sidebar-link" onclick="switchSection('feedback-summary-section', this)">
+        <span>📊</span> Macro Curriculum View
+      </div>
+
+      <div class="sidebar-heading">Phase 4 Shells</div>
+      <div class="sidebar-link" onclick="switchSection('students-shell', this)">
+        <span>🎓</span> Student Directory (Shell)
+      </div>
+      <div class="sidebar-link" onclick="switchSection('faculty-shell', this)">
+        <span>👨‍🏫</span> Faculty Registry (Shell)
+      </div>
+      <div class="sidebar-link" onclick="switchSection('placement-shell', this)">
+        <span>📈</span> Placement Analytics (Shell)
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      
+      <!-- Overview Section -->
+      <section id="overview-section">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <div>
+            <h2 id="admin-name-header">Institutional Governance</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;" id="admin-inst-header">National Accreditation & Oversight</p>
+          </div>
+          <span class="badge badge-amber">Accreditation Admin</span>
+        </div>
+
+        <!-- Metric Cards -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-bottom: 1.75rem;">
+          <div class="glass-card">
+            <div style="font-size: 0.85rem; color: var(--text-secondary);">Enrolled Students</div>
+            <div style="font-size: 2.25rem; font-weight: 800; color: #818cf8; margin: 0.3rem 0;" id="metric-students">0</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Active cohort profiles</div>
+          </div>
+
+          <div class="glass-card">
+            <div style="font-size: 0.85rem; color: var(--text-secondary);">Faculty Members</div>
+            <div style="font-size: 2.25rem; font-weight: 800; color: #38bdf8; margin: 0.3rem 0;" id="metric-faculty">0</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Affiliated departments</div>
+          </div>
+
+          <div class="glass-card">
+            <div style="font-size: 0.85rem; color: var(--text-secondary);">Feedback Loop Status</div>
+            <div style="font-size: 2.25rem; font-weight: 800; color: #34d399; margin: 0.3rem 0;">100%</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Telemetry synchronized</div>
+          </div>
+        </div>
+
+        <!-- Register New Institution Form -->
+        <div class="glass-card" style="max-width: 800px;">
+          <h3 style="font-size: 1.15rem; margin-bottom: 1.25rem;">Register New Institution (Admin Authority)</h3>
+          <form onsubmit="handleCreateInstitution(event)">
+            <div class="form-group">
+              <label class="form-label">Institution Name</label>
+              <input type="text" id="new-inst-name" class="form-input" placeholder="e.g. Indian Institute of Science" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">AISHE / Accreditation Code</label>
+              <input type="text" id="new-inst-code" class="form-input" placeholder="e.g. IISc-BLR-01" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Contact Email</label>
+              <input type="email" id="new-inst-email" class="form-input" placeholder="registrar@iisc.ac.in" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Official Website</label>
+              <input type="url" id="new-inst-web" class="form-input" placeholder="https://iisc.ac.in">
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm">Create Institution Record</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Feedback Summary Section -->
+      <section id="feedback-summary-section" style="display: none;">
+        <div style="margin-bottom: 1.5rem;">
+          <h2>Macro Institutional Curriculum Gap Telemetry</h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">
+            High-level dashboard overview for Deans and Vice Chancellors assessing academic alignment with national employment benchmarks.
+          </p>
+        </div>
+
+        <div class="glass-card">
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Target Skill</th>
+                  <th>Student Cohort Average</th>
+                  <th>Industry Standard</th>
+                  <th>Net Institutional Gap</th>
+                  <th>Market Demand Pulse</th>
+                </tr>
+              </thead>
+              <tbody id="macro-reports-body">
+                <tr><td colspan="5" style="text-align: center;">Loading macro telemetry...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Students Shell -->
+      <section id="students-shell" style="display: none;">
+        <div class="glass-card" style="text-align: center; padding: 3rem 1.5rem;">
+          <span style="font-size: 3rem;">🎓</span>
+          <h2 style="margin-top: 1rem;">Student Cohort Directory (Phase 4)</h2>
+          <p style="color: var(--text-secondary); max-width: 500px; margin: 0.75rem auto;">
+            Administrative view of all registered student enrollment records, verification status, and degrees.
+          </p>
+        </div>
+      </section>
+
+      <!-- Faculty Shell -->
+      <section id="faculty-shell" style="display: none;">
+        <div class="glass-card" style="text-align: center; padding: 3rem 1.5rem;">
+          <span style="font-size: 3rem;">👨‍🏫</span>
+          <h2 style="margin-top: 1rem;">Faculty Registry & Department Oversight (Phase 4)</h2>
+          <p style="color: var(--text-secondary); max-width: 500px; margin: 0.75rem auto;">
+            Department chair listings, curriculum action logs audit, and faculty performance indicators.
+          </p>
+        </div>
+      </section>
+
+      <!-- Placement Shell -->
+      <section id="placement-shell" style="display: none;">
+        <div class="glass-card" style="text-align: center; padding: 3rem 1.5rem;">
+          <span style="font-size: 3rem;">📈</span>
+          <h2 style="margin-top: 1rem;">Placement Intelligence & Corporate Ties (Phase 4)</h2>
+          <p style="color: var(--text-secondary); max-width: 500px; margin: 0.75rem auto;">
+            Cohort placement rates, corporate recruiting partner rosters, and internship completion metrics.
+          </p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/app.js"></script>
+  <script>
+    enforceRole(["institution_admin"]);
+
+    function switchSection(sectionId, element) {
+      document.querySelectorAll("main > section").forEach(s => s.style.display = "none");
+      document.querySelectorAll(".sidebar-link").forEach(l => l.classList.remove("active"));
+      
+      const target = document.getElementById(sectionId);
+      if (target) target.style.display = "block";
+      if (element) element.classList.add("active");
+
+      if (sectionId === "feedback-summary-section") loadMacroReports();
+    }
+
+    async function loadInstitutionDashboard() {
+      try {
+        const data = await api.get("/dashboards/institution");
+        document.getElementById("admin-name-header").innerText = data.full_name;
+        document.getElementById("metric-students").innerText = data.summary.total_registered_students;
+        document.getElementById("metric-faculty").innerText = data.summary.total_faculty_members;
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function handleCreateInstitution(e) {
+      e.preventDefault();
+      try {
+        const payload = {
+          name: document.getElementById("new-inst-name").value.trim(),
+          code: document.getElementById("new-inst-code").value.trim(),
+          contact_email: document.getElementById("new-inst-email").value.trim(),
+          website: document.getElementById("new-inst-web").value.trim() || null
+        };
+        await api.post("/institutions", payload);
+        showToast("Institution registered successfully in master database!", "success");
+        e.target.reset();
+      } catch (err) {
+        showToast(err.message, "error");
+      }
+    }
+
+    async function loadMacroReports() {
+      try {
+        const reports = await api.get("/skills/curriculum-gap-report");
+        const tbody = document.getElementById("macro-reports-body");
+        tbody.innerHTML = reports.map(r => `
+          <tr>
+            <td style="font-weight: 600;">${r.skill_name}</td>
+            <td><strong>${r.student_cohort_avg}%</strong></td>
+            <td>${r.industry_benchmark}%</td>
+            <td>
+              ${r.gap_score > 0 
+                ? `<span class="badge ${r.gap_score > 15 ? 'badge-rose' : 'badge-amber'}">-${r.gap_score}% Deficit</span>` 
+                : `<span class="badge badge-emerald">+${Math.abs(r.gap_score)}% Surplus</span>`}
+            </td>
+            <td>
+              <span class="badge ${r.trend === 'rising' ? 'badge-emerald' : 'badge-cyan'}">
+                ${r.demand_frequency} postings (${r.trend.toUpperCase()})
+              </span>
+            </td>
+          </tr>
+        `).join("");
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadInstitutionDashboard();
+    });
+  </script>
+</body>
+</html>

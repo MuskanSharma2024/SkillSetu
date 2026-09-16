@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr, Field
-from typing import Optional, List
+from typing import Optional, List, Dict, Any
 import datetime
 
 # --- Token Schemas ---
@@ -169,12 +169,143 @@ class SkillBase(BaseModel):
     name: str
     category: str
     description: Optional[str] = None
+    industry_benchmark: float = 75.0
 
 class SkillCreate(SkillBase):
     pass
 
 class SkillResponse(SkillBase):
     id: int
+    created_at: datetime.datetime
+
+    class Config:
+        from_attributes = True
+
+# --- Skill Assessment & Questionnaires ---
+class QuestionOption(BaseModel):
+    id: str
+    text: str
+    is_correct: bool
+
+class AssessmentQuestion(BaseModel):
+    id: int
+    skill_id: int
+    skill_name: str
+    question_text: str
+    category: str
+    difficulty: str  # beginner, intermediate, advanced
+    options: List[Dict[str, str]]
+
+class AssessmentAnswerSubmission(BaseModel):
+    question_id: int
+    skill_id: int
+    selected_option: str
+
+class AssessmentSubmission(BaseModel):
+    assessment_type: str = "diagnostic"
+    answers: List[AssessmentAnswerSubmission]
+
+class AssessmentResult(BaseModel):
+    assessment_id: int
+    user_id: int
+    scores_per_skill: Dict[str, float]
+    gaps_detected: List[Dict[str, Any]]
+    completed_at: datetime.datetime
+
+# --- Student Skill Profile & Gap View ---
+class SkillItemScore(BaseModel):
+    skill_id: int
+    skill_name: str
+    category: str
+    proficiency_score: float
+    industry_benchmark: float
+    gap_score: float
+    is_gap: bool
+    is_verified: bool
+
+class StudentSkillProfileView(BaseModel):
+    user_id: int
+    full_name: str
+    total_skills_assessed: int
+    top_strengths: List[SkillItemScore]
+    critical_gaps: List[SkillItemScore]
+    all_skills: List[SkillItemScore]
+    overall_readiness_score: float
+
+# --- Recommendation Schemas ---
+class OpportunityRecommendation(BaseModel):
+    opportunity_id: int
+    title: str
+    company_name: str
+    opportunity_type: str
+    location: Optional[str]
+    stipend_salary: Optional[str]
+    match_percentage: float
+    matched_skills: List[str]
+    missing_skills: List[str]
+
+# --- Industry Demand Aggregation ---
+class SkillDemandItem(BaseModel):
+    skill_id: int
+    skill_name: str
+    category: str
+    frequency_count: int
+    companies_requesting: int
+    trend: str # rising, stable, declining
+    benchmark_score: float
+
+class IndustryDemandDataset(BaseModel):
+    total_postings: int
+    total_companies: int
+    top_demanded_skills: List[SkillDemandItem]
+    updated_at: datetime.datetime
+
+# --- Curriculum Feedback Loop (⭐ USP) ---
+class CurriculumGapReportItem(BaseModel):
+    id: int
+    institution_id: int
+    institution_name: str
+    skill_id: int
+    skill_name: str
+    category: str
+    student_cohort_avg: float
+    industry_benchmark: float
+    gap_score: float
+    demand_frequency: int
+    trend: str
+    recommendation_text: Optional[str]
+    status: str
+    actions_count: int
+    updated_at: datetime.datetime
+
+    class Config:
+        from_attributes = True
+
+class CurriculumActionCreate(BaseModel):
+    action_type: str = Field(..., description="e.g. update_syllabus, workshop_planned, guest_lecture, lab_module")
+    course_name: str
+    action_notes: str
+
+class CurriculumActionResponse(BaseModel):
+    id: int
+    report_id: int
+    user_id: int
+    faculty_name: Optional[str]
+    action_type: str
+    course_name: str
+    action_notes: str
+    created_at: datetime.datetime
+
+    class Config:
+        from_attributes = True
+
+# --- Notification Schemas ---
+class NotificationResponse(BaseModel):
+    id: int
+    title: str
+    message: str
+    category: str
+    is_read: bool
     created_at: datetime.datetime
 
     class Config:
@@ -202,5 +333,5 @@ class DashboardShellResponse(BaseModel):
     full_name: str
     email: str
     title: str
-    summary: dict
+    summary: Dict[str, Any]
     available_modules: List[str]

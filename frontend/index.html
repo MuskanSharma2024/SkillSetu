@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillSetu — Bridging Academia & Industry</title>
+  <meta name="description" content="Unified ecosystem connecting students, academicians, and industry to continuously benchmark skills, recommend opportunities, and close curriculum gaps.">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <a href="/" class="brand">
+      <div class="brand-icon">⚡</div>
+      <div>
+        <span class="brand-name">SkillSetu</span>
+        <span class="brand-badge">SIH 2026</span>
+      </div>
+    </a>
+
+    <div class="nav-links">
+      <a href="#features" class="nav-link">Platform Features</a>
+      <a href="#feedback-loop" class="nav-link">⭐ Curriculum Feedback</a>
+      <a href="/docs" target="_blank" class="nav-link">API Docs</a>
+      <div id="nav-auth-section">
+        <!-- Injected dynamically by app.js -->
+        <button onclick="openAuthModal('login')" class="btn btn-secondary btn-sm">Sign In</button>
+        <button onclick="openAuthModal('register')" class="btn btn-primary btn-sm">Get Started</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="container hero">
+    <div class="hero-pill">
+      <span>🚀</span> Live Prototype: Foundation & Skill Engine Active
+    </div>
+    <h1 class="hero-title">
+      Closing the Gap Between <span class="hero-gradient-text">Higher Education</span> and <span class="hero-gradient-text">Industry Demand</span>
+    </h1>
+    <p class="hero-description">
+      SkillSetu is a bidirectional platform. Students benchmark real-world proficiencies, industry partners source verified talent, and academicians receive actionable feedback to align course syllabi with live market demands.
+    </p>
+
+    <div class="hero-actions">
+      <button onclick="openAuthModal('register')" class="btn btn-primary">
+        Create Your Account →
+      </button>
+      <button onclick="openAuthModal('login')" class="btn btn-secondary">
+        Sign In to Portal
+      </button>
+      <a href="/docs" target="_blank" class="btn btn-secondary">
+        Swagger /docs ↗
+      </a>
+    </div>
+
+    <!-- Evaluator Instant Demo Bar -->
+    <div class="demo-bar">
+      <div class="demo-bar-title">⚡ Evaluator One-Click Demo Access (Zero Setup Required)</div>
+      <div class="demo-buttons-grid">
+        <button onclick="quickDemoLogin('student')" class="demo-btn" id="demo-btn-student">
+          <span style="font-size: 1.4rem;">🎓</span>
+          <div>
+            <span class="demo-btn-name">Aarav Sharma</span>
+            <span class="demo-btn-role">Student (DTU)</span>
+          </div>
+        </button>
+
+        <button onclick="quickDemoLogin('industry')" class="demo-btn" id="demo-btn-industry">
+          <span style="font-size: 1.4rem;">🏢</span>
+          <div>
+            <span class="demo-btn-name">Priya Patel</span>
+            <span class="demo-btn-role">Industry (Infosys Labs)</span>
+          </div>
+        </button>
+
+        <button onclick="quickDemoLogin('academician')" class="demo-btn" id="demo-btn-academician">
+          <span style="font-size: 1.4rem;">🔬</span>
+          <div>
+            <span class="demo-btn-name">Dr. Rajesh Verma</span>
+            <span class="demo-btn-role">Academician (Curriculum Chair)</span>
+          </div>
+        </button>
+
+        <button onclick="quickDemoLogin('institution_admin')" class="demo-btn" id="demo-btn-admin">
+          <span style="font-size: 1.4rem;">🏛️</span>
+          <div>
+            <span class="demo-btn-name">Dean Academic Affairs</span>
+            <span class="demo-btn-role">Institution Admin (NIT)</span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Platform Highlights Section -->
+  <main class="container" id="features">
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <span class="badge badge-primary">Ecosystem Architecture</span>
+      <h2 style="font-size: 2.25rem; margin-top: 0.5rem;">Engineered for 4 Interlocking Roles</h2>
+    </div>
+
+    <div class="features-grid">
+      <div class="glass-card glass-card-interactive">
+        <div class="feature-icon-box" style="background: rgba(99, 102, 241, 0.15); color: #818cf8;">🎓</div>
+        <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">For Students</h3>
+        <p style="color: var(--text-secondary); font-size: 0.9rem;">
+          Diagnostic aptitude assessments, live skill-gap radar vs. industry benchmarks, verified resume storage, and rule-based opportunity matching.
+        </p>
+      </div>
+
+      <div class="glass-card glass-card-interactive">
+        <div class="feature-icon-box" style="background: rgba(6, 182, 212, 0.15); color: #22d3ee;">🏢</div>
+        <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">For Industry Partners</h3>
+        <p style="color: var(--text-secondary); font-size: 0.9rem;">
+          Post internships, jobs, and learning programs with required skills. Candidate ranking by match scores and participation in curriculum advisory.
+        </p>
+      </div>
+
+      <div class="glass-card glass-card-interactive">
+        <div class="feature-icon-box" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">⭐</div>
+        <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Curriculum Feedback Loop</h3>
+        <p style="color: var(--text-secondary); font-size: 0.9rem;">
+          Academicians see aggregate cohort skill gaps cross-referenced with live industry demand to update course syllabi and lab assignments.
+        </p>
+      </div>
+
+      <div class="glass-card glass-card-interactive">
+        <div class="feature-icon-box" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">🏛️</div>
+        <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">For Institutions</h3>
+        <p style="color: var(--text-secondary); font-size: 0.9rem;">
+          Institutional accreditation management, student cohort progression tracking, placement intelligence, and compliance audit logs.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Auth Modal -->
+  <div class="modal-overlay" id="auth-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <h3 id="modal-title" style="font-size: 1.35rem;">SkillSetu Access Portal</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.2rem;">Secure Role-Based Authentication</p>
+        </div>
+        <button class="close-btn" onclick="closeAuthModal()">&times;</button>
+      </div>
+
+      <!-- Auth Tabs -->
+      <div class="auth-tabs">
+        <div class="auth-tab active" data-tab="login" onclick="switchAuthTab('login')">Sign In</div>
+        <div class="auth-tab" data-tab="register" onclick="switchAuthTab('register')">Register</div>
+      </div>
+
+      <!-- Login Section -->
+      <div id="auth-login-section">
+        <form onsubmit="handleLoginSubmit(event)">
+          <div class="form-group">
+            <label class="form-label" for="login-email">Email Address</label>
+            <input type="email" id="login-email" class="form-input" placeholder="you@institution.edu" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="login-password">Password</label>
+            <input type="password" id="login-password" class="form-input" placeholder="••••••••" required>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">
+            Sign In
+          </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 1.25rem;">
+          <span style="font-size: 0.85rem; color: var(--text-muted);">
+            Testing without signing up? Use the 
+            <a href="javascript:void(0)" onclick="closeAuthModal()" style="color: #a5b4fc; text-decoration: none;">1-Click Demo Accounts</a>
+          </span>
+        </div>
+      </div>
+
+      <!-- Register Section -->
+      <div id="auth-register-section" style="display: none;">
+        <form onsubmit="handleRegisterSubmit(event)">
+          <div class="form-group">
+            <label class="form-label">Select Your Role</label>
+            <div class="role-selector">
+              <div class="role-pill active" data-role="student" onclick="selectRegisterRole('student')">🎓 Student</div>
+              <div class="role-pill" data-role="industry" onclick="selectRegisterRole('industry')">🏢 Industry</div>
+              <div class="role-pill" data-role="academician" onclick="selectRegisterRole('academician')">🔬 Faculty</div>
+              <div class="role-pill" data-role="institution_admin" onclick="selectRegisterRole('institution_admin')">🏛️ Inst. Admin</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="reg-name">Full Name</label>
+            <input type="text" id="reg-name" class="form-input" placeholder="e.g. Aarav Sharma" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="reg-email">Email Address</label>
+            <input type="email" id="reg-email" class="form-input" placeholder="name@domain.edu" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="reg-password">Password (min 6 chars)</label>
+            <input type="password" id="reg-password" class="form-input" placeholder="••••••••" minlength="6" required>
+          </div>
+
+          <!-- Dynamic Role Fields: Student -->
+          <div id="fields-student" class="role-fields">
+            <div class="form-group">
+              <label class="form-label" for="reg-student-inst">Affiliated Institution</label>
+              <select id="reg-student-inst" class="form-select"></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg-student-enroll">Enrollment / Roll Number</label>
+              <input type="text" id="reg-student-enroll" class="form-input" placeholder="e.g. 2022/CS/104">
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+              <div class="form-group">
+                <label class="form-label" for="reg-student-degree">Degree</label>
+                <input type="text" id="reg-student-degree" class="form-input" placeholder="B.Tech">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="reg-student-branch">Branch</label>
+                <input type="text" id="reg-student-branch" class="form-input" placeholder="Computer Science">
+              </div>
+            </div>
+          </div>
+
+          <!-- Dynamic Role Fields: Industry -->
+          <div id="fields-industry" class="role-fields" style="display: none;">
+            <div class="form-group">
+              <label class="form-label" for="reg-ind-company">Company / Organization Name</label>
+              <input type="text" id="reg-ind-company" class="form-input" placeholder="e.g. Acme Innovations">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg-ind-sector">Industry Sector</label>
+              <select id="reg-ind-sector" class="form-select">
+                <option value="Information Technology">Information Technology & Software</option>
+                <option value="Cloud Solutions & DevOps">Cloud Solutions & DevOps</option>
+                <option value="Artificial Intelligence & Data">Artificial Intelligence & Data</option>
+                <option value="Electronics & Semiconductor">Electronics & Semiconductor</option>
+                <option value="Fintech & Banking">Fintech & Banking</option>
+                <option value="Healthcare & Biotech">Healthcare & Biotech</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg-ind-location">Headquarters Location</label>
+              <input type="text" id="reg-ind-location" class="form-input" placeholder="Bengaluru, India">
+            </div>
+          </div>
+
+          <!-- Dynamic Role Fields: Academician -->
+          <div id="fields-academician" class="role-fields" style="display: none;">
+            <div class="form-group">
+              <label class="form-label" for="reg-acad-inst">Affiliated Institution</label>
+              <select id="reg-acad-inst" class="form-select"></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg-acad-dept">Department</label>
+              <input type="text" id="reg-acad-dept" class="form-input" placeholder="Computer Science & Engineering">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg-acad-desig">Designation</label>
+              <input type="text" id="reg-acad-desig" class="form-input" placeholder="Assistant Professor">
+            </div>
+          </div>
+
+          <!-- Dynamic Role Fields: Institution Admin -->
+          <div id="fields-institution_admin" class="role-fields" style="display: none;">
+            <div class="form-group">
+              <label class="form-label" for="reg-admin-inst-name">Institution Name</label>
+              <input type="text" id="reg-admin-inst-name" class="form-input" placeholder="e.g. Delhi Technological University">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg-admin-inst-code">Institution Code (AISHE)</label>
+              <input type="text" id="reg-admin-inst-code" class="form-input" placeholder="e.g. DTU-101">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">
+            Create Account
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/app.js"></script>
+  <script src="/static/js/auth.js"></script>
+</body>
+</html>

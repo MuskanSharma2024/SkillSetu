@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Industry Portal — SkillSetu</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="/" class="brand">
+      <div class="brand-icon" style="background: var(--gradient-cyan);">🏢</div>
+      <div>
+        <span class="brand-name">SkillSetu</span>
+        <span class="brand-badge">Industry Partner Hub</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <div id="nav-auth-section"></div>
+    </div>
+  </nav>
+
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-heading">Navigation</div>
+      <div class="sidebar-link active" onclick="switchSection('company-section', this)">
+        <span>🏢</span> Enterprise Profile
+      </div>
+      <div class="sidebar-link" onclick="switchSection('demand-section', this)">
+        <span>📊</span> ⭐ Live Skill Demand
+      </div>
+
+      <div class="sidebar-heading">Phase 3 Shells</div>
+      <div class="sidebar-link" onclick="switchSection('postings-shell', this)">
+        <span>📢</span> Opportunity Postings (Shell)
+      </div>
+      <div class="sidebar-link" onclick="switchSection('candidates-shell', this)">
+        <span>🎯</span> Candidate Funnel (Shell)
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      
+      <!-- Company Profile Section -->
+      <section id="company-section">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <div>
+            <h2 id="comp-name-header">Company Profile</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;" id="comp-sector-header">Industry Sector</p>
+          </div>
+          <span class="badge badge-cyan">Verified Recruiter</span>
+        </div>
+
+        <div class="glass-card" style="max-width: 800px;">
+          <h3 style="font-size: 1.15rem; margin-bottom: 1.25rem;">Enterprise Identification</h3>
+          <form onsubmit="handleCompanyUpdate(event)">
+            <div class="form-group">
+              <label class="form-label">Company Name</label>
+              <input type="text" id="comp-name" class="form-input" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Industry Sector</label>
+              <input type="text" id="comp-sector" class="form-input" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Headquarters / Location</label>
+              <input type="text" id="comp-location" class="form-input" placeholder="e.g. Bengaluru, India">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Corporate Website</label>
+              <input type="url" id="comp-website" class="form-input" placeholder="https://company.com">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Company Overview</label>
+              <textarea id="comp-desc" class="form-textarea" rows="3" placeholder="Brief description of enterprise focus areas..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm">Save Enterprise Info</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Industry Demand Aggregator Section (Task 8 ⭐ USP) -->
+      <section id="demand-section" style="display: none;">
+        <div style="margin-bottom: 1.5rem;">
+          <span class="badge badge-cyan">⭐ USP Feature</span>
+          <h2 style="margin-top: 0.4rem;">Industry Skill-Demand Aggregation Engine</h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">
+            Real-time telemetry showing skills most requested across all active industry postings. This live demand directly feeds the academician curriculum feedback loop!
+          </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-bottom: 1.75rem;">
+          <div class="glass-card" style="text-align: center;">
+            <div style="font-size: 2.25rem; font-weight: 800; color: #38bdf8;" id="total-postings-metric">0</div>
+            <div style="font-size: 0.85rem; color: var(--text-secondary);">Active Industry Postings</div>
+          </div>
+          <div class="glass-card" style="text-align: center;">
+            <div style="font-size: 2.25rem; font-weight: 800; color: #818cf8;" id="total-companies-metric">0</div>
+            <div style="font-size: 0.85rem; color: var(--text-secondary);">Registered Enterprises</div>
+          </div>
+          <div class="glass-card" style="text-align: center;">
+            <div style="font-size: 2.25rem; font-weight: 800; color: #34d399;">Active</div>
+            <div style="font-size: 0.85rem; color: var(--text-secondary);">Curriculum Sync Status</div>
+          </div>
+        </div>
+
+        <div class="glass-card">
+          <h3 style="font-size: 1.15rem; margin-bottom: 1rem;">Aggregated In-Demand Skills</h3>
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Skill</th>
+                  <th>Category</th>
+                  <th>Postings Requesting</th>
+                  <th>Trend</th>
+                  <th>Benchmark Expected</th>
+                </tr>
+              </thead>
+              <tbody id="demand-table-body">
+                <tr><td colspan="5" style="text-align: center;">Loading industry demand dataset...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Postings Shell -->
+      <section id="postings-shell" style="display: none;">
+        <div class="glass-card" style="text-align: center; padding: 3rem 1.5rem;">
+          <span style="font-size: 3rem;">📢</span>
+          <h2 style="margin-top: 1rem;">Opportunity Posting Console (Phase 3)</h2>
+          <p style="color: var(--text-secondary); max-width: 500px; margin: 0.75rem auto;">
+            This shell will enable posting internships, jobs, live hackathons, and corporate mentorship programs with skill requirements.
+          </p>
+        </div>
+      </section>
+
+      <!-- Candidates Shell -->
+      <section id="candidates-shell" style="display: none;">
+        <div class="glass-card" style="text-align: center; padding: 3rem 1.5rem;">
+          <span style="font-size: 3rem;">🎯</span>
+          <h2 style="margin-top: 1rem;">Candidate Shortlisting & Funnel (Phase 3)</h2>
+          <p style="color: var(--text-secondary); max-width: 500px; margin: 0.75rem auto;">
+            Ranked applicant pools with computed match percentages, verified skill scores, and status pipelines.
+          </p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/app.js"></script>
+  <script>
+    enforceRole(["industry"]);
+
+    function switchSection(sectionId, element) {
+      document.querySelectorAll("main > section").forEach(s => s.style.display = "none");
+      document.querySelectorAll(".sidebar-link").forEach(l => l.classList.remove("active"));
+      
+      const target = document.getElementById(sectionId);
+      if (target) target.style.display = "block";
+      if (element) element.classList.add("active");
+
+      if (sectionId === "demand-section") loadIndustryDemand();
+    }
+
+    async function loadCompanyProfile() {
+      try {
+        const comp = await api.get("/companies/profile");
+        document.getElementById("comp-name-header").innerText = comp.name;
+        document.getElementById("comp-sector-header").innerText = comp.industry_sector;
+
+        document.getElementById("comp-name").value = comp.name || "";
+        document.getElementById("comp-sector").value = comp.industry_sector || "";
+        document.getElementById("comp-location").value = comp.location || "";
+        document.getElementById("comp-website").value = comp.website || "";
+        document.getElementById("comp-desc").value = comp.description || "";
+      } catch (err) {
+        showToast("Error loading company profile: " + err.message, "error");
+      }
+    }
+
+    async function handleCompanyUpdate(e) {
+      e.preventDefault();
+      try {
+        const payload = {
+          name: document.getElementById("comp-name").value,
+          industry_sector: document.getElementById("comp-sector").value,
+          location: document.getElementById("comp-location").value,
+          website: document.getElementById("comp-website").value,
+          description: document.getElementById("comp-desc").value
+        };
+        await api.put("/companies/profile", payload);
+        showToast("Company profile updated successfully!", "success");
+        loadCompanyProfile();
+      } catch (err) {
+        showToast(err.message, "error");
+      }
+    }
+
+    async function loadIndustryDemand() {
+      try {
+        const data = await api.get("/skills/industry-demand");
+        document.getElementById("total-postings-metric").innerText = data.total_postings;
+        document.getElementById("total-companies-metric").innerText = data.total_companies;
+
+        const tbody = document.getElementById("demand-table-body");
+        tbody.innerHTML = data.top_demanded_skills.map(item => `
+          <tr>
+            <td style="font-weight: 600;">${item.skill_name}</td>
+            <td><span class="badge badge-primary">${item.category}</span></td>
+            <td><strong>${item.frequency_count} postings</strong></td>
+            <td>
+              ${item.trend === 'rising' 
+                ? `<span class="badge badge-emerald">▲ Rising Demand</span>` 
+                : `<span class="badge badge-cyan">● Stable</span>`}
+            </td>
+            <td>${item.benchmark_score}% proficiency</td>
+          </tr>
+        `).join("");
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadCompanyProfile();
+    });
+  </script>
+</body>
+</html>
