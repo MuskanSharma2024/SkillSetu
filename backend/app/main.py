@@ -8,7 +8,7 @@ from app.config import settings
 from app.database import engine, Base
 from app.seed import seed_database
 from app.routers import (
-    auth, students, companies, institutions, documents, dashboards, skills
+    auth, students, companies, institutions, documents, dashboards, skills, opportunities
 )
 
 # Initialize FastAPI
@@ -37,6 +37,7 @@ app.include_router(institutions.router, prefix=settings.API_V1_STR)
 app.include_router(documents.router, prefix=settings.API_V1_STR)
 app.include_router(dashboards.router, prefix=settings.API_V1_STR)
 app.include_router(skills.router, prefix=settings.API_V1_STR)
+app.include_router(opportunities.router, prefix=settings.API_V1_STR)
 
 @app.get("/api/health", tags=["Health"])
 def health_check():

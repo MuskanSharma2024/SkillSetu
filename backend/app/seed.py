@@ -182,7 +182,49 @@ def seed_database():
                 db.add(OpportunitySkill(opportunity_id=opp2.id, skill_id=ml_skill.id, min_proficiency=75.0, importance_weight=2.0))
                 db.add(OpportunitySkill(opportunity_id=opp2.id, skill_id=py_skill.id, min_proficiency=80.0, importance_weight=1.5))
 
-            print("Seeded industry demo user and opportunities.")
+            # Seed a Learning Program
+            prog = LearningProgram(
+                company_id=company.id,
+                title="AWS Cloud Architecture Bootcamp",
+                program_type="training",
+                description="Intensive 4-week cloud training covering S3, EC2, VPCs, and IAM.",
+                duration_weeks=4,
+                is_active=True,
+                created_at=datetime.datetime.utcnow()
+            )
+            db.add(prog)
+            db.flush()
+
+            if cloud_skill:
+                db.add(ProgramSkill(
+                    program_id=prog.id,
+                    skill_id=cloud_skill.id,
+                    granted_proficiency=85.0
+                ))
+
+            # Seed Application for student
+            app1 = Application(
+                opportunity_id=opp1.id,
+                user_id=student_user.id,
+                match_score=82.5,
+                status="applied",
+                cover_note="Highly interested in cloud backend roles.",
+                resume_link=student_prof.resume_url,
+                created_at=datetime.datetime.utcnow(),
+                updated_at=datetime.datetime.utcnow()
+            )
+            db.add(app1)
+
+            # Seed Enrollment for student
+            enroll = ProgramEnrollment(
+                program_id=prog.id,
+                user_id=student_user.id,
+                status="enrolled",
+                enrolled_at=datetime.datetime.utcnow()
+            )
+            db.add(enroll)
+
+            print("Seeded industry demo user, opportunities, learning programs and applications.")
 
         # Academician Demo
         acad_user = db.query(User).filter(User.email == "prof@dtu.ac.in").first()

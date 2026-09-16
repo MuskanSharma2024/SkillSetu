@@ -33,12 +33,12 @@
         <span>👤</span> Faculty Affiliation
       </div>
 
-      <div class="sidebar-heading">Phase 3 & 4 Shells</div>
+      <div class="sidebar-heading">Opportunities</div>
+      <div class="sidebar-link" onclick="switchSection('fdp-section', this)">
+        <span>🎓</span> Faculty Internships & FDP
+      </div>
       <div class="sidebar-link" onclick="switchSection('cohort-shell', this)">
         <span>👥</span> Student Cohort Roster (Shell)
-      </div>
-      <div class="sidebar-link" onclick="switchSection('fdp-shell', this)">
-        <span>🎓</span> Faculty Internships / FDP (Shell)
       </div>
     </aside>
 
@@ -154,14 +154,50 @@
         </div>
       </section>
 
-      <!-- FDP Shell -->
-      <section id="fdp-shell" style="display: none;">
-        <div class="glass-card" style="text-align: center; padding: 3rem 1.5rem;">
-          <span style="font-size: 3rem;">🎓</span>
-          <h2 style="margin-top: 1rem;">Faculty Development & Industry Sabbatical (Phase 3)</h2>
-          <p style="color: var(--text-secondary); max-width: 500px; margin: 0.75rem auto;">
-            Industry consultancy exchange, corporate faculty internships, and research collaboration postings.
+      <!-- FDP Section -->
+      <section id="fdp-section" style="display: none;">
+        <div style="margin-bottom: 1.5rem;">
+          <h2>Faculty Development & Industry Sabbatical</h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">
+            Browse and apply for industry consultancy, corporate faculty internships, and research collaborations.
           </p>
+        </div>
+        
+        <div class="glass-card">
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Opportunity</th>
+                  <th>Company/Institution</th>
+                  <th>Type</th>
+                  <th>Deadline</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="fdp-table-body">
+                <tr><td colspan="5" style="text-align: center;">Loading faculty opportunities...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div class="glass-card" style="margin-top: 1.5rem;">
+          <h3 style="font-size: 1.15rem; margin-bottom: 1rem;">My Applications</h3>
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Opportunity</th>
+                  <th>Status</th>
+                  <th>Last Updated</th>
+                </tr>
+              </thead>
+              <tbody id="my-fdp-apps-body">
+                <tr><td colspan="3" style="text-align: center;">Loading applications...</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
@@ -223,6 +259,10 @@
       if (element) element.classList.add("active");
 
       if (sectionId === "faculty-profile-section") loadFacultyProfile();
+      if (sectionId === "fdp-section") {
+        loadFacultyOpps();
+        loadMyApps();
+      }
     }
 
     async function loadFacultyProfile() {
@@ -370,6 +410,60 @@
         showToast("Curriculum action committed! Feedback loop updated.", "success");
         closeActionModal();
         loadCurriculumReports();
+      } catch (err) {
+        showToast(err.message, "error");
+      }
+    }
+
+    async function loadFacultyOpps() {
+      try {
+        const opps = await api.get("/opportunities?target_role=faculty");
+        const tbody = document.getElementById("fdp-table-body");
+        if (opps.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No faculty opportunities currently available.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = opps.map(opp => `
+          <tr>
+            <td style="font-weight: 600;">${opp.title}</td>
+            <td>${opp.company_name}</td>
+            <td><span class="badge badge-primary">${opp.opportunity_type}</span></td>
+            <td>${opp.deadline || 'N/A'}</td>
+            <td><button class="btn btn-sm btn-secondary" onclick="applyForOpportunity(${opp.id})">Apply</button></td>
+          </tr>
+        `).join("");
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function loadMyApps() {
+      try {
+        const apps = await api.get("/opportunities/applications/me");
+        const tbody = document.getElementById("my-fdp-apps-body");
+        if (apps.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="3" style="text-align: center;">No applications submitted.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = apps.map(app => `
+          <tr>
+            <td style="font-weight: 600;">${app.opportunity_title} <br><span style="font-size: 0.8rem; font-weight: normal; color: var(--text-secondary);">${app.company_name}</span></td>
+            <td><span class="badge badge-primary">${app.status}</span></td>
+            <td>${new Date(app.updated_at).toLocaleDateString()}</td>
+          </tr>
+        `).join("");
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function applyForOpportunity(oppId) {
+      const cover = prompt("Add a short statement of interest:");
+      if (cover === null) return;
+      try {
+        await api.post(`/opportunities/${oppId}/apply`, { cover_note: cover });
+        showToast("Successfully applied!", "success");
+        loadMyApps();
       } catch (err) {
         showToast(err.message, "error");
       }

@@ -36,12 +36,12 @@
         <span>💼</span> Recommended Matches
       </div>
 
-      <div class="sidebar-heading">Phase 3 & 4 Shells</div>
-      <div class="sidebar-link" onclick="switchSection('applications-shell', this)">
-        <span>📋</span> Applications (Shell)
+      <div class="sidebar-heading">Opportunities</div>
+      <div class="sidebar-link" onclick="switchSection('applications-section', this)">
+        <span>📋</span> Application Tracker
       </div>
-      <div class="sidebar-link" onclick="switchSection('portfolio-shell', this)">
-        <span>🏆</span> Verified Portfolio (Shell)
+      <div class="sidebar-link" onclick="switchSection('programs-section', this)">
+        <span>📚</span> Learning Programs
       </div>
     </aside>
 
@@ -176,25 +176,62 @@
         </div>
       </section>
 
-      <!-- Applications Shell -->
-      <section id="applications-shell" style="display: none;">
-        <div class="glass-card" style="text-align: center; padding: 3rem 1.5rem;">
-          <span style="font-size: 3rem;">📋</span>
-          <h2 style="margin-top: 1rem;">Application Tracker Shell (Phase 3)</h2>
-          <p style="color: var(--text-secondary); max-width: 500px; margin: 0.75rem auto;">
-            This module is reserved for Phase 3 (Opportunity apply flow, recruiter shortlist status, and interview pipelines).
-          </p>
+      <!-- Applications Section -->
+      <section id="applications-section" style="display: none;">
+        <div style="margin-bottom: 1.5rem;">
+          <h2>Application Tracker</h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">Track your applied internships, jobs, and project opportunities.</p>
+        </div>
+        <div class="glass-card">
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Opportunity</th>
+                  <th>Company</th>
+                  <th>Match Score</th>
+                  <th>Status</th>
+                  <th>Last Updated</th>
+                </tr>
+              </thead>
+              <tbody id="applications-table-body">
+                <tr><td colspan="5" style="text-align: center;">Loading applications...</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
-      <!-- Portfolio Shell -->
-      <section id="portfolio-shell" style="display: none;">
-        <div class="glass-card" style="text-align: center; padding: 3rem 1.5rem;">
-          <span style="font-size: 3rem;">🏆</span>
-          <h2 style="margin-top: 1rem;">Verified Portfolio Shell (Phase 4)</h2>
-          <p style="color: var(--text-secondary); max-width: 500px; margin: 0.75rem auto;">
-            This module will automatically aggregate verified skills, hackathon achievements, and employer feedback into exportable portfolios.
-          </p>
+      <!-- Programs Section -->
+      <section id="programs-section" style="display: none;">
+        <div style="margin-bottom: 1.5rem;">
+          <h2>Learning Programs & Certifications</h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">Enroll in industry programs to upskill and verify your proficiencies automatically.</p>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem;">
+          <div class="glass-card">
+            <h3 style="font-size: 1.15rem; margin-bottom: 1rem;">Available Programs</h3>
+            <div class="data-table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Program Title</th>
+                    <th>Duration</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="available-programs-body">
+                  <tr><td colspan="3" style="text-align: center;">Loading...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+          <div class="glass-card">
+            <h3 style="font-size: 1.15rem; margin-bottom: 1rem;">My Enrollments</h3>
+            <div id="my-enrollments-container">Loading...</div>
+          </div>
         </div>
       </section>
 
@@ -240,6 +277,11 @@
 
       if (sectionId === "skills-section") loadSkillProfile();
       if (sectionId === "recommendations-section") loadRecommendations();
+      if (sectionId === "applications-section") loadApplications();
+      if (sectionId === "programs-section") {
+        loadAvailablePrograms();
+        loadMyEnrollments();
+      }
     }
 
     async function loadStudentProfile() {
@@ -376,7 +418,7 @@
 
             <div style="margin-top: 1.25rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
               <span style="font-weight: 600; font-size: 0.9rem; color: #a5b4fc;">${r.stipend_salary || 'Stipend Disclosed Upon Apply'}</span>
-              <button class="btn btn-secondary btn-sm" onclick="showToast('Application flow activates in Phase 3!', 'info')">Apply</button>
+              <button class="btn btn-secondary btn-sm" onclick="applyForOpportunity(${r.id})">Apply</button>
             </div>
           </div>
         `).join("");
@@ -445,6 +487,96 @@
         loadSkillProfile();
       } catch (err) {
         showToast("Assessment submission failed: " + err.message, "error");
+      }
+    }
+
+    async function applyForOpportunity(oppId) {
+      const cover = prompt("Add a short cover note:");
+      if (cover === null) return;
+      try {
+        await api.post(`/opportunities/${oppId}/apply`, { cover_note: cover });
+        showToast("Successfully applied to opportunity!", "success");
+      } catch (err) {
+        showToast(err.message, "error");
+      }
+    }
+
+    async function loadApplications() {
+      try {
+        const apps = await api.get("/opportunities/applications/me");
+        const tbody = document.getElementById("applications-table-body");
+        if (apps.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No applications submitted yet.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = apps.map(app => `
+          <tr>
+            <td style="font-weight: 600;">${app.opportunity_title}</td>
+            <td>${app.company_name}</td>
+            <td><span style="color: #34d399; font-weight: 600;">${app.match_score}%</span></td>
+            <td><span class="badge badge-primary">${app.status}</span></td>
+            <td>${new Date(app.updated_at).toLocaleDateString()}</td>
+          </tr>
+        `).join("");
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function loadAvailablePrograms() {
+      try {
+        const progs = await api.get("/opportunities/programs");
+        const tbody = document.getElementById("available-programs-body");
+        if (progs.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="3" style="text-align: center;">No programs available.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = progs.map(prog => `
+          <tr>
+            <td style="font-weight: 600;">${prog.title}</td>
+            <td>${prog.duration_weeks} wks</td>
+            <td>
+              ${prog.is_enrolled 
+                ? '<span class="badge badge-emerald">Enrolled</span>' 
+                : `<button class="btn btn-sm btn-primary" onclick="enrollProgram(${prog.id})">Enroll</button>`}
+            </td>
+          </tr>
+        `).join("");
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function loadMyEnrollments() {
+      try {
+        const enrs = await api.get("/opportunities/programs/my-enrollments");
+        const container = document.getElementById("my-enrollments-container");
+        if (enrs.length === 0) {
+          container.innerHTML = '<p style="color: var(--text-secondary); text-align: center;">No enrollments yet.</p>';
+          return;
+        }
+        container.innerHTML = enrs.map(enr => `
+          <div style="padding: 1rem; margin-bottom: 0.5rem; background: rgba(30, 41, 59, 0.4); border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+            <div style="font-weight: 600; margin-bottom: 0.25rem;">${enr.program_title}</div>
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem;">
+              <span class="badge ${enr.status === 'completed' ? 'badge-emerald' : 'badge-primary'}">${enr.status}</span>
+              ${enr.status === 'completed' ? `<span style="color: var(--text-muted);">Completed</span>` : `<button class="btn btn-sm" onclick="alert('Module taking interface coming soon')">Continue</button>`}
+            </div>
+          </div>
+        `).join("");
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function enrollProgram(progId) {
+      try {
+        await api.post(`/opportunities/programs/${progId}/enroll`);
+        showToast("Enrolled successfully!", "success");
+        loadAvailablePrograms();
+        loadMyEnrollments();
+      } catch (err) {
+        showToast(err.message, "error");
       }
     }
 
