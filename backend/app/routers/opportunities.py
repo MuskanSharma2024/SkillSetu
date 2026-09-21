@@ -8,12 +8,13 @@ from app.database import get_db
 from app.models import (
     User, Company, Opportunity, OpportunitySkill, Skill, Application, 
     StudentProfile, SkillProfile, LearningProgram, ProgramSkill, 
-    ProgramEnrollment, AcademicianProfile, Notification
+    ProgramEnrollment, AcademicianProfile, Notification, AuditLog, PortfolioItem, HireOutcome
 )
 from app.schemas import (
     OpportunityCreate, OpportunityResponse, RequiredSkillDetail,
     ApplicationCreate, ApplicationResponse, ApplicationStatusUpdate, MentorFeedbackSubmit,
-    LearningProgramCreate, LearningProgramResponse, ProgramEnrollmentResponse
+    LearningProgramCreate, LearningProgramResponse, ProgramEnrollmentResponse,
+    HireOutcomeCreate, HireOutcomeResponse
 )
 from app.dependencies import (
     get_current_user, require_industry, require_student, 
@@ -184,6 +185,9 @@ def _format_opportunity(opp: Opportunity, db: Session) -> OpportunityResponse:
             ))
             
     # Need to convert SQLAlchemy objects to Pydantic format correctly using dict
+    # Calculate trust score for company
+    trust_score = _calculate_trust_score(opp.company_id, db)
+
     return OpportunityResponse(
         id=opp.id,
         company_id=opp.company_id,
@@ -197,8 +201,37 @@ def _format_opportunity(opp: Opportunity, db: Session) -> OpportunityResponse:
         deadline=opp.deadline,
         is_active=opp.is_active,
         skills=skills_detail,
+        trust_score=trust_score,
         created_at=opp.created_at
     )
+
+def _calculate_trust_score(company_id: int, db: Session) -> float:
+    # Task D3: Posting Trust Score = f(historical conversion rate, average response time, hire outcome ratings & retention)
+    opps = db.query(Opportunity).filter(Opportunity.company_id == company_id).all()
+    opp_ids = [o.id for o in opps]
+    if not opp_ids:
+        return 85.0
+
+    apps = db.query(Application).filter(Application.opportunity_id.in_(opp_ids)).all()
+    if not apps:
+        return 85.0
+
+    total_apps = len(apps)
+    successful_apps = sum(1 for a in apps if a.status in ["offered", "completed", "shortlisted"])
+    conversion_rate = (successful_apps / total_apps) if total_apps > 0 else 0.5
+
+    app_ids = [a.id for a in apps]
+    outcomes = db.query(HireOutcome).filter(HireOutcome.application_id.in_(app_ids)).all()
+
+    if outcomes:
+        avg_rating = sum(o.performance_rating for o in outcomes) / len(outcomes)
+        retention = sum(1 for o in outcomes if o.retained) / len(outcomes)
+    else:
+        avg_rating = 4.2
+        retention = 0.85
+
+    trust = round((0.4 * (conversion_rate * 100)) + (0.3 * (avg_rating / 5.0 * 100)) + (0.3 * (retention * 100)), 1)
+    return max(50.0, min(99.0, trust))
 
 def _calculate_match_score(user: User, opp: Opportunity, db: Session) -> float:
     req_skills = db.query(OpportunitySkill).filter(OpportunitySkill.opportunity_id == opp.id).all()
@@ -402,6 +435,68 @@ def submit_mentor_feedback(
     db.commit()
     db.refresh(app)
     return _format_application(app, db)
+
+# --- Tasks D1 & D2: Post-Hire Outcome Reporting ---
+@router.post("/applications/{application_id}/hire-outcome", response_model=HireOutcomeResponse, status_code=status.HTTP_201_CREATED)
+def submit_hire_outcome(
+    application_id: int,
+    outcome_in: HireOutcomeCreate,
+    current_user: User = Depends(require_industry),
+    db: Session = Depends(get_db)
+):
+    """
+    Task D2: Industry partner submits 3-month or 6-month post-hire outcome report.
+    """
+    app = db.query(Application).filter(Application.id == application_id).first()
+    if not app:
+        raise HTTPException(status_code=404, detail="Application record not found.")
+
+    outcome = HireOutcome(
+        application_id=application_id,
+        reported_by_user_id=current_user.id,
+        interval=outcome_in.interval,
+        retained=outcome_in.retained,
+        performance_rating=outcome_in.performance_rating,
+        reported_at=datetime.datetime.utcnow()
+    )
+    db.add(outcome)
+    db.commit()
+    db.refresh(outcome)
+
+    student_user = db.query(User).filter(User.id == app.user_id).first()
+    comp = db.query(Company).filter(Company.id == app.opportunity.company_id).first() if app.opportunity else None
+
+    return HireOutcomeResponse(
+        id=outcome.id,
+        application_id=application_id,
+        opportunity_title=app.opportunity.title if app.opportunity else "Placement",
+        student_name=student_user.full_name if student_user else "Student Candidate",
+        company_name=comp.name if comp else "Industry Partner",
+        interval=outcome.interval,
+        retained=outcome.retained,
+        performance_rating=outcome.performance_rating,
+        reported_at=outcome.reported_at
+    )
+
+@router.get("/company/hire-outcomes/pending", response_model=List[ApplicationResponse])
+def get_pending_hire_outcome_reminders(
+    current_user: User = Depends(require_industry),
+    db: Session = Depends(get_db)
+):
+    """
+    Task D2: Lists selections eligible for 3-month or 6-month outcome reporting reminders.
+    """
+    comp = db.query(Company).filter(Company.user_id == current_user.id).first()
+    if not comp:
+        return []
+
+    opp_ids = [o.id for o in db.query(Opportunity).filter(Opportunity.company_id == comp.id).all()]
+    apps = db.query(Application).filter(
+        Application.opportunity_id.in_(opp_ids),
+        Application.status.in_(["offered", "completed"])
+    ).all()
+
+    return [_format_application(a, db) for a in apps]
 
 @router.get("/applications/me", response_model=List[ApplicationResponse])
 def get_my_applications(

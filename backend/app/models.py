@@ -58,6 +58,8 @@ class StudentProfile(Base):
     grad_year = Column(Integer, nullable=True)      # e.g., 2026
     career_interests = Column(Text, nullable=True)  # JSON-encoded array or comma-separated tags
     resume_url = Column(String(500), nullable=True)
+    is_minor = Column(Boolean, default=False, nullable=False)
+    guardian_consent_status = Column(String(50), default="not_required", nullable=False) # 'not_required', 'pending', 'approved'
     created_at = Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow, nullable=False)
 
@@ -319,3 +321,104 @@ class AuditLog(Base):
     created_at = Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
 
     user = relationship("User")
+
+# ==========================================
+# SRS Delta Additions (§4.8, §5, §10, FR-ADM-06/07, FR-IND-09/10, FR-STU-13)
+# ==========================================
+
+class IntegrityFlag(Base):
+    __tablename__ = "integrity_flags"
+
+    id = Column(Integer, primary_key=True, index=True)
+    assessment_id = Column(Integer, ForeignKey("skill_assessments.id", ondelete="CASCADE"), nullable=False, index=True)
+    # flag_type: 'tab_switch' | 'timing_anomaly' | 'self_rating_mismatch'
+    flag_type = Column(String(50), nullable=False, index=True)
+    raw_signal = Column(Text, nullable=True) # Purged after audit retention window (data minimization)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
+
+    assessment = relationship("SkillAssessment")
+
+class StudentConsent(Base):
+    __tablename__ = "student_consents"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    consent_given = Column(Boolean, default=True, nullable=False)
+    consent_version = Column(String(50), default="1.0", nullable=False)
+    consented_at = Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
+
+    user = relationship("User")
+
+class CareerCluster(Base):
+    __tablename__ = "career_clusters"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(150), nullable=False, unique=True, index=True)
+    description = Column(Text, nullable=True)
+    skill_weights = Column(Text, nullable=False) # JSON dict mapping skill_id or category to ideal weight
+    ideal_interests = Column(Text, nullable=True)
+    associated_roles = Column(Text, nullable=True) # JSON list of job role titles
+    version = Column(Integer, default=1, nullable=False)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
+    updated_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow, nullable=False)
+
+class HireOutcome(Base):
+    __tablename__ = "hire_outcomes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    application_id = Column(Integer, ForeignKey("applications.id", ondelete="CASCADE"), nullable=False, index=True)
+    reported_by_user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    # interval: '3_month' | '6_month'
+    interval = Column(String(20), nullable=False)
+    retained = Column(Boolean, default=True, nullable=False)
+    performance_rating = Column(Float, nullable=False) # 1.0 to 5.0
+    reported_at = Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
+
+    application = relationship("Application")
+    reported_by = relationship("User")
+
+class SkillProfileSnapshot(Base):
+    __tablename__ = "skill_profile_snapshots"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    skill_id = Column(Integer, ForeignKey("skills.id", ondelete="CASCADE"), nullable=False)
+    proficiency_score = Column(Float, nullable=False)
+    # source_type: 'assessment' | 'program_completion' | 'internship'
+    source_type = Column(String(50), default="assessment", nullable=False)
+    source_reference_id = Column(Integer, nullable=True)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
+
+    user = relationship("User")
+    skill = relationship("Skill")
+
+class ClusterRecalibrationLog(Base):
+    __tablename__ = "cluster_recalibration_logs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    cluster_id = Column(Integer, ForeignKey("career_clusters.id", ondelete="CASCADE"), nullable=False)
+    old_weights = Column(Text, nullable=False) # JSON
+    new_weights = Column(Text, nullable=False) # JSON
+    trigger_volume = Column(Integer, default=0, nullable=False)
+    notes = Column(Text, nullable=True)
+    recalibrated_at = Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
+
+    cluster = relationship("CareerCluster")
+
+class SyllabusRevisionProposal(Base):
+    __tablename__ = "syllabus_revision_proposals"
+
+    id = Column(Integer, primary_key=True, index=True)
+    curriculum_report_id = Column(Integer, ForeignKey("curriculum_gap_reports.id", ondelete="CASCADE"), nullable=False, index=True)
+    submitted_by = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    course_code = Column(String(100), nullable=False)
+    proposed_change = Column(Text, nullable=False)
+    # status: 'submitted' | 'under_review' | 'approved' | 'rejected'
+    status = Column(String(50), default="submitted", nullable=False, index=True)
+    institution_admin_notes = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
+    updated_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow, nullable=False)
+
+    curriculum_report = relationship("CurriculumGapReport")
+    submitter = relationship("User")
+

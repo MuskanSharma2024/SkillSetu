@@ -347,9 +347,14 @@
                   : `<span class="badge badge-amber">Action Needed</span>`}
               </td>
               <td>
-                <button onclick="openActionModal(${r.id})" class="btn btn-secondary btn-sm">
-                  ✏️ Log Action
-                </button>
+                <div style="display: flex; gap: 0.35rem;">
+                  <button onclick="openActionModal(${r.id})" class="btn btn-secondary btn-sm">
+                    ✏️ Log Action
+                  </button>
+                  <button onclick="submitSyllabusProposal(${r.id})" class="btn btn-primary btn-sm">
+                    📜 Syllabus Proposal
+                  </button>
+                </div>
               </td>
             </tr>
           `;
@@ -466,6 +471,24 @@
         loadMyApps();
       } catch (err) {
         showToast(err.message, "error");
+      }
+    }
+
+    async function submitSyllabusProposal(reportId) {
+      const courseCode = prompt("Enter Course Code (e.g. CS402):", "CS402");
+      if (!courseCode) return;
+      const proposedChange = prompt("Enter detailed syllabus revision proposal:");
+      if (!proposedChange) return;
+
+      try {
+        await api.post(`/skills/curriculum-reports/${reportId}/proposals`, {
+          course_code: courseCode,
+          proposed_change: proposedChange
+        });
+        showToast("Structured syllabus revision proposal submitted to Institution Admin!", "success");
+        loadCurriculumReports();
+      } catch (err) {
+        showToast("Error submitting proposal: " + err.message, "error");
       }
     }
 

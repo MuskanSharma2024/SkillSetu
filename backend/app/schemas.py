@@ -311,6 +311,7 @@ class OpportunityResponse(BaseModel):
     is_active: bool
     skills: List[RequiredSkillDetail] = []
     applicant_match_score: Optional[float] = None
+    trust_score: Optional[float] = 85.0
     created_at: datetime.datetime
     model_config = ConfigDict(from_attributes=True)
 
@@ -468,3 +469,131 @@ class InstitutionAnalyticsSummary(BaseModel):
     internships_applied: int
     internships_completed: int
     active_gap_reports: int
+
+# ==========================================
+# SRS Delta Schemas Additions
+# ==========================================
+
+class IntegrityFlagCreate(BaseModel):
+    flag_type: str = Field(..., description="tab_switch, timing_anomaly, self_rating_mismatch")
+    raw_signal: Optional[str] = None
+
+class IntegrityFlagResponse(BaseModel):
+    id: int
+    assessment_id: int
+    flag_type: str
+    raw_signal: Optional[str]
+    created_at: datetime.datetime
+    model_config = ConfigDict(from_attributes=True)
+
+class IntegrityReviewSummary(BaseModel):
+    assessment_id: int
+    student_id: int
+    student_name: str
+    assessment_completed_at: datetime.datetime
+    flag_counts: Dict[str, int]
+    total_flags: int
+    flags: List[IntegrityFlagResponse]
+
+class ConsentSubmission(BaseModel):
+    consent_given: bool = True
+    consent_version: str = "1.0"
+
+class ConsentStatusResponse(BaseModel):
+    user_id: int
+    has_consented: bool
+    consent_version: Optional[str] = None
+    consented_at: Optional[datetime.datetime] = None
+    is_minor: bool = False
+    guardian_consent_status: str = "not_required" # not_required, pending, approved
+    can_take_assessment: bool = True
+
+class GuardianConsentUpdate(BaseModel):
+    status: str = Field(..., description="pending, approved, not_required")
+
+class CareerClusterResponse(BaseModel):
+    id: int
+    name: str
+    description: Optional[str]
+    skill_weights: Dict[str, float]
+    ideal_interests: Optional[str]
+    associated_roles: List[str]
+    version: int
+    created_at: datetime.datetime
+    model_config = ConfigDict(from_attributes=True)
+
+class ClusterFitSummary(BaseModel):
+    cluster_id: int
+    cluster_name: str
+    fit_percentage: float
+    explanation: str
+    top_contributing_skills: List[str]
+    gap_skills: List[str]
+
+class HireOutcomeCreate(BaseModel):
+    interval: str = Field(..., description="3_month or 6_month")
+    retained: bool = True
+    performance_rating: float = Field(..., ge=1.0, le=5.0)
+
+class HireOutcomeResponse(BaseModel):
+    id: int
+    application_id: int
+    opportunity_title: str
+    student_name: str
+    company_name: str
+    interval: str
+    retained: bool
+    performance_rating: float
+    reported_at: datetime.datetime
+    model_config = ConfigDict(from_attributes=True)
+
+class GrowthTrendPoint(BaseModel):
+    timestamp: datetime.datetime
+    proficiency_score: float
+    source_type: str
+    milestone_title: Optional[str] = None
+
+class SkillGrowthSeries(BaseModel):
+    skill_id: int
+    skill_name: str
+    category: str
+    data_points: List[GrowthTrendPoint]
+
+class StudentGrowthTrendView(BaseModel):
+    user_id: int
+    student_name: str
+    skills_trends: List[SkillGrowthSeries]
+
+class RecalibrationLogResponse(BaseModel):
+    id: int
+    cluster_id: int
+    cluster_name: str
+    old_weights: Dict[str, float]
+    new_weights: Dict[str, float]
+    trigger_volume: int
+    notes: Optional[str]
+    recalibrated_at: datetime.datetime
+    model_config = ConfigDict(from_attributes=True)
+
+class SyllabusProposalCreate(BaseModel):
+    course_code: str
+    proposed_change: str
+
+class SyllabusProposalResponse(BaseModel):
+    id: int
+    curriculum_report_id: int
+    skill_name: str
+    submitted_by: int
+    academician_name: str
+    course_code: str
+    proposed_change: str
+    status: str # submitted, under_review, approved, rejected
+    institution_admin_notes: Optional[str]
+    created_at: datetime.datetime
+    updated_at: datetime.datetime
+    model_config = ConfigDict(from_attributes=True)
+
+class SyllabusProposalStatusUpdate(BaseModel):
+    status: str = Field(..., description="under_review, approved, rejected")
+    institution_admin_notes: Optional[str] = None
+

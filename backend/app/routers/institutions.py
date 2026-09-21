@@ -3,10 +3,15 @@ from sqlalchemy.orm import Session
 from typing import List
 
 from app.database import get_db
-from app.models import User, Institution, AcademicianProfile
+from app.models import (
+    User, Institution, AcademicianProfile, StudentProfile, SkillAssessment, 
+    IntegrityFlag, SyllabusRevisionProposal, CurriculumGapReport, Skill, Notification
+)
 from app.schemas import (
     InstitutionResponse, InstitutionCreate,
-    AcademicianProfileResponse, AcademicianProfileUpdate
+    AcademicianProfileResponse, AcademicianProfileUpdate,
+    IntegrityReviewSummary, IntegrityFlagResponse, GuardianConsentUpdate,
+    SyllabusProposalResponse, SyllabusProposalStatusUpdate
 )
 from app.dependencies import require_institution_admin, require_academician
 
@@ -135,13 +140,157 @@ def update_my_academician_profile(
         updated_at=profile.updated_at
     )
 
-@router.get("/{institution_id}", response_model=InstitutionResponse)
-def get_institution_by_id(institution_id: int, db: Session = Depends(get_db)):
-    """Retrieve details for a specific institution."""
-    inst = db.query(Institution).filter(Institution.id == institution_id).first()
-    if not inst:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Institution not found."
-        )
     return inst
+
+# ==========================================
+# SRS Delta Institution Admin Endpoints
+# ==========================================
+
+# --- Task A5: Assessment Integrity Review Dashboard ---
+@router.get("/integrity-flags", response_model=List[IntegrityReviewSummary])
+def get_integrity_flag_reviews(
+    current_user: User = Depends(require_institution_admin),
+    db: Session = Depends(get_db)
+):
+    """
+    Task A5: Institution Admin view listing flagged assessments for review.
+    Does not expose raw behavioural signal beyond derived flag counts & flag list.
+    """
+    flags = db.query(IntegrityFlag).all()
+    by_assessment = {}
+    for f in flags:
+        if f.assessment_id not in by_assessment:
+            by_assessment[f.assessment_id] = []
+        by_assessment[f.assessment_id].append(f)
+
+    results = []
+    for aid, flist in by_assessment.items():
+        assessment = db.query(SkillAssessment).filter(SkillAssessment.id == aid).first()
+        if not assessment:
+            continue
+        student_user = db.query(User).filter(User.id == assessment.user_id).first()
+
+        counts = {}
+        for f in flist:
+            counts[f.flag_type] = counts.get(f.flag_type, 0) + 1
+
+        flag_responses = [
+            IntegrityFlagResponse(
+                id=f.id,
+                assessment_id=f.assessment_id,
+                flag_type=f.flag_type,
+                raw_signal=f.raw_signal,
+                created_at=f.created_at
+            ) for f in flist
+        ]
+
+        results.append(IntegrityReviewSummary(
+            assessment_id=aid,
+            student_id=assessment.user_id,
+            student_name=student_user.full_name if student_user else "Student",
+            assessment_completed_at=assessment.completed_at,
+            flag_counts=counts,
+            total_flags=len(flist),
+            flags=flag_responses
+        ))
+
+    results.sort(key=lambda x: x.total_flags, reverse=True)
+    return results
+
+# --- Task B3: Guardian Consent Gate Management ---
+@router.patch("/students/{student_id}/guardian-consent")
+def update_student_guardian_consent(
+    student_id: int,
+    update_in: GuardianConsentUpdate,
+    current_user: User = Depends(require_institution_admin),
+    db: Session = Depends(get_db)
+):
+    """
+    Task B3: Institution Admin updates guardian/institutional consent status for minor students.
+    """
+    sp = db.query(StudentProfile).filter(StudentProfile.user_id == student_id).first()
+    if not sp:
+        raise HTTPException(status_code=404, detail="Student profile not found.")
+
+    sp.guardian_consent_status = update_in.status
+    db.commit()
+    return {"status": "success", "user_id": student_id, "guardian_consent_status": sp.guardian_consent_status}
+
+# --- Task F3: Institution Admin Review/Approval Flow ---
+@router.get("/curriculum-proposals", response_model=List[SyllabusProposalResponse])
+def list_curriculum_proposals(
+    current_user: User = Depends(require_institution_admin),
+    db: Session = Depends(get_db)
+):
+    """
+    Task F3: List all syllabus revision proposals submitted by academicians for review.
+    """
+    proposals = db.query(SyllabusRevisionProposal).order_by(SyllabusRevisionProposal.created_at.desc()).all()
+    results = []
+
+    for p in proposals:
+        submitter = db.query(User).filter(User.id == p.submitted_by).first()
+        report = db.query(CurriculumGapReport).filter(CurriculumGapReport.id == p.curriculum_report_id).first()
+        skill = db.query(Skill).filter(Skill.id == report.skill_id).first() if report else None
+
+        results.append(SyllabusProposalResponse(
+            id=p.id,
+            curriculum_report_id=p.curriculum_report_id,
+            skill_name=skill.name if skill else "Skill",
+            submitted_by=p.submitted_by,
+            academician_name=submitter.full_name if submitter else "Faculty Member",
+            course_code=p.course_code,
+            proposed_change=p.proposed_change,
+            status=p.status,
+            institution_admin_notes=p.institution_admin_notes,
+            created_at=p.created_at,
+            updated_at=p.updated_at
+        ))
+    return results
+
+@router.patch("/curriculum-proposals/{proposal_id}/status", response_model=SyllabusProposalResponse)
+def update_curriculum_proposal_status(
+    proposal_id: int,
+    status_in: SyllabusProposalStatusUpdate,
+    current_user: User = Depends(require_institution_admin),
+    db: Session = Depends(get_db)
+):
+    """
+    Task F3: Approve or reject a submitted syllabus revision proposal and notify the submitting academician.
+    """
+    p = db.query(SyllabusRevisionProposal).filter(SyllabusRevisionProposal.id == proposal_id).first()
+    if not p:
+        raise HTTPException(status_code=404, detail="Syllabus proposal not found.")
+
+    p.status = status_in.status
+    if status_in.institution_admin_notes is not None:
+        p.institution_admin_notes = status_in.institution_admin_notes
+
+    # Send Notification to submitting academician
+    db.add(Notification(
+        user_id=p.submitted_by,
+        title=f"Syllabus Proposal {status_in.status.upper()}",
+        message=f"Your syllabus proposal for '{p.course_code}' was marked as '{status_in.status}' by Institution Admin.",
+        category="curriculum_alert"
+    ))
+
+    db.commit()
+    db.refresh(p)
+
+    submitter = db.query(User).filter(User.id == p.submitted_by).first()
+    report = db.query(CurriculumGapReport).filter(CurriculumGapReport.id == p.curriculum_report_id).first()
+    skill = db.query(Skill).filter(Skill.id == report.skill_id).first() if report else None
+
+    return SyllabusProposalResponse(
+        id=p.id,
+        curriculum_report_id=p.curriculum_report_id,
+        skill_name=skill.name if skill else "Skill",
+        submitted_by=p.submitted_by,
+        academician_name=submitter.full_name if submitter else "Faculty Member",
+        course_code=p.course_code,
+        proposed_change=p.proposed_change,
+        status=p.status,
+        institution_admin_notes=p.institution_admin_notes,
+        created_at=p.created_at,
+        updated_at=p.updated_at
+    )

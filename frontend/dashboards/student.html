@@ -35,6 +35,12 @@
       <div class="sidebar-link" onclick="switchSection('recommendations-section', this)">
         <span>💼</span> Recommended Matches
       </div>
+      <div class="sidebar-link" onclick="switchSection('clusters-section', this)">
+        <span>🎯</span> Career Clusters & Fit
+      </div>
+      <div class="sidebar-link" onclick="switchSection('trends-section', this)">
+        <span>📈</span> Skill Growth Trends
+      </div>
       <div class="sidebar-link" onclick="switchSection('portfolio-section', this)">
         <span>🏆</span> Verified Portfolio
       </div>
@@ -196,6 +202,32 @@
 
         <div id="recommendations-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.25rem;">
           <div class="glass-card">Loading matching recommendations...</div>
+        </div>
+      </section>
+
+      <!-- Task C2: Career Clusters & Fit Section -->
+      <section id="clusters-section" style="display: none;">
+        <div style="margin-bottom: 1.5rem;">
+          <h2>🎯 Career Cluster Alignment</h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">
+            Vectorized cluster fit computation matching your verified skills against industry career domains.
+          </p>
+        </div>
+        <div id="clusters-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.25rem;">
+          <div class="glass-card">Loading career cluster fits...</div>
+        </div>
+      </section>
+
+      <!-- Task E1: Skill Growth Trends Section -->
+      <section id="trends-section" style="display: none;">
+        <div style="margin-bottom: 1.5rem;">
+          <h2>📈 Longitudinal Skill Growth Trends</h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">
+            Progression timeline tracking skill score updates over time annotated with completed learning programs.
+          </p>
+        </div>
+        <div class="glass-card">
+          <div id="trends-container">Loading skill growth snapshots...</div>
         </div>
       </section>
 
@@ -687,9 +719,100 @@
       }
     }
 
+    async function loadCareerClusters() {
+      try {
+        const fits = await api.get("/skills/career-clusters/me");
+        const container = document.getElementById("clusters-container");
+        if (!fits.length) {
+          container.innerHTML = '<div class="glass-card">No career cluster vector data computed yet.</div>';
+          return;
+        }
+        container.innerHTML = fits.map(f => `
+          <div class="glass-card glass-card-interactive">
+            <div style="display: flex; justify-content: space-between; align-items: start;">
+              <div>
+                <h3 style="font-size: 1.1rem;">${f.cluster_name}</h3>
+                <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 0.25rem;">${f.explanation}</p>
+              </div>
+              <div style="text-align: right;">
+                <span style="font-size: 1.4rem; font-weight: 800; color: #6366f1;">${f.fit_percentage}%</span>
+                <span style="display: block; font-size: 0.7rem; color: var(--text-muted);">Cluster Fit</span>
+              </div>
+            </div>
+            <div style="margin-top: 1rem;">
+              <span style="font-size: 0.75rem; color: var(--text-muted);">Top Contributing Skills:</span>
+              <div style="display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.25rem;">
+                ${f.top_contributing_skills.map(s => `<span class="badge badge-emerald">${s}</span>`).join('')}
+              </div>
+            </div>
+          </div>
+        `).join("");
+      } catch (err) {
+        console.error("Clusters error:", err);
+      }
+    }
+
+    async function loadGrowthTrends() {
+      try {
+        const res = await api.get("/skills/growth-trends/me");
+        const container = document.getElementById("trends-container");
+        if (!res.skills_trends || !res.skills_trends.length) {
+          container.innerHTML = '<p style="color: var(--text-secondary); text-align: center;">No growth snapshots recorded yet. Take assessments or complete learning programs to build your progression history.</p>';
+          return;
+        }
+        container.innerHTML = res.skills_trends.map(s => `
+          <div style="margin-bottom: 1.25rem; padding: 1rem; background: rgba(30, 41, 59, 0.4); border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <h4 style="font-size: 1rem; color: #a5b4fc;">${s.skill_name}</h4>
+              <span class="badge badge-primary">${s.category}</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+              ${s.data_points.map(pt => `
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; padding: 0.4rem 0.6rem; background: rgba(15, 23, 42, 0.5); border-radius: 6px;">
+                  <span>📅 ${new Date(pt.timestamp).toLocaleDateString()} ${pt.milestone_title ? `• <strong style="color: #34d399;">${pt.milestone_title}</strong>` : ''}</span>
+                  <span class="badge badge-emerald">${pt.proficiency_score}% proficiency</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `).join("");
+      } catch (err) {
+        console.error("Trends error:", err);
+      }
+    }
+
+    async function exportMyData() {
+      try {
+        const data = await api.get("/students/me/data-export");
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `skillsetu_data_export_${data.user_info.id}.json`;
+        a.click();
+        showToast("Data export downloaded successfully!", "success");
+      } catch (err) {
+        showToast(err.message, "error");
+      }
+    }
+
+    async function deleteMyData() {
+      if (!confirm("Are you sure you want to request data deletion? Your personal assessment scores will be erased while preserving anonymized aggregate statistics.")) return;
+      try {
+        await api.post("/students/me/data-deletion-request");
+        showToast("Assessment data deleted & anonymized successfully.", "success");
+        loadStudentProfile();
+        loadSkillProfile();
+      } catch (err) {
+        showToast(err.message, "error");
+      }
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
       loadStudentProfile();
       loadStudentAnalytics();
+      loadCareerClusters();
+      loadGrowthTrends();
     });
   </script>
 </body>

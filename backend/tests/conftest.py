@@ -11,7 +11,10 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from app.main import app
 from app.database import Base, get_db
-from app.models import User, Institution, Skill, StudentProfile, Company, AcademicianProfile
+from app.models import (
+    User, Institution, Skill, StudentProfile, Company, AcademicianProfile, 
+    CareerCluster, CurriculumGapReport
+)
 from app.auth import get_password_hash, create_access_token
 
 # Use an in-memory SQLite database for test isolation
@@ -51,6 +54,33 @@ def db():
         s2 = Skill(name="Cloud Computing (AWS/GCP)", category="technical", industry_benchmark=70.0)
         s3 = Skill(name="SQL & Relational Databases", category="technical", industry_benchmark=75.0)
         session.add_all([s1, s2, s3])
+        session.flush()
+
+    if session.query(CareerCluster).count() == 0:
+        import json
+        c1 = CareerCluster(
+            name="Backend & Software Engineering",
+            description="Systems development & REST APIs",
+            skill_weights=json.dumps({"1": 0.5, "3": 0.5}),
+            ideal_interests="Software Development",
+            associated_roles=json.dumps(["Software Engineer"])
+        )
+        session.add(c1)
+        session.flush()
+
+    if session.query(CurriculumGapReport).count() == 0:
+        inst = session.query(Institution).first()
+        r1 = CurriculumGapReport(
+            institution_id=inst.id if inst else 1,
+            skill_id=1,
+            student_cohort_avg=45.0,
+            industry_benchmark=80.0,
+            gap_score=35.0,
+            demand_frequency=12,
+            trend="rising",
+            status="open"
+        )
+        session.add(r1)
         session.flush()
 
     session.commit()

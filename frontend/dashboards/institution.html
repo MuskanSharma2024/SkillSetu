@@ -32,6 +32,12 @@
       <div class="sidebar-link" onclick="switchSection('feedback-summary-section', this)">
         <span>📊</span> Macro Curriculum View
       </div>
+      <div class="sidebar-link" onclick="switchSection('integrity-section', this)">
+        <span>⚖️</span> Assessment Integrity Audit
+      </div>
+      <div class="sidebar-link" onclick="switchSection('proposals-section', this)">
+        <span>📜</span> Syllabus Proposals Queue
+      </div>
       <div class="sidebar-link" onclick="switchSection('audit-section', this)">
         <span>🛡️</span> System Audit Logs
       </div>
@@ -135,6 +141,63 @@
         </div>
       </section>
 
+      <!-- Task A5: Integrity Review Dashboard Section -->
+      <section id="integrity-section" style="display: none;">
+        <div style="margin-bottom: 1.5rem;">
+          <h2>⚖️ Assessment Integrity Review Dashboard</h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">
+            Oversight console reviewing flagged assessments (tab switches, timing anomalies, self-rating mismatches) under strict data-minimization rules.
+          </p>
+        </div>
+        <div class="glass-card">
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Assessment ID</th>
+                  <th>Student Candidate</th>
+                  <th>Flag Breakdown</th>
+                  <th>Total Flags</th>
+                  <th>Completed At</th>
+                </tr>
+              </thead>
+              <tbody id="integrity-table-body">
+                <tr><td colspan="5" style="text-align: center;">Loading integrity flags review...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Task F3: Syllabus Revision Proposals Section -->
+      <section id="proposals-section" style="display: none;">
+        <div style="margin-bottom: 1.5rem;">
+          <h2>📜 Syllabus Revision Proposals Queue</h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">
+            Review, comment on, and approve or reject structured syllabus update proposals submitted by faculty academicians.
+          </p>
+        </div>
+        <div class="glass-card">
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Course Code</th>
+                  <th>Skill Gap</th>
+                  <th>Submitted By</th>
+                  <th>Proposed Syllabus Upgrade</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="proposals-table-body">
+                <tr><td colspan="6" style="text-align: center;">Loading submitted proposals...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
       <!-- Audit Logs Section -->
       <section id="audit-section" style="display: none;">
         <div style="margin-bottom: 1.5rem;">
@@ -214,7 +277,83 @@
       if (element) element.classList.add("active");
 
       if (sectionId === "feedback-summary-section") loadMacroReports();
+      if (sectionId === "integrity-section") loadIntegrityFlags();
+      if (sectionId === "proposals-section") loadProposals();
       if (sectionId === "audit-section") loadAuditLogs();
+    }
+
+    async function loadIntegrityFlags() {
+      try {
+        const summaries = await api.get("/institutions/integrity-flags");
+        const tbody = document.getElementById("integrity-table-body");
+        if (!summaries.length) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No flagged assessments detected. High assessment integrity!</td></tr>';
+          return;
+        }
+        tbody.innerHTML = summaries.map(s => `
+          <tr>
+            <td style="font-weight: 600;">#${s.assessment_id}</td>
+            <td>${s.student_name}</td>
+            <td>
+              <div style="display: flex; gap: 0.35rem; flex-wrap: wrap;">
+                ${Object.entries(s.flag_counts).map(([k, v]) => `<span class="badge badge-amber">${k}: ${v}</span>`).join('')}
+              </div>
+            </td>
+            <td><strong style="color: #f43f5e;">${s.total_flags}</strong></td>
+            <td>${new Date(s.assessment_completed_at).toLocaleString()}</td>
+          </tr>
+        `).join("");
+      } catch (err) {
+        console.error("Integrity flags error:", err);
+      }
+    }
+
+    async function loadProposals() {
+      try {
+        const props = await api.get("/institutions/curriculum-proposals");
+        const tbody = document.getElementById("proposals-table-body");
+        if (!props.length) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No syllabus revision proposals submitted yet.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = props.map(p => `
+          <tr>
+            <td style="font-weight: 600; color: #a5b4fc;">${p.course_code}</td>
+            <td><span class="badge badge-primary">${p.skill_name}</span></td>
+            <td>${p.academician_name}</td>
+            <td style="max-width: 250px; font-size: 0.85rem;">${p.proposed_change}</td>
+            <td>
+              <span class="badge ${p.status === 'approved' ? 'badge-emerald' : p.status === 'rejected' ? 'badge-rose' : 'badge-amber'}">
+                ${p.status.toUpperCase()}
+              </span>
+            </td>
+            <td>
+              ${p.status === 'submitted' ? `
+                <div style="display: flex; gap: 0.3rem;">
+                  <button class="btn btn-sm btn-primary" onclick="updateProposalStatus(${p.id}, 'approved')">Approve</button>
+                  <button class="btn btn-sm" onclick="updateProposalStatus(${p.id}, 'rejected')">Reject</button>
+                </div>
+              ` : `<span style="font-size: 0.8rem; color: var(--text-muted);">Reviewed</span>`}
+            </td>
+          </tr>
+        `).join("");
+      } catch (err) {
+        console.error("Proposals error:", err);
+      }
+    }
+
+    async function updateProposalStatus(propId, status) {
+      const notes = prompt(`Enter optional admin notes for marking as ${status.toUpperCase()}:`);
+      try {
+        await api.patch(`/institutions/curriculum-proposals/${propId}/status`, {
+          status: status,
+          institution_admin_notes: notes || undefined
+        });
+        showToast(`Proposal marked as ${status.toUpperCase()}! Submitting faculty notified.`, "success");
+        loadProposals();
+      } catch (err) {
+        showToast(err.message, "error");
+      }
     }
 
     async function loadInstitutionDashboard() {

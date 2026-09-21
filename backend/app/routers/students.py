@@ -3,7 +3,10 @@ from sqlalchemy.orm import Session
 import json
 
 from app.database import get_db
-from app.models import User, StudentProfile, Institution
+from app.models import (
+    User, StudentProfile, Institution, SkillAssessment, SkillProfile, 
+    Application, StudentConsent, PortfolioItem, SkillProfileSnapshot
+)
 from app.schemas import StudentProfileResponse, StudentProfileUpdate
 from app.dependencies import require_student, require_all_authenticated
 
@@ -121,3 +124,64 @@ def get_student_profile_by_id(
         )
 
     return build_student_response(profile, user, db)
+
+# --- Task B4: Data Access & Deletion Request ---
+@router.get("/me/data-export")
+def export_my_data(
+    current_user: User = Depends(require_student),
+    db: Session = Depends(get_db)
+):
+    """
+    Task B4: Student-facing action to request a full copy of their assessment & profile data.
+    """
+    profile = db.query(StudentProfile).filter(StudentProfile.user_id == current_user.id).first()
+    assessments = db.query(SkillAssessment).filter(SkillAssessment.user_id == current_user.id).all()
+    skills = db.query(SkillProfile).filter(SkillProfile.user_id == current_user.id).all()
+    applications = db.query(Application).filter(Application.user_id == current_user.id).all()
+    consent = db.query(StudentConsent).filter(StudentConsent.user_id == current_user.id).first()
+
+    return {
+        "user_info": {
+            "id": current_user.id,
+            "full_name": current_user.full_name,
+            "email": current_user.email,
+            "role": current_user.role,
+            "created_at": current_user.created_at.isoformat()
+        },
+        "academic_profile": {
+            "degree": profile.degree if profile else None,
+            "branch": profile.branch if profile else None,
+            "grad_year": profile.grad_year if profile else None,
+            "resume_url": profile.resume_url if profile else None
+        } if profile else None,
+        "consent_record": {
+            "consent_given": consent.consent_given if consent else False,
+            "consented_at": consent.consented_at.isoformat() if consent and consent.consented_at else None
+        } if consent else None,
+        "skill_profiles": [{"skill_id": s.skill_id, "score": s.proficiency_score, "is_verified": s.is_verified} for s in skills],
+        "assessments_count": len(assessments),
+        "applications_count": len(applications)
+    }
+
+@router.post("/me/data-deletion-request")
+def request_data_deletion(
+    current_user: User = Depends(require_student),
+    db: Session = Depends(get_db)
+):
+    """
+    Task B4: Student-facing action to request deletion of assessment data,
+    subject to institutional retention rules while retaining anonymized aggregate stats.
+    """
+    # Anonymize/soft-delete individual assessment records
+    assessments = db.query(SkillAssessment).filter(SkillAssessment.user_id == current_user.id).all()
+    for a in assessments:
+        a.responses = "[ANONYMIZED_DATA_DELETION]"
+
+    # Clear personal profiles
+    skills = db.query(SkillProfile).filter(SkillProfile.user_id == current_user.id).all()
+    for s in skills:
+        db.delete(s)
+
+    db.commit()
+    return {"status": "success", "message": "Personal assessment data deleted and anonymized for curriculum statistics."}
+

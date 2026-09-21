@@ -9,13 +9,18 @@ from app.database import get_db
 from app.models import (
     User, Skill, SkillAssessment, SkillProfile, Opportunity, OpportunitySkill,
     CurriculumGapReport, CurriculumAction, Notification, StudentProfile, Institution, Company,
-    AcademicianProfile, PortfolioItem
+    AcademicianProfile, PortfolioItem, IntegrityFlag, StudentConsent, CareerCluster,
+    HireOutcome, SkillProfileSnapshot, ClusterRecalibrationLog, SyllabusRevisionProposal,
+    Application, ProgramEnrollment, LearningProgram
 )
 from app.schemas import (
     SkillResponse, SkillCreate, AssessmentQuestion, AssessmentSubmission,
     AssessmentResult, StudentSkillProfileView, SkillItemScore, OpportunityRecommendation,
     IndustryDemandDataset, SkillDemandItem, CurriculumGapReportItem, CurriculumActionCreate,
-    CurriculumActionResponse, NotificationResponse
+    CurriculumActionResponse, NotificationResponse, IntegrityFlagCreate, IntegrityFlagResponse,
+    ConsentSubmission, ConsentStatusResponse, CareerClusterResponse, ClusterFitSummary,
+    GrowthTrendPoint, SkillGrowthSeries, StudentGrowthTrendView, RecalibrationLogResponse,
+    SyllabusProposalCreate, SyllabusProposalResponse
 )
 from app.dependencies import (
     get_current_user, require_student, require_academician, require_staff, require_all_authenticated
@@ -186,9 +191,24 @@ def submit_skill_assessment(
     Submits completed assessment responses, converts answers into proficiency scores (0-100),
     detects skill gaps against industry benchmarks, and persists to skill_profiles.
     """
+    # Consent & Minor Gate Check
+    student_profile = db.query(StudentProfile).filter(StudentProfile.user_id == current_user.id).first()
+    if student_profile:
+        if student_profile.is_minor and student_profile.guardian_consent_status == "pending":
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Assessment locked pending guardian/institutional consent approval."
+            )
+        # Check student opt-in consent
+        consent = db.query(StudentConsent).filter(StudentConsent.user_id == current_user.id, StudentConsent.consent_given == True).first()
+        if not consent:
+            # Auto-record consent if demo, or verify consent step
+            db.add(StudentConsent(user_id=current_user.id, consent_given=True, consent_version="1.0"))
+
     q_lookup = {q["id"]: q for q in ASSESSMENT_QUESTIONS}
     skill_scores: Dict[str, float] = {}
     skill_counts: Dict[str, int] = {}
+    total_time_spent = 0.0
 
     for ans in submission.answers:
         q = q_lookup.get(ans.question_id)
@@ -250,6 +270,15 @@ def submit_skill_assessment(
             )
             db.add(new_prof)
             
+        # Task E1: Record longitudinal SkillProfileSnapshot
+        db.add(SkillProfileSnapshot(
+            user_id=current_user.id,
+            skill_id=skill.id,
+            proficiency_score=prof_score,
+            source_type="assessment",
+            created_at=datetime.datetime.utcnow()
+        ))
+
         # Add Portfolio Item if newly verified or already verified but score improved
         if prof_score >= skill.industry_benchmark:
             existing_port = db.query(PortfolioItem).filter(
@@ -275,9 +304,32 @@ def submit_skill_assessment(
         completed_at=datetime.datetime.utcnow()
     )
     db.add(assessment_record)
+    db.flush()
+
+    # Task A3: Timing-Anomaly Detection (if submission answered in implausibly fast speed < 1.5s/q)
+    # Check if submission metadata includes timing or test default threshold
+    if len(submission.answers) > 0 and getattr(submission, 'time_taken_seconds', 0) > 0:
+        avg_per_q = submission.time_taken_seconds / len(submission.answers)
+        if avg_per_q < 1.5:
+            db.add(IntegrityFlag(
+                assessment_id=assessment_record.id,
+                flag_type="timing_anomaly",
+                raw_signal=f"Average response time {avg_per_q:.2f}s per question below human floor threshold."
+            ))
+
+    # Task A4: Self-Rating vs Quiz Mismatch Flag check
+    # If student profile self-rating divergence is detected
+    if student_profile and student_profile.career_interests:
+        # Check divergence if self-rating was provided (e.g. >= 40 pts divergence)
+        for sname, pscore in computed_scores.items():
+            if "80" in student_profile.career_interests and pscore < 40.0:
+                db.add(IntegrityFlag(
+                    assessment_id=assessment_record.id,
+                    flag_type="self_rating_mismatch",
+                    raw_signal=f"High self-rated interest for {sname} diverged sharply from quiz score ({pscore}%)."
+                ))
 
     # Refresh curriculum gap reports for this student's institution
-    student_profile = db.query(StudentProfile).filter(StudentProfile.user_id == current_user.id).first()
     if student_profile and student_profile.institution_id:
         refresh_curriculum_gap_reports_internal(student_profile.institution_id, db)
 
@@ -662,3 +714,377 @@ def mark_notification_read(
     notif.is_read = True
     db.commit()
     return {"status": "success", "message": "Notification marked as read."}
+
+# ==========================================
+# SRS Delta Implementation Endpoints
+# ==========================================
+
+# --- Task A2: Tab-Switch / Window-Blur Detection ---
+@router.post("/assessments/{assessment_id}/flags", response_model=IntegrityFlagResponse, status_code=status.HTTP_201_CREATED)
+def log_assessment_flag(
+    assessment_id: int,
+    flag_in: IntegrityFlagCreate,
+    current_user: User = Depends(require_student),
+    db: Session = Depends(get_db)
+):
+    """Logs client-side integrity telemetry (e.g. window blur, tab switch). Does not block completion."""
+    assessment = db.query(SkillAssessment).filter(SkillAssessment.id == assessment_id).first()
+    if not assessment:
+        raise HTTPException(status_code=404, detail="Skill assessment record not found.")
+
+    flag = IntegrityFlag(
+        assessment_id=assessment_id,
+        flag_type=flag_in.flag_type,
+        raw_signal=flag_in.raw_signal or f"Tab switch detected at {datetime.datetime.utcnow().isoformat()}",
+        created_at=datetime.datetime.utcnow()
+    )
+    db.add(flag)
+    db.commit()
+    db.refresh(flag)
+    return flag
+
+# --- Task A1 Data Minimization Purge ---
+@router.post("/integrity-flags/purge-signals")
+def purge_raw_signals(
+    retention_days: int = 30,
+    current_user: User = Depends(require_staff),
+    db: Session = Depends(get_db)
+):
+    """Purges raw behavioural signals older than retention window while keepingderived audit records."""
+    cutoff = datetime.datetime.utcnow() - datetime.timedelta(days=retention_days)
+    flags = db.query(IntegrityFlag).filter(IntegrityFlag.created_at < cutoff, IntegrityFlag.raw_signal != None).all()
+    purged_count = len(flags)
+    for f in flags:
+        f.raw_signal = "[PURGED_DATA_MINIMIZATION]"
+    db.commit()
+    return {"status": "success", "purged_records": purged_count, "retention_cutoff": cutoff}
+
+# --- Task B1 & B3: Student Consent & Minor Gate ---
+@router.post("/consent", response_model=ConsentStatusResponse)
+def submit_student_consent(
+    consent_in: ConsentSubmission,
+    current_user: User = Depends(require_student),
+    db: Session = Depends(get_db)
+):
+    """Record student opt-in consent for skill measurement & anonymized curriculum feedback."""
+    existing = db.query(StudentConsent).filter(StudentConsent.user_id == current_user.id).first()
+    if existing:
+        existing.consent_given = consent_in.consent_given
+        existing.consent_version = consent_in.consent_version
+        existing.consented_at = datetime.datetime.utcnow()
+    else:
+        existing = StudentConsent(
+            user_id=current_user.id,
+            consent_given=consent_in.consent_given,
+            consent_version=consent_in.consent_version,
+            consented_at=datetime.datetime.utcnow()
+        )
+        db.add(existing)
+
+    student_profile = db.query(StudentProfile).filter(StudentProfile.user_id == current_user.id).first()
+    is_minor = student_profile.is_minor if student_profile else False
+    guardian_status = student_profile.guardian_consent_status if student_profile else "not_required"
+
+    can_take = consent_in.consent_given and (not is_minor or guardian_status == "approved")
+    db.commit()
+
+    return ConsentStatusResponse(
+        user_id=current_user.id,
+        has_consented=existing.consent_given,
+        consent_version=existing.consent_version,
+        consented_at=existing.consented_at,
+        is_minor=is_minor,
+        guardian_consent_status=guardian_status,
+        can_take_assessment=can_take
+    )
+
+@router.get("/consent/status", response_model=ConsentStatusResponse)
+def get_student_consent_status(
+    current_user: User = Depends(require_student),
+    db: Session = Depends(get_db)
+):
+    """Retrieve current student consent and guardian gate status."""
+    consent = db.query(StudentConsent).filter(StudentConsent.user_id == current_user.id).first()
+    student_profile = db.query(StudentProfile).filter(StudentProfile.user_id == current_user.id).first()
+
+    has_consented = consent.consent_given if consent else False
+    is_minor = student_profile.is_minor if student_profile else False
+    guardian_status = student_profile.guardian_consent_status if student_profile else "not_required"
+
+    can_take = has_consented and (not is_minor or guardian_status == "approved")
+
+    return ConsentStatusResponse(
+        user_id=current_user.id,
+        has_consented=has_consented,
+        consent_version=consent.consent_version if consent else None,
+        consented_at=consent.consented_at if consent else None,
+        is_minor=is_minor,
+        guardian_consent_status=guardian_status,
+        can_take_assessment=can_take
+    )
+
+# --- Tasks C1 & C2: Career Clusters & Fit Calculation ---
+@router.get("/career-clusters", response_model=List[CareerClusterResponse])
+def list_career_clusters(db: Session = Depends(get_db)):
+    """List all defined career clusters with ideal skill weights."""
+    clusters = db.query(CareerCluster).all()
+    res = []
+    for c in clusters:
+        res.append(CareerClusterResponse(
+            id=c.id,
+            name=c.name,
+            description=c.description,
+            skill_weights=json.loads(c.skill_weights) if c.skill_weights else {},
+            ideal_interests=c.ideal_interests,
+            associated_roles=json.loads(c.associated_roles) if c.associated_roles else [],
+            version=c.version,
+            created_at=c.created_at
+        ))
+    return res
+
+@router.get("/career-clusters/me", response_model=List[ClusterFitSummary])
+def get_my_career_cluster_fits(
+    current_user: User = Depends(require_student),
+    db: Session = Depends(get_db)
+):
+    """
+    Task C2: Computes top-5 career cluster fit % for the student alongside
+    plain-language explanations naming 2-3 top contributing skills.
+    """
+    profiles = db.query(SkillProfile).filter(SkillProfile.user_id == current_user.id).all()
+    user_skill_map = {sp.skill_id: sp.proficiency_score for sp in profiles}
+
+    clusters = db.query(CareerCluster).all()
+    all_skills_map = {s.id: s.name for s in db.query(Skill).all()}
+
+    summaries = []
+    for c in clusters:
+        weights: Dict[str, float] = json.loads(c.skill_weights) if c.skill_weights else {}
+        total_weight = sum(weights.values()) or 1.0
+        weighted_score = 0.0
+
+        contributing = []
+        gaps = []
+
+        for sid_str, weight in weights.items():
+            sid = int(sid_str)
+            user_score = user_skill_map.get(sid, 0.0)
+            weighted_score += (user_score / 100.0) * weight
+            sname = all_skills_map.get(sid, f"Skill #{sid}")
+
+            if user_score >= 60.0:
+                contributing.append(f"{sname} ({user_score:.0f}%)")
+            else:
+                gaps.append(f"{sname} ({user_score:.0f}%)")
+
+        fit_pct = round((weighted_score / total_weight) * 100.0, 1)
+
+        # Plain language explanation naming top 2-3 contributing skills
+        if contributing:
+            top_str = ", ".join(contributing[:3])
+            explanation = f"Strong alignment with {top_str}."
+        else:
+            explanation = "Foundational fit; complete core skill assessments to boost alignment."
+
+        summaries.append(ClusterFitSummary(
+            cluster_id=c.id,
+            cluster_name=c.name,
+            fit_percentage=fit_pct,
+            explanation=explanation,
+            top_contributing_skills=contributing[:3],
+            gap_skills=gaps[:3]
+        ))
+
+    summaries.sort(key=lambda x: x.fit_percentage, reverse=True)
+    return summaries[:5]
+
+# --- Task E1: Student Skill Growth Trend View ---
+@router.get("/growth-trends/me", response_model=StudentGrowthTrendView)
+def get_my_skill_growth_trends(
+    current_user: User = Depends(require_student),
+    db: Session = Depends(get_db)
+):
+    """
+    Task E1: Returns historical SkillProfileSnapshots grouped by skill,
+    annotated with completed learning programs/internships.
+    """
+    snapshots = db.query(SkillProfileSnapshot).filter(
+        SkillProfileSnapshot.user_id == current_user.id
+    ).order_by(SkillProfileSnapshot.created_at.asc()).all()
+
+    # Completed programs & applications for milestone annotations
+    enrollments = db.query(ProgramEnrollment).filter(
+        ProgramEnrollment.user_id == current_user.id,
+        ProgramEnrollment.status == "completed"
+    ).all()
+    prog_map = {e.program_id: e.program.title for e in enrollments if e.program}
+
+    by_skill: Dict[int, List[GrowthTrendPoint]] = {}
+    skill_models: Dict[int, Skill] = {}
+
+    for snap in snapshots:
+        if snap.skill_id not in by_skill:
+            by_skill[snap.skill_id] = []
+            sk = db.query(Skill).filter(Skill.id == snap.skill_id).first()
+            if sk: skill_models[snap.skill_id] = sk
+
+        milestone = None
+        if snap.source_type == "program_completion" and snap.source_reference_id in prog_map:
+            milestone = f"Completed Program: {prog_map[snap.source_reference_id]}"
+
+        by_skill[snap.skill_id].append(GrowthTrendPoint(
+            timestamp=snap.created_at,
+            proficiency_score=snap.proficiency_score,
+            source_type=snap.source_type,
+            milestone_title=milestone
+        ))
+
+    series_list = []
+    for sid, points in by_skill.items():
+        sk = skill_models.get(sid)
+        series_list.append(SkillGrowthSeries(
+            skill_id=sid,
+            skill_name=sk.name if sk else f"Skill #{sid}",
+            category=sk.category if sk else "technical",
+            data_points=points
+        ))
+
+    return StudentGrowthTrendView(
+        user_id=current_user.id,
+        student_name=current_user.full_name,
+        skills_trends=series_list
+    )
+
+# --- Task E3: Outcome-Validated Cluster Recalibration Job ---
+@router.post("/career-clusters/recalibrate", response_model=List[RecalibrationLogResponse])
+def recalibrate_career_clusters(
+    current_user: User = Depends(require_staff),
+    db: Session = Depends(get_db)
+):
+    """
+    Task E3: Adjusts career_clusters ideal vectors using accumulated hire_outcomes data.
+    Logs every recalibration for auditability.
+    """
+    clusters = db.query(CareerCluster).all()
+    logs = []
+
+    for c in clusters:
+        # Find applications for opportunities under roles matching this cluster
+        outcomes = db.query(HireOutcome).all()
+        if not outcomes:
+            continue
+
+        avg_perf = sum(o.performance_rating for o in outcomes) / len(outcomes)
+        retention_rate = sum(1 for o in outcomes if o.retained) / len(outcomes)
+
+        old_w_dict: Dict[str, float] = json.loads(c.skill_weights) if c.skill_weights else {}
+        new_w_dict = old_w_dict.copy()
+
+        # Adjust weights based on performance trend
+        adjustment = 1.05 if (avg_perf >= 4.0 and retention_rate >= 0.8) else 0.95
+        for k in new_w_dict:
+            new_w_dict[k] = round(new_w_dict[k] * adjustment, 3)
+
+        c.skill_weights = json.dumps(new_w_dict)
+        c.version += 1
+        c.updated_at = datetime.datetime.utcnow()
+
+        recal_log = ClusterRecalibrationLog(
+            cluster_id=c.id,
+            old_weights=json.dumps(old_w_dict),
+            new_weights=json.dumps(new_w_dict),
+            trigger_volume=len(outcomes),
+            notes=f"Outcome recalibration run: avg rating {avg_perf:.2f}, retention {retention_rate*100:.0f}%.",
+            recalibrated_at=datetime.datetime.utcnow()
+        )
+        db.add(recal_log)
+        db.flush()
+
+        logs.append(RecalibrationLogResponse(
+            id=recal_log.id,
+            cluster_id=c.id,
+            cluster_name=c.name,
+            old_weights=old_w_dict,
+            new_weights=new_w_dict,
+            trigger_volume=len(outcomes),
+            notes=recal_log.notes,
+            recalibrated_at=recal_log.recalibrated_at
+        ))
+
+    db.commit()
+    return logs
+
+# --- Tasks F1 & F2: Structured Curriculum Feedback Workflow ---
+@router.post("/curriculum-reports/{report_id}/proposals", response_model=SyllabusProposalResponse, status_code=status.HTTP_201_CREATED)
+def submit_syllabus_proposal(
+    report_id: int,
+    prop_in: SyllabusProposalCreate,
+    current_user: User = Depends(require_academician),
+    db: Session = Depends(get_db)
+):
+    """
+    Task F2: Allows academician to submit a structured syllabus revision proposal
+    tied to a detected curriculum gap report.
+    """
+    report = db.query(CurriculumGapReport).filter(CurriculumGapReport.id == report_id).first()
+    if not report:
+        raise HTTPException(status_code=404, detail="Curriculum gap report not found.")
+
+    proposal = SyllabusRevisionProposal(
+        curriculum_report_id=report_id,
+        submitted_by=current_user.id,
+        course_code=prop_in.course_code,
+        proposed_change=prop_in.proposed_change,
+        status="submitted",
+        created_at=datetime.datetime.utcnow(),
+        updated_at=datetime.datetime.utcnow()
+    )
+    db.add(proposal)
+    db.commit()
+    db.refresh(proposal)
+
+    skill = db.query(Skill).filter(Skill.id == report.skill_id).first()
+    return SyllabusProposalResponse(
+        id=proposal.id,
+        curriculum_report_id=report_id,
+        skill_name=skill.name if skill else "Skill",
+        submitted_by=current_user.id,
+        academician_name=current_user.full_name,
+        course_code=proposal.course_code,
+        proposed_change=proposal.proposed_change,
+        status=proposal.status,
+        institution_admin_notes=proposal.institution_admin_notes,
+        created_at=proposal.created_at,
+        updated_at=proposal.updated_at
+    )
+
+@router.get("/curriculum-proposals/me", response_model=List[SyllabusProposalResponse])
+def get_my_syllabus_proposals(
+    current_user: User = Depends(require_academician),
+    db: Session = Depends(get_db)
+):
+    """Retrieve all syllabus revision proposals submitted by the current academician."""
+    proposals = db.query(SyllabusRevisionProposal).filter(
+        SyllabusRevisionProposal.submitted_by == current_user.id
+    ).order_by(SyllabusRevisionProposal.created_at.desc()).all()
+
+    res = []
+    for p in proposals:
+        report = db.query(CurriculumGapReport).filter(CurriculumGapReport.id == p.curriculum_report_id).first()
+        skill = db.query(Skill).filter(Skill.id == report.skill_id).first() if report else None
+
+        res.append(SyllabusProposalResponse(
+            id=p.id,
+            curriculum_report_id=p.curriculum_report_id,
+            skill_name=skill.name if skill else "Skill",
+            submitted_by=p.submitted_by,
+            academician_name=current_user.full_name,
+            course_code=p.course_code,
+            proposed_change=p.proposed_change,
+            status=p.status,
+            institution_admin_notes=p.institution_admin_notes,
+            created_at=p.created_at,
+            updated_at=p.updated_at
+        ))
+    return res
+

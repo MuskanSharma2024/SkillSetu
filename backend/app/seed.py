@@ -5,7 +5,7 @@ from app.database import engine, SessionLocal, Base
 from app.models import (
     User, Institution, StudentProfile, Company, AcademicianProfile,
     Skill, Opportunity, OpportunitySkill, SkillProfile, CurriculumGapReport,
-    CurriculumAction, Notification
+    CurriculumAction, Notification, CareerCluster
 )
 from app.auth import get_password_hash
 
@@ -316,6 +316,53 @@ def seed_database():
             ))
 
             print("Seeded curriculum gap reports and notifications.")
+
+        # 6. Seed Career Clusters
+        if db.query(CareerCluster).count() == 0:
+            clusters = [
+                CareerCluster(
+                    name="Backend & Software Engineering",
+                    description="Systems development, REST/gRPC APIs, microservices, database optimization, and cloud architecture.",
+                    skill_weights=json.dumps({"1": 0.35, "3": 0.30, "4": 0.20, "5": 0.15}),
+                    ideal_interests="Software Development, Backend Engineering, Distributed Systems",
+                    associated_roles=json.dumps(["Software Development Engineer", "Backend Developer", "API Architect", "Systems Engineer"]),
+                    version=1
+                ),
+                CareerCluster(
+                    name="Data Engineering & AI/ML",
+                    description="Scalable data pipelines, machine learning models, statistical analysis, and big data architecture.",
+                    skill_weights=json.dumps({"1": 0.30, "2": 0.30, "3": 0.25, "4": 0.15}),
+                    ideal_interests="Machine Learning, Data Analysis, Artificial Intelligence",
+                    associated_roles=json.dumps(["Data Engineer", "Machine Learning Specialist", "AI Research Intern", "Data Analyst"]),
+                    version=1
+                ),
+                CareerCluster(
+                    name="Cloud Native & DevOps",
+                    description="Infrastructure as Code, container orchestration, continuous deployment, and cloud security.",
+                    skill_weights=json.dumps({"5": 0.45, "1": 0.25, "3": 0.15, "4": 0.15}),
+                    ideal_interests="Cloud Computing, DevOps, System Administration",
+                    associated_roles=json.dumps(["DevOps Engineer", "Cloud Solutions Architect", "Site Reliability Engineer (SRE)"]),
+                    version=1
+                ),
+                CareerCluster(
+                    name="Fullstack & Web Applications",
+                    description="End-to-end web applications, frontend interactive UI components, backend services, and API integration.",
+                    skill_weights=json.dumps({"1": 0.30, "3": 0.30, "5": 0.20, "4": 0.20}),
+                    ideal_interests="Fullstack Development, Web Applications, Product Engineering",
+                    associated_roles=json.dumps(["Fullstack Developer", "Frontend Developer", "Web Applications Engineer"]),
+                    version=1
+                ),
+                CareerCluster(
+                    name="Cybersecurity & Network Systems",
+                    description="Information security, penetration testing, threat detection, network administration, and compliance.",
+                    skill_weights=json.dumps({"4": 0.40, "5": 0.30, "1": 0.15, "3": 0.15}),
+                    ideal_interests="Information Security, Ethical Hacking, Network Systems",
+                    associated_roles=json.dumps(["Security Analyst", "Cybersecurity Specialist", "Network Security Engineer"]),
+                    version=1
+                )
+            ]
+            db.add_all(clusters)
+            print("Seeded 5 Career Clusters.")
 
         db.commit()
         print("Database seeding completed successfully!")

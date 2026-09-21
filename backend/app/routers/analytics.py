@@ -175,9 +175,68 @@ def get_institution_summary(
 @router.get("/admin/audit-logs", response_model=List[AuditLogResponse])
 def get_audit_logs(
     limit: int = 50,
-    current_user: User = Depends(get_current_user), # In real app: require_admin
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """View key actions for accountability."""
     logs = db.query(AuditLog).order_by(desc(AuditLog.created_at)).limit(limit).all()
     return logs
+
+# --- Task E2: Academician Growth View ---
+@router.get("/faculty/cohort-growth-trends")
+def get_faculty_cohort_growth_trends(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Task E2: Surface longitudinal skill growth trend data aggregated for an academician's student cohort.
+    Task F4: Enforces minimum cohort size anonymization guarantee (min. 3 students required).
+    """
+    from app.models import AcademicianProfile, SkillProfileSnapshot
+    acad = db.query(AcademicianProfile).filter(AcademicianProfile.user_id == current_user.id).first()
+    inst_id = acad.institution_id if acad else 1
+
+    students = db.query(StudentProfile).filter(StudentProfile.institution_id == inst_id).all()
+    student_ids = [s.user_id for s in students]
+
+    # Task F4 Anonymization Guarantee: Require minimum cohort size of 3
+    if len(student_ids) < 3:
+        return {
+            "institution_id": inst_id,
+            "cohort_student_count": len(student_ids),
+            "anonymization_guarantee_met": False,
+            "notice": "Cohort size must be at least 3 students to protect individual student privacy.",
+            "aggregated_skills": []
+        }
+
+    snapshots = db.query(SkillProfileSnapshot).filter(
+        SkillProfileSnapshot.user_id.in_(student_ids)
+    ).all()
+
+    skill_averages = {}
+    for snap in snapshots:
+        if snap.skill_id not in skill_averages:
+            sk = db.query(Skill).filter(Skill.id == snap.skill_id).first()
+            skill_averages[snap.skill_id] = {
+                "skill_name": sk.name if sk else f"Skill #{snap.skill_id}",
+                "scores": []
+            }
+        skill_averages[snap.skill_id]["scores"].append(snap.proficiency_score)
+
+    results = []
+    for sid, data in skill_averages.items():
+        avg = sum(data["scores"]) / len(data["scores"])
+        results.append({
+            "skill_id": sid,
+            "skill_name": data["skill_name"],
+            "avg_proficiency": round(avg, 1),
+            "total_assessments_logged": len(data["scores"])
+        })
+
+    return {
+        "institution_id": inst_id,
+        "cohort_student_count": len(student_ids),
+        "anonymization_guarantee_met": True,
+        "aggregated_skills": results
+    }
+

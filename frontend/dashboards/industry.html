@@ -417,7 +417,7 @@
               ${app.status === 'shortlisted' ? `<button class="btn btn-sm btn-primary" onclick="updateCandidateStatus(${app.id}, 'interview')">Interview</button>` : ''}
               ${app.status === 'interview' ? `<button class="btn btn-sm btn-primary" onclick="updateCandidateStatus(${app.id}, 'offered')">Offer</button>` : ''}
               ${(app.status === 'offered' || app.status === 'accepted') ? `<button class="btn btn-sm btn-primary" onclick="certifyInternship(${app.id})">Certify & Feedback</button>` : ''}
-              ${app.status === 'completed' ? `<span class="badge badge-emerald">Completed</span>` : ''}
+              ${app.status === 'completed' ? `<button class="btn btn-sm btn-secondary" onclick="logHireOutcome(${app.id})">📊 Log 3/6-Mo Outcome</button>` : ''}
             </td>
           </tr>
         `).join("");
@@ -506,6 +506,27 @@
     }
     
     function showCreateProgramModal() { alert("Modal UI for creating programs pending implementation"); }
+
+    async function logHireOutcome(appId) {
+      const interval = prompt("Enter evaluation milestone interval (3_month or 6_month):", "3_month");
+      if (!interval) return;
+      const perfStr = prompt("Performance rating (1.0 to 5.0):", "4.5");
+      if (!perfStr) return;
+      const perf = parseFloat(perfStr);
+      const retained = confirm("Is the hired candidate retained at the enterprise?");
+
+      try {
+        await api.post(`/opportunities/applications/${appId}/hire-outcome`, {
+          interval: interval,
+          performance_rating: perf,
+          retained: retained
+        });
+        showToast("Post-hire outcome recorded successfully! Posting Trust Score updated.", "success");
+        loadCandidates();
+      } catch (err) {
+        showToast(err.message, "error");
+      }
+    }
 
     document.addEventListener("DOMContentLoaded", () => {
       loadCompanyProfile();
