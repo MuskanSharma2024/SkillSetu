@@ -43,13 +43,13 @@ function updateNavbarUser() {
 
   if (user && api.isAuthenticated()) {
     const roleColors = {
-      student: "badge-primary",
-      industry: "badge-cyan",
-      academician: "badge-purple",
-      institution_admin: "badge-amber"
+      student: "badge-teal",
+      industry: "badge-clay",
+      academician: "badge-clay",
+      institution_admin: "badge-sage"
     };
 
-    const roleClass = roleColors[user.role] || "badge-primary";
+    const roleClass = roleColors[user.role] || "badge-teal";
     const dashUrl = getRoleDashboardUrl(user.role);
 
     navContainer.innerHTML = `

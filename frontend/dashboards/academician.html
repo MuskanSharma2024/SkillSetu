@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Faculty Portal — SkillSetu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
@@ -11,10 +14,10 @@
   <!-- Navbar -->
   <nav class="navbar">
     <a href="/" class="brand">
-      <div class="brand-icon" style="background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);">🔬</div>
+      <div class="brand-icon">🔬</div>
       <div>
         <span class="brand-name">SkillSetu</span>
-        <span class="brand-badge" style="background: rgba(168, 85, 247, 0.2); color: #c084fc;">Faculty Console</span>
+        <span class="brand-badge">Faculty Console</span>
       </div>
     </a>
     <div class="nav-links">
@@ -47,37 +50,39 @@
       
       <!-- Curriculum Feedback Loop Section (⭐ USP CORE) -->
       <section id="feedback-loop-section">
-        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1.5rem;">
-          <div>
-            <span class="badge badge-purple" style="font-size: 0.8rem; margin-bottom: 0.5rem;">⭐ Primary SIH Differentiator</span>
-            <h2>Curriculum Feedback & Gap Resolution Loop</h2>
-            <p style="color: var(--text-secondary); font-size: 0.9rem;" id="inst-name-header">
-              Live telemetry cross-referencing your student cohort's proficiency gaps against real-time industry demand.
-            </p>
+        <div class="usp-feedback-card" style="margin-bottom: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: start;">
+            <div>
+              <span class="badge badge-clay" style="font-size: 0.8rem; margin-bottom: 0.5rem;">⭐ Primary SIH Differentiator</span>
+              <h2>Curriculum Feedback & Gap Resolution Loop</h2>
+              <p style="color: var(--muted); font-size: 0.9rem;" id="inst-name-header">
+                Live telemetry cross-referencing your student cohort's proficiency gaps against real-time industry demand.
+              </p>
+            </div>
+            <button onclick="loadCurriculumReports()" class="btn btn-secondary btn-sm">
+              ⟳ Refresh Telemetry
+            </button>
           </div>
-          <button onclick="loadCurriculumReports()" class="btn btn-secondary btn-sm">
-            ⟳ Refresh Telemetry
-          </button>
         </div>
 
         <!-- Metric Cards -->
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-bottom: 1.75rem;">
-          <div class="glass-card" style="border-left: 4px solid #f43f5e;">
-            <div style="font-size: 0.85rem; color: var(--text-secondary);">Critical Gaps Detected</div>
-            <div style="font-size: 2.25rem; font-weight: 800; color: #f43f5e; margin: 0.3rem 0;" id="crit-gaps-count">1</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Skills >15% below benchmark</div>
+          <div class="glass-card" style="border-left: 4px solid var(--danger);">
+            <div style="font-size: 0.85rem; color: var(--muted);">Critical Gaps Detected</div>
+            <div style="font-size: 2.25rem; font-weight: 700; color: var(--danger); margin: 0.3rem 0;" id="crit-gaps-count">1</div>
+            <div style="font-size: 0.75rem; color: var(--muted);">Skills >15% below benchmark</div>
           </div>
 
-          <div class="glass-card" style="border-left: 4px solid #06b6d4;">
-            <div style="font-size: 0.85rem; color: var(--text-secondary);">High Industry Demand</div>
-            <div style="font-size: 2.25rem; font-weight: 800; color: #06b6d4; margin: 0.3rem 0;" id="rising-skills-count">3</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Trending across partner postings</div>
+          <div class="glass-card" style="border-left: 4px solid var(--teal);">
+            <div style="font-size: 0.85rem; color: var(--muted);">High Industry Demand</div>
+            <div style="font-size: 2.25rem; font-weight: 700; color: var(--teal); margin: 0.3rem 0;" id="rising-skills-count">3</div>
+            <div style="font-size: 0.75rem; color: var(--muted);">Trending across partner postings</div>
           </div>
 
-          <div class="glass-card" style="border-left: 4px solid #10b981;">
-            <div style="font-size: 0.85rem; color: var(--text-secondary);">Corrective Actions Logged</div>
-            <div style="font-size: 2.25rem; font-weight: 800; color: #10b981; margin: 0.3rem 0;" id="actions-logged-count">1</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Syllabus upgrades committed</div>
+          <div class="glass-card" style="border-left: 4px solid var(--sage);">
+            <div style="font-size: 0.85rem; color: var(--muted);">Corrective Actions Logged</div>
+            <div style="font-size: 2.25rem; font-weight: 700; color: var(--sage); margin: 0.3rem 0;" id="actions-logged-count">1</div>
+            <div style="font-size: 0.75rem; color: var(--muted);">Syllabus upgrades committed</div>
           </div>
         </div>
 
