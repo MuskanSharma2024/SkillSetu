@@ -63,6 +63,7 @@ if FRONTEND_DIR.exists():
     app.mount("/static", StaticFiles(directory=str(FRONTEND_DIR)), name="static")
 
     @app.get("/", include_in_schema=False)
+    @app.get("/index.html", include_in_schema=False)
     def serve_frontend_root():
         index_path = FRONTEND_DIR / "index.html"
         if index_path.exists():
@@ -70,8 +71,11 @@ if FRONTEND_DIR.exists():
         return {"message": "SkillSetu API is running. Frontend index.html not yet created."}
 
     @app.get("/dashboards/{dashboard_name}.html", include_in_schema=False)
+    @app.get("/dashboards/{dashboard_name}", include_in_schema=False)
     def serve_dashboard_page(dashboard_name: str):
-        dash_path = FRONTEND_DIR / "dashboards" / f"{dashboard_name}.html"
+        dash_name = dashboard_name if dashboard_name.endswith(".html") else f"{dashboard_name}.html"
+        dash_path = FRONTEND_DIR / "dashboards" / dash_name
         if dash_path.exists():
             return FileResponse(str(dash_path))
         return FileResponse(str(FRONTEND_DIR / "index.html"))
+
