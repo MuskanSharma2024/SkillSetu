@@ -5,7 +5,8 @@ from app.database import engine, SessionLocal, Base
 from app.models import (
     User, Institution, StudentProfile, Company, AcademicianProfile,
     Skill, Opportunity, OpportunitySkill, SkillProfile, CurriculumGapReport,
-    CurriculumAction, Notification, CareerCluster
+    CurriculumAction, Notification, CareerCluster, LearningProgram,
+    ProgramSkill, Application, ProgramEnrollment
 )
 from app.auth import get_password_hash
 

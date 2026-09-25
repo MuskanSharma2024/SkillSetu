@@ -190,6 +190,8 @@ class AssessmentResult(BaseModel):
     scores_per_skill: Dict[str, float]
     gaps_detected: List[Dict[str, Any]]
     completed_at: datetime.datetime
+    correct_count: Optional[int] = 0
+    incorrect_count: Optional[int] = 0
 
 # --- Student Skill Profile & Gap View ---
 class SkillItemScore(BaseModel):

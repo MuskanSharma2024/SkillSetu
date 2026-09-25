@@ -28,129 +28,16 @@ from app.dependencies import (
 
 router = APIRouter(prefix="/skills", tags=["Skill Engine & Curriculum Feedback Loop"])
 
-# In-memory question bank for Task 2 (Seedable questionnaire)
-ASSESSMENT_QUESTIONS = [
-    {
-        "id": 1,
-        "skill_name": "Python",
-        "question_text": "What is the time complexity of looking up a key in a standard Python dictionary on average?",
-        "category": "technical",
-        "difficulty": "intermediate",
-        "options": [
-            {"id": "A", "text": "O(1)"},
-            {"id": "B", "text": "O(n)"},
-            {"id": "C", "text": "O(log n)"},
-            {"id": "D", "text": "O(n^2)"}
-        ],
-        "correct_option": "A",
-        "points": 25.0
-    },
-    {
-        "id": 2,
-        "skill_name": "Python",
-        "question_text": "Which built-in Python module provides tools for working with asynchronous event loops?",
-        "category": "technical",
-        "difficulty": "intermediate",
-        "options": [
-            {"id": "A", "text": "threading"},
-            {"id": "B", "text": "asyncio"},
-            {"id": "C", "text": "multiprocessing"},
-            {"id": "D", "text": "concurrent"}
-        ],
-        "correct_option": "B",
-        "points": 25.0
-    },
-    {
-        "id": 3,
-        "skill_name": "SQL & Relational Databases",
-        "question_text": "Which SQL clause is used to filter groups of rows after an aggregate function has been applied?",
-        "category": "technical",
-        "difficulty": "intermediate",
-        "options": [
-            {"id": "A", "text": "WHERE"},
-            {"id": "B", "text": "GROUP BY"},
-            {"id": "C", "text": "HAVING"},
-            {"id": "D", "text": "ORDER BY"}
-        ],
-        "correct_option": "C",
-        "points": 25.0
-    },
-    {
-        "id": 4,
-        "skill_name": "Data Structures & Algorithms",
-        "question_text": "Which data structure follows the LIFO (Last In First Out) principle?",
-        "category": "technical",
-        "difficulty": "beginner",
-        "options": [
-            {"id": "A", "text": "Queue"},
-            {"id": "B", "text": "Stack"},
-            {"id": "C", "text": "Heap"},
-            {"id": "D", "text": "Binary Search Tree"}
-        ],
-        "correct_option": "B",
-        "points": 25.0
-    },
-    {
-        "id": 5,
-        "skill_name": "Cloud Computing (AWS/GCP)",
-        "question_text": "Which type of cloud computing service provides virtual machines and raw compute resources without managing physical hardware?",
-        "category": "technical",
-        "difficulty": "intermediate",
-        "options": [
-            {"id": "A", "text": "SaaS (Software as a Service)"},
-            {"id": "B", "text": "IaaS (Infrastructure as a Service)"},
-            {"id": "C", "text": "PaaS (Platform as a Service)"},
-            {"id": "D", "text": "FaaS (Function as a Service)"}
-        ],
-        "correct_option": "B",
-        "points": 25.0
-    },
-    {
-        "id": 6,
-        "skill_name": "Machine Learning & AI",
-        "question_text": "Which optimization technique is commonly used to minimize loss functions in neural networks?",
-        "category": "technical",
-        "difficulty": "intermediate",
-        "options": [
-            {"id": "A", "text": "Gradient Descent"},
-            {"id": "B", "text": "Breadth First Search"},
-            {"id": "C", "text": "K-Means Clustering"},
-            {"id": "D", "text": "Dijkstra's Algorithm"}
-        ],
-        "correct_option": "A",
-        "points": 25.0
-    },
-    {
-        "id": 7,
-        "skill_name": "Problem Solving & Critical Thinking",
-        "question_text": "When approaching an ambiguous system failure, what is the recommended first troubleshooting principle?",
-        "category": "soft",
-        "difficulty": "intermediate",
-        "options": [
-            {"id": "A", "text": "Immediately rewrite the core service"},
-            {"id": "B", "text": "Reproduce the issue and isolate symptoms with telemetry/logs"},
-            {"id": "C", "text": "Restart the production database without investigation"},
-            {"id": "D", "text": "Notify users that service is discontinued"}
-        ],
-        "correct_option": "B",
-        "points": 25.0
-    },
-    {
-        "id": 8,
-        "skill_name": "Team Collaboration & Agile",
-        "question_text": "In Scrum methodology, what is the main purpose of the daily stand-up meeting?",
-        "category": "soft",
-        "difficulty": "beginner",
-        "options": [
-            {"id": "A", "text": "To negotiate employee compensations"},
-            {"id": "B", "text": "Synchronize progress, align on daily sprint goals, and surface blockers"},
-            {"id": "C", "text": "Deliver long technical lectures"},
-            {"id": "D", "text": "Sign customer procurement contracts"}
-        ],
-        "correct_option": "B",
-        "points": 25.0
-    }
-]
+import os
+
+# Load questions from questions_bank.json
+try:
+    with open(os.path.join(os.path.dirname(__file__), '..', 'questions_bank.json'), 'r') as f:
+        ASSESSMENT_QUESTIONS = json.load(f)
+except Exception as e:
+    print("Warning: Could not load questions_bank.json, using fallback. Error:", e)
+    ASSESSMENT_QUESTIONS = []
+
 
 # Task 1: Skill Master List
 @router.get("", response_model=List[SkillResponse])
@@ -163,15 +50,21 @@ def list_skills(category: str = None, db: Session = Depends(get_db)):
 
 # Task 2: Skill Assessment Questionnaire
 @router.get("/questionnaire", response_model=List[AssessmentQuestion])
-def get_assessment_questions(db: Session = Depends(get_db)):
+def get_assessment_questions(skill_id: int = None, db: Session = Depends(get_db)):
     """Provides the questionnaire items for student skill assessment."""
     skills_map = {s.name: s.id for s in db.query(Skill).all()}
+    
     questions = []
     for q in ASSESSMENT_QUESTIONS:
-        skill_id = skills_map.get(q["skill_name"], 1)
+        q_skill_id = skills_map.get(q["skill_name"], 1)
+        
+        # Filter by skill_id if provided
+        if skill_id is not None and q_skill_id != skill_id:
+            continue
+            
         questions.append(AssessmentQuestion(
             id=q["id"],
-            skill_id=skill_id,
+            skill_id=q_skill_id,
             skill_name=q["skill_name"],
             question_text=q["question_text"],
             category=q["category"],
@@ -209,6 +102,9 @@ def submit_skill_assessment(
     skill_scores: Dict[str, float] = {}
     skill_counts: Dict[str, int] = {}
     total_time_spent = 0.0
+    
+    correct_count = 0
+    incorrect_count = 0
 
     for ans in submission.answers:
         q = q_lookup.get(ans.question_id)
@@ -216,6 +112,11 @@ def submit_skill_assessment(
             continue
         skill_name = q["skill_name"]
         is_correct = (ans.selected_option.upper() == q["correct_option"].upper())
+        if is_correct:
+            correct_count += 1
+        else:
+            incorrect_count += 1
+            
         score_add = 85.0 if is_correct else 35.0  # Base realistic proficiency calculation
 
         if skill_name not in skill_scores:
@@ -341,7 +242,9 @@ def submit_skill_assessment(
         user_id=current_user.id,
         scores_per_skill=computed_scores,
         gaps_detected=gaps_detected,
-        completed_at=assessment_record.completed_at
+        completed_at=assessment_record.completed_at,
+        correct_count=correct_count,
+        incorrect_count=incorrect_count
     )
 
 # Task 5: Skill Profile View
