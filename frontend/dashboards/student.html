@@ -331,22 +331,70 @@
   <!-- Assessment Modal -->
   <div class="modal-overlay" id="assessment-modal">
     <div class="modal-card" style="max-width: 650px;">
-      <div class="modal-header">
-        <div>
-          <h3>Diagnostic Skill Assessment</h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">Answer questions to benchmark your proficiencies.</p>
+      
+      <!-- Selection Screen -->
+      <div id="assessment-select-screen">
+        <div class="modal-header">
+          <h3>Select Skill for Assessment</h3>
+          <button class="close-btn" onclick="closeAssessmentModal()">&times;</button>
         </div>
-        <button class="close-btn" onclick="closeAssessmentModal()">&times;</button>
+        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;">Choose a skill to test your proficiency. You will be asked 15 multiple-choice questions.</p>
+        <div id="assessment-skills-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-height: 50vh; overflow-y: auto; padding-right: 0.5rem; margin-bottom: 1.5rem;">
+          <!-- Populated dynamically -->
+        </div>
+        <div style="text-align: right;">
+          <button class="btn btn-primary" id="btn-start-assessment" disabled onclick="initializeAssessment()">Start Assessment</button>
+        </div>
       </div>
 
-      <form id="assessment-form" onsubmit="submitAssessmentForm(event)">
-        <div id="questions-container" style="display: flex; flex-direction: column; gap: 1.5rem; max-height: 60vh; overflow-y: auto; padding-right: 0.5rem;">
-          Loading questions...
+      <!-- Test Screen -->
+      <div id="assessment-test-screen" style="display: none;">
+        <div class="modal-header">
+          <div style="width: 100%; display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+              <h3 id="assessment-test-title">Skill Assessment</h3>
+              <p id="assessment-question-counter" style="font-size: 0.85rem; color: var(--text-muted);">Question 1 of 15</p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+              <div id="assessment-timer-display" style="font-size: 1.25rem; font-weight: 700; color: #ef4444; font-family: monospace; background: rgba(239, 68, 68, 0.1); padding: 0.25rem 0.75rem; border-radius: var(--radius-md);">
+                ⏱️ 15:00
+              </div>
+              <button class="close-btn" onclick="closeAssessmentModal()">&times;</button>
+            </div>
+          </div>
         </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;">
-          Submit & Calculate Skill Profile
-        </button>
-      </form>
+        
+        <div id="assessment-question-container" style="margin: 1.5rem 0;">
+          <!-- Current Question goes here -->
+        </div>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+          <button class="btn btn-secondary" id="btn-prev-question" onclick="prevQuestion()">Previous</button>
+          
+          <div id="assessment-dots" style="display: flex; gap: 0.35rem;">
+            <!-- Dots for navigation -->
+          </div>
+          
+          <button class="btn btn-primary" id="btn-next-question" onclick="nextQuestion()">Next</button>
+          <button class="btn btn-accent" id="btn-submit-assessment" onclick="submitAssessmentFlow()" style="display: none;">Submit Assessment</button>
+        </div>
+      </div>
+
+      <!-- Result Screen -->
+      <div id="assessment-result-screen" style="display: none;">
+        <div class="modal-header">
+          <h3>Assessment Results</h3>
+          <button class="close-btn" onclick="closeAssessmentModal()">&times;</button>
+        </div>
+        <div id="assessment-result-content" style="text-align: center; padding: 1.5rem 0;">
+          <!-- Results go here -->
+        </div>
+        <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem;">
+          <button class="btn btn-secondary" onclick="resetAssessmentModal()">Select Another Skill</button>
+          <button class="btn btn-primary" onclick="retakeAssessment()">Retake This Skill</button>
+        </div>
+      </div>
+      
     </div>
   </div>
 
@@ -569,52 +617,198 @@
       }
     }
 
+    let assessmentTimerInterval;
+    let currentAssessmentState = {
+      skills: [],
+      selectedSkill: null,
+      questions: [],
+      answers: {},
+      currentIndex: 0,
+      timeRemaining: 15 * 60
+    };
+
     async function startAssessmentModal() {
       try {
-        const questions = await api.get("/skills/questionnaire");
-        const container = document.getElementById("questions-container");
-        container.innerHTML = questions.map((q, idx) => `
-          <div style="background: rgba(30, 41, 59, 0.4); padding: 1.2rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-              <span class="badge badge-primary">${q.skill_name}</span>
-              <span style="font-size: 0.75rem; color: var(--text-muted);">Q${idx + 1} • ${q.difficulty.toUpperCase()}</span>
-            </div>
-            <p style="font-weight: 500; font-size: 0.95rem; margin-bottom: 0.75rem;">${q.question_text}</p>
-            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-              ${q.options.map(opt => `
-                <label style="display: flex; align-items: center; gap: 0.6rem; cursor: pointer; font-size: 0.9rem;">
-                  <input type="radio" name="question_${q.id}" value="${opt.id}" data-skill-id="${q.skill_id}" required>
-                  <span><strong>${opt.id})</strong> ${opt.text}</span>
-                </label>
-              `).join('')}
-            </div>
-          </div>
-        `).join("");
-
+        const data = await api.get("/skills/profile/me");
+        currentAssessmentState.skills = data.all_skills;
+        
+        const listContainer = document.getElementById("assessment-skills-list");
+        if (currentAssessmentState.skills.length === 0) {
+           listContainer.innerHTML = "<p>No skills available to assess.</p>";
+        } else {
+           listContainer.innerHTML = currentAssessmentState.skills.map(s => `
+             <div class="glass-card skill-select-card" style="cursor:pointer; transition: all 0.2s;" onclick="selectSkillForAssessment('${s.skill_name}', ${s.skill_id || 0}, this)">
+               <h4 style="margin: 0; color: #a5b4fc;">${s.skill_name}</h4>
+               <span class="badge badge-primary" style="margin-top: 0.5rem; display: inline-block;">${s.category}</span>
+             </div>
+           `).join("");
+        }
+        
+        document.getElementById("assessment-select-screen").style.display = "block";
+        document.getElementById("assessment-test-screen").style.display = "none";
+        document.getElementById("assessment-result-screen").style.display = "none";
+        document.getElementById("btn-start-assessment").disabled = true;
+        
         document.getElementById("assessment-modal").classList.add("active");
       } catch (err) {
-        showToast("Error loading questionnaire: " + err.message, "error");
+        showToast("Error loading skills: " + err.message, "error");
       }
     }
 
+    function selectSkillForAssessment(skillName, skillId, cardElement) {
+      currentAssessmentState.selectedSkill = { name: skillName, id: skillId };
+      document.querySelectorAll(".skill-select-card").forEach(c => c.style.border = "1px solid var(--border-color)");
+      cardElement.style.border = "2px solid #818cf8";
+      document.getElementById("btn-start-assessment").disabled = false;
+    }
+
+    async function initializeAssessment() {
+      if (!currentAssessmentState.selectedSkill) return;
+      try {
+        let questions = await api.get(`/skills/questionnaire?skill_id=${currentAssessmentState.selectedSkill.id}`);
+        questions = questions.filter(q => q.skill_name === currentAssessmentState.selectedSkill.name);
+        
+        if (questions.length > 15) questions = questions.slice(0, 15);
+        if (questions.length === 0) {
+            showToast("No questions available for this skill.", "warning");
+            return;
+        }
+
+        currentAssessmentState.questions = questions;
+        currentAssessmentState.answers = {};
+        currentAssessmentState.currentIndex = 0;
+        currentAssessmentState.timeRemaining = questions.length * 60; // 1 min per Q
+        
+        document.getElementById("assessment-select-screen").style.display = "none";
+        document.getElementById("assessment-test-screen").style.display = "block";
+        document.getElementById("assessment-test-title").innerText = `${currentAssessmentState.selectedSkill.name} Assessment`;
+        
+        renderCurrentQuestion();
+        startTimer();
+      } catch (err) {
+        showToast("Error starting assessment: " + err.message, "error");
+      }
+    }
+
+    function renderCurrentQuestion() {
+      const idx = currentAssessmentState.currentIndex;
+      const q = currentAssessmentState.questions[idx];
+      const total = currentAssessmentState.questions.length;
+      
+      document.getElementById("assessment-question-counter").innerText = `Question ${idx + 1} of ${total}`;
+      
+      const savedAnswer = currentAssessmentState.answers[idx];
+      
+      document.getElementById("assessment-question-container").innerHTML = `
+        <div style="background: rgba(30, 41, 59, 0.4); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+            <span class="badge badge-primary">${q.skill_name}</span>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">${q.difficulty.toUpperCase()}</span>
+          </div>
+          <p style="font-weight: 500; font-size: 1.05rem; margin-bottom: 1.25rem;">${q.question_text}</p>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            ${q.options.map(opt => `
+              <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer; font-size: 0.95rem; padding: 0.5rem; border-radius: 4px; background: rgba(15, 23, 42, 0.5);">
+                <input type="radio" name="current_q" value="${opt.id}" onchange="saveAnswer(${idx}, '${opt.id}')" ${savedAnswer === opt.id ? 'checked' : ''}>
+                <span><strong>${opt.id})</strong> ${opt.text}</span>
+              </label>
+            `).join('')}
+          </div>
+        </div>
+      `;
+      
+      document.getElementById("btn-prev-question").disabled = (idx === 0);
+      
+      if (idx === total - 1) {
+          document.getElementById("btn-next-question").style.display = "none";
+          document.getElementById("btn-submit-assessment").style.display = "inline-block";
+      } else {
+          document.getElementById("btn-next-question").style.display = "inline-block";
+          document.getElementById("btn-submit-assessment").style.display = "none";
+      }
+      
+      renderDots();
+    }
+    
+    function saveAnswer(qIdx, val) {
+       currentAssessmentState.answers[qIdx] = val;
+       renderDots();
+    }
+
+    function prevQuestion() {
+      if (currentAssessmentState.currentIndex > 0) {
+        currentAssessmentState.currentIndex--;
+        renderCurrentQuestion();
+      }
+    }
+
+    function nextQuestion() {
+      if (currentAssessmentState.currentIndex < currentAssessmentState.questions.length - 1) {
+        currentAssessmentState.currentIndex++;
+        renderCurrentQuestion();
+      }
+    }
+    
+    function renderDots() {
+       const dotsContainer = document.getElementById("assessment-dots");
+       dotsContainer.innerHTML = currentAssessmentState.questions.map((_, i) => {
+         const answered = !!currentAssessmentState.answers[i];
+         const isCurrent = i === currentAssessmentState.currentIndex;
+         let bgColor = "var(--border-color)";
+         if (isCurrent) bgColor = "#818cf8";
+         else if (answered) bgColor = "#34d399";
+         
+         return `<div style="width: 10px; height: 10px; border-radius: 50%; background: ${bgColor}; cursor: pointer;" onclick="jumpToQuestion(${i})"></div>`;
+       }).join('');
+    }
+    
+    function jumpToQuestion(idx) {
+       currentAssessmentState.currentIndex = idx;
+       renderCurrentQuestion();
+    }
+
+    function startTimer() {
+        clearInterval(assessmentTimerInterval);
+        const timerDisplay = document.getElementById("assessment-timer-display");
+        
+        const updateTimerDisplay = () => {
+          const m = Math.floor(currentAssessmentState.timeRemaining / 60).toString().padStart(2, '0');
+          const s = (currentAssessmentState.timeRemaining % 60).toString().padStart(2, '0');
+          if (timerDisplay) timerDisplay.innerText = `⏱️ ${m}:${s}`;
+        };
+        updateTimerDisplay();
+
+        assessmentTimerInterval = setInterval(() => {
+          currentAssessmentState.timeRemaining--;
+          updateTimerDisplay();
+          
+          if (currentAssessmentState.timeRemaining <= 0) {
+            clearInterval(assessmentTimerInterval);
+            timerDisplay.innerText = "⏱️ Time's Up!";
+            showToast("Time is up! Auto-submitting your assessment...", "warning");
+            submitAssessmentFlow();
+          }
+        }, 1000);
+    }
+
     function closeAssessmentModal() {
+      clearInterval(assessmentTimerInterval);
       document.getElementById("assessment-modal").classList.remove("active");
     }
 
-    async function submitAssessmentForm(e) {
-      e.preventDefault();
-      const form = e.target;
-      const inputs = form.querySelectorAll("input[type='radio']:checked");
+    async function submitAssessmentFlow() {
+      clearInterval(assessmentTimerInterval);
       const answers = [];
-
-      inputs.forEach(input => {
-        const qId = parseInt(input.name.replace("question_", ""));
-        const sId = parseInt(input.getAttribute("data-skill-id"));
-        answers.push({
-          question_id: qId,
-          skill_id: sId,
-          selected_option: input.value
-        });
+      
+      currentAssessmentState.questions.forEach((q, idx) => {
+         const selected = currentAssessmentState.answers[idx];
+         if (selected) {
+             answers.push({
+                 question_id: q.id,
+                 skill_id: q.skill_id,
+                 selected_option: selected
+             });
+         }
       });
 
       try {
@@ -623,13 +817,54 @@
           assessment_type: "diagnostic",
           answers: answers
         });
-
+        
         showToast("Skill profile computed successfully!", "success");
-        closeAssessmentModal();
         loadSkillProfile();
+        
+        const total = currentAssessmentState.questions.length;
+        const answeredCount = Object.keys(currentAssessmentState.answers).length;
+        const unanswered = total - answeredCount;
+        
+        const scoreUpdate = res.skill_scores.find(s => s.skill_id === currentAssessmentState.selectedSkill.id) || { proficiency_score: 'Updated' };
+        
+        document.getElementById("assessment-test-screen").style.display = "none";
+        document.getElementById("assessment-result-screen").style.display = "block";
+        
+        const timeTaken = (currentAssessmentState.questions.length * 60) - currentAssessmentState.timeRemaining;
+        const timeTakenM = Math.floor(timeTaken / 60);
+        const timeTakenS = timeTaken % 60;
+        
+        document.getElementById("assessment-result-content").innerHTML = `
+           <h2 style="color: #818cf8; margin-bottom: 0.5rem; font-size: 3rem;">${scoreUpdate.proficiency_score}%</h2>
+           <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Proficiency Score for ${currentAssessmentState.selectedSkill.name}</p>
+           
+           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; text-align: left;">
+              <div class="glass-card" style="padding: 1rem;">
+                 <div style="font-size: 0.8rem; color: var(--text-muted);">Answered Questions</div>
+                 <div style="font-size: 1.2rem; font-weight: 600;">${answeredCount} / ${total}</div>
+              </div>
+              <div class="glass-card" style="padding: 1rem;">
+                 <div style="font-size: 0.8rem; color: var(--text-muted);">Unanswered Questions</div>
+                 <div style="font-size: 1.2rem; font-weight: 600;">${unanswered}</div>
+              </div>
+              <div class="glass-card" style="padding: 1rem; grid-column: span 2;">
+                 <div style="font-size: 0.8rem; color: var(--text-muted);">Time Taken</div>
+                 <div style="font-size: 1.2rem; font-weight: 600;">${timeTakenM}m ${timeTakenS}s</div>
+              </div>
+           </div>
+        `;
+        
       } catch (err) {
         showToast("Assessment submission failed: " + err.message, "error");
       }
+    }
+
+    function resetAssessmentModal() {
+       startAssessmentModal();
+    }
+    
+    function retakeAssessment() {
+       initializeAssessment();
     }
 
     async function applyForOpportunity(oppId) {

@@ -1,0 +1,4862 @@
+[
+    {
+        "id": 1,
+        "skill_name": "Python",
+        "question_text": "Question 1 assessing knowledge in Python. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 2,
+        "skill_name": "Python",
+        "question_text": "Question 2 assessing knowledge in Python. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 3,
+        "skill_name": "Python",
+        "question_text": "Question 3 assessing knowledge in Python. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 4,
+        "skill_name": "Python",
+        "question_text": "Question 4 assessing knowledge in Python. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 5,
+        "skill_name": "Python",
+        "question_text": "Question 5 assessing knowledge in Python. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 6,
+        "skill_name": "Python",
+        "question_text": "Question 6 assessing knowledge in Python. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 7,
+        "skill_name": "Python",
+        "question_text": "Question 7 assessing knowledge in Python. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 8,
+        "skill_name": "Python",
+        "question_text": "Question 8 assessing knowledge in Python. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 9,
+        "skill_name": "Python",
+        "question_text": "Question 9 assessing knowledge in Python. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 10,
+        "skill_name": "Python",
+        "question_text": "Question 10 assessing knowledge in Python. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 11,
+        "skill_name": "Python",
+        "question_text": "Question 11 assessing knowledge in Python. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 12,
+        "skill_name": "Python",
+        "question_text": "Question 12 assessing knowledge in Python. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 13,
+        "skill_name": "Python",
+        "question_text": "Question 13 assessing knowledge in Python. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 14,
+        "skill_name": "Python",
+        "question_text": "Question 14 assessing knowledge in Python. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 15,
+        "skill_name": "Python",
+        "question_text": "Question 15 assessing knowledge in Python. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 16,
+        "skill_name": "SQL & Relational Databases",
+        "question_text": "Question 1 assessing knowledge in SQL & Relational Databases. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 17,
+        "skill_name": "SQL & Relational Databases",
+        "question_text": "Question 2 assessing knowledge in SQL & Relational Databases. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 18,
+        "skill_name": "SQL & Relational Databases",
+        "question_text": "Question 3 assessing knowledge in SQL & Relational Databases. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 19,
+        "skill_name": "SQL & Relational Databases",
+        "question_text": "Question 4 assessing knowledge in SQL & Relational Databases. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 20,
+        "skill_name": "SQL & Relational Databases",
+        "question_text": "Question 5 assessing knowledge in SQL & Relational Databases. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 21,
+        "skill_name": "SQL & Relational Databases",
+        "question_text": "Question 6 assessing knowledge in SQL & Relational Databases. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 22,
+        "skill_name": "SQL & Relational Databases",
+        "question_text": "Question 7 assessing knowledge in SQL & Relational Databases. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 23,
+        "skill_name": "SQL & Relational Databases",
+        "question_text": "Question 8 assessing knowledge in SQL & Relational Databases. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 24,
+        "skill_name": "SQL & Relational Databases",
+        "question_text": "Question 9 assessing knowledge in SQL & Relational Databases. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 25,
+        "skill_name": "SQL & Relational Databases",
+        "question_text": "Question 10 assessing knowledge in SQL & Relational Databases. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 26,
+        "skill_name": "SQL & Relational Databases",
+        "question_text": "Question 11 assessing knowledge in SQL & Relational Databases. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 27,
+        "skill_name": "SQL & Relational Databases",
+        "question_text": "Question 12 assessing knowledge in SQL & Relational Databases. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 28,
+        "skill_name": "SQL & Relational Databases",
+        "question_text": "Question 13 assessing knowledge in SQL & Relational Databases. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 29,
+        "skill_name": "SQL & Relational Databases",
+        "question_text": "Question 14 assessing knowledge in SQL & Relational Databases. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 30,
+        "skill_name": "SQL & Relational Databases",
+        "question_text": "Question 15 assessing knowledge in SQL & Relational Databases. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 31,
+        "skill_name": "Data Structures & Algorithms",
+        "question_text": "Question 1 assessing knowledge in Data Structures & Algorithms. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 32,
+        "skill_name": "Data Structures & Algorithms",
+        "question_text": "Question 2 assessing knowledge in Data Structures & Algorithms. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 33,
+        "skill_name": "Data Structures & Algorithms",
+        "question_text": "Question 3 assessing knowledge in Data Structures & Algorithms. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 34,
+        "skill_name": "Data Structures & Algorithms",
+        "question_text": "Question 4 assessing knowledge in Data Structures & Algorithms. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 35,
+        "skill_name": "Data Structures & Algorithms",
+        "question_text": "Question 5 assessing knowledge in Data Structures & Algorithms. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 36,
+        "skill_name": "Data Structures & Algorithms",
+        "question_text": "Question 6 assessing knowledge in Data Structures & Algorithms. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 37,
+        "skill_name": "Data Structures & Algorithms",
+        "question_text": "Question 7 assessing knowledge in Data Structures & Algorithms. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 38,
+        "skill_name": "Data Structures & Algorithms",
+        "question_text": "Question 8 assessing knowledge in Data Structures & Algorithms. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 39,
+        "skill_name": "Data Structures & Algorithms",
+        "question_text": "Question 9 assessing knowledge in Data Structures & Algorithms. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 40,
+        "skill_name": "Data Structures & Algorithms",
+        "question_text": "Question 10 assessing knowledge in Data Structures & Algorithms. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 41,
+        "skill_name": "Data Structures & Algorithms",
+        "question_text": "Question 11 assessing knowledge in Data Structures & Algorithms. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 42,
+        "skill_name": "Data Structures & Algorithms",
+        "question_text": "Question 12 assessing knowledge in Data Structures & Algorithms. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 43,
+        "skill_name": "Data Structures & Algorithms",
+        "question_text": "Question 13 assessing knowledge in Data Structures & Algorithms. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 44,
+        "skill_name": "Data Structures & Algorithms",
+        "question_text": "Question 14 assessing knowledge in Data Structures & Algorithms. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 45,
+        "skill_name": "Data Structures & Algorithms",
+        "question_text": "Question 15 assessing knowledge in Data Structures & Algorithms. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 46,
+        "skill_name": "Cloud Computing (AWS/GCP)",
+        "question_text": "Question 1 assessing knowledge in Cloud Computing (AWS/GCP). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 47,
+        "skill_name": "Cloud Computing (AWS/GCP)",
+        "question_text": "Question 2 assessing knowledge in Cloud Computing (AWS/GCP). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 48,
+        "skill_name": "Cloud Computing (AWS/GCP)",
+        "question_text": "Question 3 assessing knowledge in Cloud Computing (AWS/GCP). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 49,
+        "skill_name": "Cloud Computing (AWS/GCP)",
+        "question_text": "Question 4 assessing knowledge in Cloud Computing (AWS/GCP). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 50,
+        "skill_name": "Cloud Computing (AWS/GCP)",
+        "question_text": "Question 5 assessing knowledge in Cloud Computing (AWS/GCP). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 51,
+        "skill_name": "Cloud Computing (AWS/GCP)",
+        "question_text": "Question 6 assessing knowledge in Cloud Computing (AWS/GCP). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 52,
+        "skill_name": "Cloud Computing (AWS/GCP)",
+        "question_text": "Question 7 assessing knowledge in Cloud Computing (AWS/GCP). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 53,
+        "skill_name": "Cloud Computing (AWS/GCP)",
+        "question_text": "Question 8 assessing knowledge in Cloud Computing (AWS/GCP). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 54,
+        "skill_name": "Cloud Computing (AWS/GCP)",
+        "question_text": "Question 9 assessing knowledge in Cloud Computing (AWS/GCP). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 55,
+        "skill_name": "Cloud Computing (AWS/GCP)",
+        "question_text": "Question 10 assessing knowledge in Cloud Computing (AWS/GCP). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 56,
+        "skill_name": "Cloud Computing (AWS/GCP)",
+        "question_text": "Question 11 assessing knowledge in Cloud Computing (AWS/GCP). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 57,
+        "skill_name": "Cloud Computing (AWS/GCP)",
+        "question_text": "Question 12 assessing knowledge in Cloud Computing (AWS/GCP). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 58,
+        "skill_name": "Cloud Computing (AWS/GCP)",
+        "question_text": "Question 13 assessing knowledge in Cloud Computing (AWS/GCP). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 59,
+        "skill_name": "Cloud Computing (AWS/GCP)",
+        "question_text": "Question 14 assessing knowledge in Cloud Computing (AWS/GCP). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 60,
+        "skill_name": "Cloud Computing (AWS/GCP)",
+        "question_text": "Question 15 assessing knowledge in Cloud Computing (AWS/GCP). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 61,
+        "skill_name": "Machine Learning & AI",
+        "question_text": "Question 1 assessing knowledge in Machine Learning & AI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 62,
+        "skill_name": "Machine Learning & AI",
+        "question_text": "Question 2 assessing knowledge in Machine Learning & AI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 63,
+        "skill_name": "Machine Learning & AI",
+        "question_text": "Question 3 assessing knowledge in Machine Learning & AI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 64,
+        "skill_name": "Machine Learning & AI",
+        "question_text": "Question 4 assessing knowledge in Machine Learning & AI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 65,
+        "skill_name": "Machine Learning & AI",
+        "question_text": "Question 5 assessing knowledge in Machine Learning & AI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 66,
+        "skill_name": "Machine Learning & AI",
+        "question_text": "Question 6 assessing knowledge in Machine Learning & AI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 67,
+        "skill_name": "Machine Learning & AI",
+        "question_text": "Question 7 assessing knowledge in Machine Learning & AI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 68,
+        "skill_name": "Machine Learning & AI",
+        "question_text": "Question 8 assessing knowledge in Machine Learning & AI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 69,
+        "skill_name": "Machine Learning & AI",
+        "question_text": "Question 9 assessing knowledge in Machine Learning & AI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 70,
+        "skill_name": "Machine Learning & AI",
+        "question_text": "Question 10 assessing knowledge in Machine Learning & AI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 71,
+        "skill_name": "Machine Learning & AI",
+        "question_text": "Question 11 assessing knowledge in Machine Learning & AI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 72,
+        "skill_name": "Machine Learning & AI",
+        "question_text": "Question 12 assessing knowledge in Machine Learning & AI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 73,
+        "skill_name": "Machine Learning & AI",
+        "question_text": "Question 13 assessing knowledge in Machine Learning & AI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 74,
+        "skill_name": "Machine Learning & AI",
+        "question_text": "Question 14 assessing knowledge in Machine Learning & AI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 75,
+        "skill_name": "Machine Learning & AI",
+        "question_text": "Question 15 assessing knowledge in Machine Learning & AI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 76,
+        "skill_name": "REST API Design & FastAPI",
+        "question_text": "Question 1 assessing knowledge in REST API Design & FastAPI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 77,
+        "skill_name": "REST API Design & FastAPI",
+        "question_text": "Question 2 assessing knowledge in REST API Design & FastAPI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 78,
+        "skill_name": "REST API Design & FastAPI",
+        "question_text": "Question 3 assessing knowledge in REST API Design & FastAPI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 79,
+        "skill_name": "REST API Design & FastAPI",
+        "question_text": "Question 4 assessing knowledge in REST API Design & FastAPI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 80,
+        "skill_name": "REST API Design & FastAPI",
+        "question_text": "Question 5 assessing knowledge in REST API Design & FastAPI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 81,
+        "skill_name": "REST API Design & FastAPI",
+        "question_text": "Question 6 assessing knowledge in REST API Design & FastAPI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 82,
+        "skill_name": "REST API Design & FastAPI",
+        "question_text": "Question 7 assessing knowledge in REST API Design & FastAPI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 83,
+        "skill_name": "REST API Design & FastAPI",
+        "question_text": "Question 8 assessing knowledge in REST API Design & FastAPI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 84,
+        "skill_name": "REST API Design & FastAPI",
+        "question_text": "Question 9 assessing knowledge in REST API Design & FastAPI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 85,
+        "skill_name": "REST API Design & FastAPI",
+        "question_text": "Question 10 assessing knowledge in REST API Design & FastAPI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 86,
+        "skill_name": "REST API Design & FastAPI",
+        "question_text": "Question 11 assessing knowledge in REST API Design & FastAPI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 87,
+        "skill_name": "REST API Design & FastAPI",
+        "question_text": "Question 12 assessing knowledge in REST API Design & FastAPI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 88,
+        "skill_name": "REST API Design & FastAPI",
+        "question_text": "Question 13 assessing knowledge in REST API Design & FastAPI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 89,
+        "skill_name": "REST API Design & FastAPI",
+        "question_text": "Question 14 assessing knowledge in REST API Design & FastAPI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 90,
+        "skill_name": "REST API Design & FastAPI",
+        "question_text": "Question 15 assessing knowledge in REST API Design & FastAPI. Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 91,
+        "skill_name": "Web Frontend (HTML/CSS/JS)",
+        "question_text": "Question 1 assessing knowledge in Web Frontend (HTML/CSS/JS). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 92,
+        "skill_name": "Web Frontend (HTML/CSS/JS)",
+        "question_text": "Question 2 assessing knowledge in Web Frontend (HTML/CSS/JS). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 93,
+        "skill_name": "Web Frontend (HTML/CSS/JS)",
+        "question_text": "Question 3 assessing knowledge in Web Frontend (HTML/CSS/JS). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 94,
+        "skill_name": "Web Frontend (HTML/CSS/JS)",
+        "question_text": "Question 4 assessing knowledge in Web Frontend (HTML/CSS/JS). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 95,
+        "skill_name": "Web Frontend (HTML/CSS/JS)",
+        "question_text": "Question 5 assessing knowledge in Web Frontend (HTML/CSS/JS). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 96,
+        "skill_name": "Web Frontend (HTML/CSS/JS)",
+        "question_text": "Question 6 assessing knowledge in Web Frontend (HTML/CSS/JS). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 97,
+        "skill_name": "Web Frontend (HTML/CSS/JS)",
+        "question_text": "Question 7 assessing knowledge in Web Frontend (HTML/CSS/JS). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 98,
+        "skill_name": "Web Frontend (HTML/CSS/JS)",
+        "question_text": "Question 8 assessing knowledge in Web Frontend (HTML/CSS/JS). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 99,
+        "skill_name": "Web Frontend (HTML/CSS/JS)",
+        "question_text": "Question 9 assessing knowledge in Web Frontend (HTML/CSS/JS). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 100,
+        "skill_name": "Web Frontend (HTML/CSS/JS)",
+        "question_text": "Question 10 assessing knowledge in Web Frontend (HTML/CSS/JS). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 101,
+        "skill_name": "Web Frontend (HTML/CSS/JS)",
+        "question_text": "Question 11 assessing knowledge in Web Frontend (HTML/CSS/JS). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 102,
+        "skill_name": "Web Frontend (HTML/CSS/JS)",
+        "question_text": "Question 12 assessing knowledge in Web Frontend (HTML/CSS/JS). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 103,
+        "skill_name": "Web Frontend (HTML/CSS/JS)",
+        "question_text": "Question 13 assessing knowledge in Web Frontend (HTML/CSS/JS). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 104,
+        "skill_name": "Web Frontend (HTML/CSS/JS)",
+        "question_text": "Question 14 assessing knowledge in Web Frontend (HTML/CSS/JS). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 105,
+        "skill_name": "Web Frontend (HTML/CSS/JS)",
+        "question_text": "Question 15 assessing knowledge in Web Frontend (HTML/CSS/JS). Which of the following is correct?",
+        "category": "technical",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 106,
+        "skill_name": "Git & CI/CD Pipelines",
+        "question_text": "Question 1 assessing knowledge in Git & CI/CD Pipelines. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 107,
+        "skill_name": "Git & CI/CD Pipelines",
+        "question_text": "Question 2 assessing knowledge in Git & CI/CD Pipelines. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 108,
+        "skill_name": "Git & CI/CD Pipelines",
+        "question_text": "Question 3 assessing knowledge in Git & CI/CD Pipelines. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 109,
+        "skill_name": "Git & CI/CD Pipelines",
+        "question_text": "Question 4 assessing knowledge in Git & CI/CD Pipelines. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 110,
+        "skill_name": "Git & CI/CD Pipelines",
+        "question_text": "Question 5 assessing knowledge in Git & CI/CD Pipelines. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 111,
+        "skill_name": "Git & CI/CD Pipelines",
+        "question_text": "Question 6 assessing knowledge in Git & CI/CD Pipelines. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 112,
+        "skill_name": "Git & CI/CD Pipelines",
+        "question_text": "Question 7 assessing knowledge in Git & CI/CD Pipelines. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 113,
+        "skill_name": "Git & CI/CD Pipelines",
+        "question_text": "Question 8 assessing knowledge in Git & CI/CD Pipelines. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 114,
+        "skill_name": "Git & CI/CD Pipelines",
+        "question_text": "Question 9 assessing knowledge in Git & CI/CD Pipelines. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 115,
+        "skill_name": "Git & CI/CD Pipelines",
+        "question_text": "Question 10 assessing knowledge in Git & CI/CD Pipelines. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 116,
+        "skill_name": "Git & CI/CD Pipelines",
+        "question_text": "Question 11 assessing knowledge in Git & CI/CD Pipelines. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 117,
+        "skill_name": "Git & CI/CD Pipelines",
+        "question_text": "Question 12 assessing knowledge in Git & CI/CD Pipelines. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 118,
+        "skill_name": "Git & CI/CD Pipelines",
+        "question_text": "Question 13 assessing knowledge in Git & CI/CD Pipelines. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 119,
+        "skill_name": "Git & CI/CD Pipelines",
+        "question_text": "Question 14 assessing knowledge in Git & CI/CD Pipelines. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 120,
+        "skill_name": "Git & CI/CD Pipelines",
+        "question_text": "Question 15 assessing knowledge in Git & CI/CD Pipelines. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 121,
+        "skill_name": "Docker & Containers",
+        "question_text": "Question 1 assessing knowledge in Docker & Containers. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 122,
+        "skill_name": "Docker & Containers",
+        "question_text": "Question 2 assessing knowledge in Docker & Containers. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 123,
+        "skill_name": "Docker & Containers",
+        "question_text": "Question 3 assessing knowledge in Docker & Containers. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 124,
+        "skill_name": "Docker & Containers",
+        "question_text": "Question 4 assessing knowledge in Docker & Containers. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 125,
+        "skill_name": "Docker & Containers",
+        "question_text": "Question 5 assessing knowledge in Docker & Containers. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 126,
+        "skill_name": "Docker & Containers",
+        "question_text": "Question 6 assessing knowledge in Docker & Containers. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 127,
+        "skill_name": "Docker & Containers",
+        "question_text": "Question 7 assessing knowledge in Docker & Containers. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 128,
+        "skill_name": "Docker & Containers",
+        "question_text": "Question 8 assessing knowledge in Docker & Containers. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 129,
+        "skill_name": "Docker & Containers",
+        "question_text": "Question 9 assessing knowledge in Docker & Containers. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 130,
+        "skill_name": "Docker & Containers",
+        "question_text": "Question 10 assessing knowledge in Docker & Containers. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 131,
+        "skill_name": "Docker & Containers",
+        "question_text": "Question 11 assessing knowledge in Docker & Containers. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 132,
+        "skill_name": "Docker & Containers",
+        "question_text": "Question 12 assessing knowledge in Docker & Containers. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 133,
+        "skill_name": "Docker & Containers",
+        "question_text": "Question 13 assessing knowledge in Docker & Containers. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 134,
+        "skill_name": "Docker & Containers",
+        "question_text": "Question 14 assessing knowledge in Docker & Containers. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 135,
+        "skill_name": "Docker & Containers",
+        "question_text": "Question 15 assessing knowledge in Docker & Containers. Which of the following is correct?",
+        "category": "tools",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 136,
+        "skill_name": "Problem Solving & Critical Thinking",
+        "question_text": "Question 1 assessing knowledge in Problem Solving & Critical Thinking. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 137,
+        "skill_name": "Problem Solving & Critical Thinking",
+        "question_text": "Question 2 assessing knowledge in Problem Solving & Critical Thinking. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 138,
+        "skill_name": "Problem Solving & Critical Thinking",
+        "question_text": "Question 3 assessing knowledge in Problem Solving & Critical Thinking. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 139,
+        "skill_name": "Problem Solving & Critical Thinking",
+        "question_text": "Question 4 assessing knowledge in Problem Solving & Critical Thinking. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 140,
+        "skill_name": "Problem Solving & Critical Thinking",
+        "question_text": "Question 5 assessing knowledge in Problem Solving & Critical Thinking. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 141,
+        "skill_name": "Problem Solving & Critical Thinking",
+        "question_text": "Question 6 assessing knowledge in Problem Solving & Critical Thinking. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 142,
+        "skill_name": "Problem Solving & Critical Thinking",
+        "question_text": "Question 7 assessing knowledge in Problem Solving & Critical Thinking. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 143,
+        "skill_name": "Problem Solving & Critical Thinking",
+        "question_text": "Question 8 assessing knowledge in Problem Solving & Critical Thinking. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 144,
+        "skill_name": "Problem Solving & Critical Thinking",
+        "question_text": "Question 9 assessing knowledge in Problem Solving & Critical Thinking. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 145,
+        "skill_name": "Problem Solving & Critical Thinking",
+        "question_text": "Question 10 assessing knowledge in Problem Solving & Critical Thinking. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 146,
+        "skill_name": "Problem Solving & Critical Thinking",
+        "question_text": "Question 11 assessing knowledge in Problem Solving & Critical Thinking. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 147,
+        "skill_name": "Problem Solving & Critical Thinking",
+        "question_text": "Question 12 assessing knowledge in Problem Solving & Critical Thinking. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 148,
+        "skill_name": "Problem Solving & Critical Thinking",
+        "question_text": "Question 13 assessing knowledge in Problem Solving & Critical Thinking. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 149,
+        "skill_name": "Problem Solving & Critical Thinking",
+        "question_text": "Question 14 assessing knowledge in Problem Solving & Critical Thinking. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 150,
+        "skill_name": "Problem Solving & Critical Thinking",
+        "question_text": "Question 15 assessing knowledge in Problem Solving & Critical Thinking. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 151,
+        "skill_name": "Team Collaboration & Agile",
+        "question_text": "Question 1 assessing knowledge in Team Collaboration & Agile. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 152,
+        "skill_name": "Team Collaboration & Agile",
+        "question_text": "Question 2 assessing knowledge in Team Collaboration & Agile. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 153,
+        "skill_name": "Team Collaboration & Agile",
+        "question_text": "Question 3 assessing knowledge in Team Collaboration & Agile. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 154,
+        "skill_name": "Team Collaboration & Agile",
+        "question_text": "Question 4 assessing knowledge in Team Collaboration & Agile. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 155,
+        "skill_name": "Team Collaboration & Agile",
+        "question_text": "Question 5 assessing knowledge in Team Collaboration & Agile. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 156,
+        "skill_name": "Team Collaboration & Agile",
+        "question_text": "Question 6 assessing knowledge in Team Collaboration & Agile. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 157,
+        "skill_name": "Team Collaboration & Agile",
+        "question_text": "Question 7 assessing knowledge in Team Collaboration & Agile. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 158,
+        "skill_name": "Team Collaboration & Agile",
+        "question_text": "Question 8 assessing knowledge in Team Collaboration & Agile. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 159,
+        "skill_name": "Team Collaboration & Agile",
+        "question_text": "Question 9 assessing knowledge in Team Collaboration & Agile. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 160,
+        "skill_name": "Team Collaboration & Agile",
+        "question_text": "Question 10 assessing knowledge in Team Collaboration & Agile. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 161,
+        "skill_name": "Team Collaboration & Agile",
+        "question_text": "Question 11 assessing knowledge in Team Collaboration & Agile. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 162,
+        "skill_name": "Team Collaboration & Agile",
+        "question_text": "Question 12 assessing knowledge in Team Collaboration & Agile. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 163,
+        "skill_name": "Team Collaboration & Agile",
+        "question_text": "Question 13 assessing knowledge in Team Collaboration & Agile. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 164,
+        "skill_name": "Team Collaboration & Agile",
+        "question_text": "Question 14 assessing knowledge in Team Collaboration & Agile. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 165,
+        "skill_name": "Team Collaboration & Agile",
+        "question_text": "Question 15 assessing knowledge in Team Collaboration & Agile. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 166,
+        "skill_name": "Technical Communication",
+        "question_text": "Question 1 assessing knowledge in Technical Communication. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 167,
+        "skill_name": "Technical Communication",
+        "question_text": "Question 2 assessing knowledge in Technical Communication. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 168,
+        "skill_name": "Technical Communication",
+        "question_text": "Question 3 assessing knowledge in Technical Communication. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 169,
+        "skill_name": "Technical Communication",
+        "question_text": "Question 4 assessing knowledge in Technical Communication. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 170,
+        "skill_name": "Technical Communication",
+        "question_text": "Question 5 assessing knowledge in Technical Communication. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 171,
+        "skill_name": "Technical Communication",
+        "question_text": "Question 6 assessing knowledge in Technical Communication. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 172,
+        "skill_name": "Technical Communication",
+        "question_text": "Question 7 assessing knowledge in Technical Communication. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 173,
+        "skill_name": "Technical Communication",
+        "question_text": "Question 8 assessing knowledge in Technical Communication. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 174,
+        "skill_name": "Technical Communication",
+        "question_text": "Question 9 assessing knowledge in Technical Communication. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 175,
+        "skill_name": "Technical Communication",
+        "question_text": "Question 10 assessing knowledge in Technical Communication. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 176,
+        "skill_name": "Technical Communication",
+        "question_text": "Question 11 assessing knowledge in Technical Communication. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 177,
+        "skill_name": "Technical Communication",
+        "question_text": "Question 12 assessing knowledge in Technical Communication. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 178,
+        "skill_name": "Technical Communication",
+        "question_text": "Question 13 assessing knowledge in Technical Communication. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 179,
+        "skill_name": "Technical Communication",
+        "question_text": "Question 14 assessing knowledge in Technical Communication. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    },
+    {
+        "id": 180,
+        "skill_name": "Technical Communication",
+        "question_text": "Question 15 assessing knowledge in Technical Communication. Which of the following is correct?",
+        "category": "soft",
+        "difficulty": "intermediate",
+        "options": [
+            {
+                "id": "A",
+                "text": "Correct Option A"
+            },
+            {
+                "id": "B",
+                "text": "Incorrect Option B"
+            },
+            {
+                "id": "C",
+                "text": "Incorrect Option C"
+            },
+            {
+                "id": "D",
+                "text": "Incorrect Option D"
+            }
+        ],
+        "correct_option": "A",
+        "points": 10.0
+    }
+]
