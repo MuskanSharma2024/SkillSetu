@@ -20,10 +20,13 @@ from app.schemas import (
     CurriculumActionResponse, NotificationResponse, IntegrityFlagCreate, IntegrityFlagResponse,
     ConsentSubmission, ConsentStatusResponse, CareerClusterResponse, ClusterFitSummary,
     GrowthTrendPoint, SkillGrowthSeries, StudentGrowthTrendView, RecalibrationLogResponse,
-    SyllabusProposalCreate, SyllabusProposalResponse
+    SyllabusProposalCreate, SyllabusProposalResponse, AdaptiveQuestionnaireRequest, AdaptiveSubmissionRequest
 )
 from app.dependencies import (
     get_current_user, require_student, require_academician, require_staff, require_all_authenticated
+)
+from app.adaptive_framework import (
+    MAJOR_FIELDS, generate_adaptive_questionnaire, calculate_adaptive_results
 )
 
 router = APIRouter(prefix="/skills", tags=["Skill Engine & Curriculum Feedback Loop"])
@@ -990,4 +993,34 @@ def get_my_syllabus_proposals(
             updated_at=p.updated_at
         ))
     return res
+
+# --- Adaptive Career Assessment Framework Routes ---
+
+@router.get("/adaptive/fields")
+def get_adaptive_fields():
+    """Retrieve all 5 Major Fields and 25 Subfield Requirement Profiles for the Adaptive Assessment Framework."""
+    return MAJOR_FIELDS
+
+@router.post("/adaptive/questionnaire")
+def get_adaptive_questionnaire(req: AdaptiveQuestionnaireRequest):
+    """Retrieve tailored question set according to Path A (Career Discovery) or Path B (Gap Analysis)."""
+    questions = generate_adaptive_questionnaire(req.path, req.major_field, req.subfield)
+    return {
+        "path": req.path,
+        "major_field": req.major_field,
+        "subfield": req.subfield,
+        "total_questions": len(questions),
+        "questions": questions
+    }
+
+@router.post("/adaptive/submit")
+def submit_adaptive_assessment(
+    req: AdaptiveSubmissionRequest,
+    db: Session = Depends(get_db)
+):
+    """Calculate 6D Skill Vector, RIASEC Profile, and Path A Career Discovery or Path B Skill Gap Report."""
+    answers_dicts = [{"question_id": a.question_id, "selected_option": a.selected_option} for a in req.answers]
+    results = calculate_adaptive_results(req.path, req.major_field, req.subfield, answers_dicts)
+    return results
+
 

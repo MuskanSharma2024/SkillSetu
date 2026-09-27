@@ -599,3 +599,20 @@ class SyllabusProposalStatusUpdate(BaseModel):
     status: str = Field(..., description="under_review, approved, rejected")
     institution_admin_notes: Optional[str] = None
 
+# --- Adaptive Assessment Framework Schemas ---
+class AdaptiveQuestionnaireRequest(BaseModel):
+    path: str = Field(..., description="path_a (Career Discovery) or path_b (Gap Analysis)")
+    major_field: str = Field("engineering", description="Major field ID")
+    subfield: Optional[str] = Field(None, description="Subfield ID for Path B")
+
+class AdaptiveAnswerItem(BaseModel):
+    question_id: int
+    selected_option: str
+
+class AdaptiveSubmissionRequest(BaseModel):
+    path: str = Field(..., description="path_a or path_b")
+    major_field: str = Field("engineering")
+    subfield: Optional[str] = None
+    answers: List[AdaptiveAnswerItem]
+
+

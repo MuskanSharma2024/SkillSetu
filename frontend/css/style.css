@@ -104,8 +104,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .brand-icon {
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   border-radius: var(--radius-md);
   background: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.25);
@@ -114,6 +114,24 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: center;
   font-size: 1.25rem;
   color: #FFFFFF;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.brand-logo-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.brand:hover .brand-logo-img,
+.brand:hover .brand-icon {
+  transform: scale(1.06);
+  filter: brightness(1.08);
 }
 
 .brand-name {
@@ -779,5 +797,100 @@ h1, h2, h3, h4, h5, h6 {
   .navbar {
     padding: 0.9rem 1.25rem;
   }
+}
+
+/* Adaptive Career Assessment Framework UI Components */
+.path-choice-card {
+  padding: 1.25rem;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.path-choice-card:hover {
+  border-color: var(--teal-light);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(23, 94, 108, 0.12);
+}
+
+.path-choice-card.active {
+  border-color: var(--teal);
+  background: var(--teal-tint);
+  box-shadow: 0 0 0 3px rgba(23, 94, 108, 0.2);
+}
+
+.field-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+
+.field-choice-card {
+  padding: 1rem 0.75rem;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.field-choice-card:hover {
+  border-color: var(--teal-light);
+}
+
+.field-choice-card.active {
+  border-color: var(--teal);
+  background: var(--teal-tint);
+  font-weight: 600;
+}
+
+.vector-bar-container {
+  margin-bottom: 0.85rem;
+}
+
+.vector-bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: var(--ink);
+}
+
+.vector-bar-track {
+  height: 8px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  position: relative;
+}
+
+.vector-bar-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.badge-strong { background: #dcfce7; color: #166534; }
+.badge-moderate { background: #e0f2fe; color: #0369a1; }
+.badge-high { background: #fef3c7; color: #92400e; }
+.badge-critical { background: #ffe4e6; color: #9f1239; }
+
+.riasec-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  background: rgba(23, 94, 108, 0.1);
+  color: var(--teal);
+  font-weight: 600;
+  font-size: 0.78rem;
+  border-radius: var(--radius-full);
 }
 

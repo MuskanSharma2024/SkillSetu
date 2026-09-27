@@ -19,10 +19,9 @@ def test_assessment_questionnaire_and_submission(client, student_auth):
 
     # 2. Submit answers
     answers = [
-        {"question_id": 1, "skill_id": 1, "selected_option": "A"}, # Correct
-        {"question_id": 2, "skill_id": 1, "selected_option": "B"}, # Correct
-        {"question_id": 3, "skill_id": 3, "selected_option": "A"}, # Incorrect
-        {"question_id": 5, "skill_id": 2, "selected_option": "A"}  # Incorrect
+        {"question_id": 1, "skill_id": 1, "selected_option": "A"}, # Correct (Python -> 85.0)
+        {"question_id": 2, "skill_id": 1, "selected_option": "A"}, # Correct (Python -> 85.0)
+        {"question_id": 54, "skill_id": 3, "selected_option": "B"}  # Incorrect (Cloud Computing -> 35.0, Gap)
     ]
     sub_res = client.post(
         "/api/skills/assessments",

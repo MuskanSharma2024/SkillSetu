@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="/static/images/skillsetulogo.png">
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
@@ -15,7 +16,7 @@
   <!-- Navigation Bar -->
   <nav class="navbar">
     <a href="/" class="brand">
-      <div class="brand-icon">⚡</div>
+      <img src="/static/images/skillsetulogo.png" alt="SkillSetu Logo" class="brand-logo-img" onerror="this.src='/static/skillsetulogo.png'">
       <div>
         <span class="brand-name">SkillSetu</span>
         <span class="brand-badge">SIH 2026</span>
@@ -47,7 +48,10 @@
     </p>
 
     <div class="hero-actions">
-      <button onclick="openAuthModal('register')" class="btn btn-primary">
+      <button onclick="openAdaptiveAssessmentModal('path_a')" class="btn btn-primary" style="background: linear-gradient(135deg, #175E6C 0%, #0F3A43 100%); font-weight: 600; box-shadow: 0 4px 12px rgba(23,94,108,0.25);">
+        ⚡ Take Skill Assessment
+      </button>
+      <button onclick="openAuthModal('register')" class="btn btn-secondary">
         Create Your Account →
       </button>
       <button onclick="openAuthModal('login')" class="btn btn-secondary">
@@ -143,9 +147,12 @@
   <div class="modal-overlay" id="auth-modal">
     <div class="modal-card">
       <div class="modal-header">
-        <div>
-          <h3 id="modal-title" style="font-size: 1.35rem;">SkillSetu Access Portal</h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.2rem;">Secure Role-Based Authentication</p>
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <img src="/static/images/skillsetulogo.png" alt="SkillSetu Logo" class="brand-logo-img" style="width: 36px; height: 36px;" onerror="this.src='/static/skillsetulogo.png'">
+          <div>
+            <h3 id="modal-title" style="font-size: 1.35rem;">SkillSetu Access Portal</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.2rem;">Secure Role-Based Authentication</p>
+          </div>
         </div>
         <button class="close-btn" onclick="closeAuthModal()">&times;</button>
       </div>
@@ -289,10 +296,133 @@
     </div>
   </div>
 
+  <!-- Adaptive Career Assessment Framework Modal -->
+  <div class="modal-overlay" id="adaptive-assessment-modal">
+    <div class="modal-card" style="max-width: 780px; width: 92%;">
+      
+      <!-- Step 1: Goal & Field Selection -->
+      <div id="adaptive-step-1">
+        <div class="modal-header">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <img src="/static/images/skillsetulogo.png" alt="SkillSetu Logo" class="brand-logo-img" style="width: 36px; height: 36px;" onerror="this.src='/static/skillsetulogo.png'">
+            <div>
+              <h3 style="font-size: 1.3rem;">Adaptive Skill & Career Assessment</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.15rem;">Two-Path Adaptive Evaluation Framework</p>
+            </div>
+          </div>
+          <button class="close-btn" onclick="closeAdaptiveAssessmentModal()">&times;</button>
+        </div>
+
+        <div style="margin: 1.25rem 0;">
+          <label class="form-label" style="font-weight: 600; margin-bottom: 0.75rem; display: block;">1. Select Assessment Goal & Path</label>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="path-choice-card active" id="path-card-path_a" onclick="selectAdaptivePath('path_a')">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="font-size: 1.4rem;">🧭</span>
+                <span style="font-weight: 700; color: var(--teal); font-size: 0.95rem;">Path A — Career Discovery</span>
+              </div>
+              <p style="font-size: 0.82rem; color: var(--muted); margin: 0;">
+                “I don't know which career path suits me.” Evaluates 6D Skill Vector + RIASEC interests to recommend matched career clusters.
+              </p>
+            </div>
+
+            <div class="path-choice-card" id="path-card-path_b" onclick="selectAdaptivePath('path_b')">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="font-size: 1.4rem;">🎯</span>
+                <span style="font-weight: 700; color: var(--teal); font-size: 0.95rem;">Path B — Desired Career Gap Analysis</span>
+              </div>
+              <p style="font-size: 0.82rem; color: var(--muted); margin: 0;">
+                “I know what career I want and want to know my skill gaps.” Compares current skills against subfield requirements.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 1.25rem;">
+          <label class="form-label" style="font-weight: 600; margin-bottom: 0.75rem; display: block;">2. Select Major Field</label>
+          <div class="field-choice-grid" id="adaptive-fields-grid">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <div id="adaptive-subfield-select-container" style="display: none; margin-bottom: 1.5rem;">
+          <label class="form-label" style="font-weight: 600; margin-bottom: 0.4rem;">3. Select Target Subfield / Career</label>
+          <select id="adaptive-subfield-select" class="form-select" onchange="onSubfieldChange(this.value)">
+            <!-- Rendered by JS -->
+          </select>
+        </div>
+
+        <div style="text-align: right; margin-top: 1.5rem;">
+          <button class="btn btn-primary" onclick="startAdaptiveQuestionnaire()">
+            Begin Adaptive Assessment →
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2: Quiz Test Screen -->
+      <div id="adaptive-step-2" style="display: none;">
+        <div class="modal-header">
+          <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <h3 style="font-size: 1.25rem;">Adaptive Questionnaire</h3>
+              <p id="adaptive-question-counter" style="font-size: 0.85rem; color: var(--muted);">Question 1 of 13</p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+              <div id="adaptive-timer-display" style="font-size: 1.15rem; font-weight: 700; color: var(--teal); font-family: monospace; background: var(--teal-tint); padding: 0.25rem 0.75rem; border-radius: var(--radius-md);">
+                ⏱️ 13:00
+              </div>
+              <button class="close-btn" onclick="closeAdaptiveAssessmentModal()">&times;</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Progress Track -->
+        <div style="height: 6px; background: var(--border); border-radius: var(--radius-full); overflow: hidden; margin: 1rem 0;">
+          <div id="adaptive-progress-bar" style="height: 100%; background: var(--teal); width: 0%; transition: width 0.3s ease;"></div>
+        </div>
+
+        <div id="adaptive-question-container" style="margin: 1.25rem 0;">
+          <!-- Current Question -->
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.25rem;">
+          <button class="btn btn-secondary" id="btn-adaptive-prev" onclick="prevAdaptiveQuestion()">Previous</button>
+          <div>
+            <button class="btn btn-primary" id="btn-adaptive-next" onclick="nextAdaptiveQuestion()">Next Question →</button>
+            <button class="btn btn-primary" id="btn-adaptive-submit" onclick="submitAdaptiveAssessment()" style="display: none; background: #10b981; border-color: #10b981;">Complete & View Results ✓</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Results & Redirection Screen -->
+      <div id="adaptive-step-3" style="display: none;">
+        <div class="modal-header">
+          <h3>Assessment Report & Guidance</h3>
+          <button class="close-btn" onclick="closeAdaptiveAssessmentModal()">&times;</button>
+        </div>
+
+        <div id="adaptive-results-content" style="max-height: 60vh; overflow-y: auto; padding-right: 0.5rem; margin: 1rem 0;">
+          <!-- Rendered by JS -->
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; border-top: 1px solid var(--border); padding-top: 1rem;">
+          <button class="btn btn-secondary" onclick="openAdaptiveAssessmentModal('path_a')">
+            🔄 Take Another Assessment
+          </button>
+          <button class="btn btn-primary" onclick="redirectToSkillEngine()">
+            ⚡ Go to Skill Engine & Gaps Dashboard →
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <div id="toast-container"></div>
 
   <script src="/static/js/api.js"></script>
   <script src="/static/js/app.js"></script>
   <script src="/static/js/auth.js"></script>
+  <script src="/static/js/adaptive-assessment.js"></script>
 </body>
 </html>
