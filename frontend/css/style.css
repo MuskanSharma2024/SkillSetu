@@ -560,7 +560,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 0.4rem;
 }
 
-.form-input, .form-select, .form-textarea {
+.form-input, .form-select, .form-textarea, .form-control {
   width: 100%;
   padding: 0.65rem 0.9rem;
   background: var(--surface);
@@ -572,11 +572,23 @@ h1, h2, h3, h4, h5, h6 {
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-.form-input:focus, .form-select:focus, .form-textarea:focus {
+.form-input:focus, .form-select:focus, .form-textarea:focus, .form-control:focus {
   outline: none;
   border-color: var(--teal);
   box-shadow: 0 0 0 3px rgba(23, 94, 108, 0.15);
 }
+
+.recs-tag-pill {
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.recs-tag-pill:hover {
+  background: var(--teal);
+  color: #FFFFFF !important;
+  transform: translateY(-1px);
+}
+
 
 .form-select option {
   background: var(--surface);

@@ -197,17 +197,61 @@
 
       <!-- Recommendations Section -->
       <section id="recommendations-section" style="display: none;">
-        <div style="margin-bottom: 1.5rem;">
-          <h2>Matched Opportunities (Recommendation Engine v1)</h2>
-          <p style="color: var(--text-secondary); font-size: 0.9rem;">
-            Rule-based weighted ranking matching your skill vector against active enterprise postings.
-          </p>
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <h2 style="margin: 0;">Matched Opportunities & Real Postings</h2>
+              <span class="badge badge-emerald" style="display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.25rem 0.65rem; font-size: 0.8rem;">
+                <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981;"></span>
+                🌐 Live Internet Sourced
+              </span>
+            </div>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.35rem; max-width: 780px;">
+              Live internet job and internship aggregation from verified tech employers (Remotive, Arbeitnow, Jobicy & Tech Portals). Dynamically matched against your assessed skill profile with real-time match fit scores.
+            </p>
+          </div>
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <button onclick="refreshRecommendations(true)" class="btn btn-secondary btn-sm" id="btn-refresh-recs" style="display: flex; align-items: center; gap: 0.4rem;">
+              <span id="refresh-icon">🔄</span> Fetch Latest Web Jobs
+            </button>
+          </div>
         </div>
 
-        <div id="recommendations-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.25rem;">
-          <div class="glass-card">Loading matching recommendations...</div>
+        <!-- Real Web Search & Filters Bar -->
+        <div class="glass-card" style="margin-bottom: 1.5rem; padding: 1.25rem;">
+          <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
+            <div style="flex: 1; min-width: 260px; position: relative;">
+              <input type="text" id="recs-search-input" placeholder="Search real web jobs & internships (e.g. Python intern, React, Machine Learning, Remote)..." 
+                     class="form-control" style="padding-left: 2.25rem;" onkeydown="if(event.key==='Enter') searchRecommendations()">
+              <span style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); opacity: 0.6;">🔍</span>
+            </div>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <select id="recs-type-filter" class="form-control" style="width: auto; cursor: pointer;" onchange="filterRecommendationsByType()">
+                <option value="all">All Role Types</option>
+                <option value="internship">🎓 Internships & Traineeships</option>
+                <option value="job">💼 Full-time & Junior Roles</option>
+              </select>
+              <button onclick="searchRecommendations()" class="btn btn-primary btn-sm">Search Internet</button>
+              <button onclick="clearRecsSearch()" class="btn btn-secondary btn-sm">Reset</button>
+            </div>
+          </div>
+          <div style="display: flex; gap: 0.5rem; align-items: center; margin-top: 0.85rem; font-size: 0.85rem; color: var(--text-muted); flex-wrap: wrap;">
+            <span>Popular Searches:</span>
+            <span class="badge badge-primary recs-tag-pill" style="cursor: pointer;" onclick="quickFilterQuery('intern')">🎓 Internships</span>
+            <span class="badge badge-primary recs-tag-pill" style="cursor: pointer;" onclick="quickFilterQuery('python')">🐍 Python</span>
+            <span class="badge badge-primary recs-tag-pill" style="cursor: pointer;" onclick="quickFilterQuery('react')">⚛️ React / Web</span>
+            <span class="badge badge-primary recs-tag-pill" style="cursor: pointer;" onclick="quickFilterQuery('machine learning')">🤖 AI / Machine Learning</span>
+            <span class="badge badge-primary recs-tag-pill" style="cursor: pointer;" onclick="quickFilterQuery('cloud')">☁️ Cloud & AWS</span>
+            <span class="badge badge-primary recs-tag-pill" style="cursor: pointer;" onclick="quickFilterQuery('remote')">🌍 Remote</span>
+            <span id="recs-count-badge" style="margin-left: auto; font-weight: 600; color: #a5b4fc;"></span>
+          </div>
+        </div>
+
+        <div id="recommendations-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.25rem;">
+          <div class="glass-card">Loading real internet recommendations...</div>
         </div>
       </section>
+
 
       <!-- Task C2: Career Clusters & Fit Section -->
       <section id="clusters-section" style="display: none;">
@@ -568,55 +612,216 @@
       }
     }
 
-    async function loadRecommendations() {
+    let allRecsData = [];
+    let trackedOppIds = new Set();
+
+    async function loadRecommendations(query = null, refresh = false) {
+      const container = document.getElementById("recommendations-container");
+      const countBadge = document.getElementById("recs-count-badge");
+      
+      container.innerHTML = `
+        <div class="glass-card" style="grid-column: 1 / -1; text-align: center; padding: 2.5rem;">
+          <div style="font-size: 2rem; margin-bottom: 0.75rem;">🌐</div>
+          <div style="font-weight: 600; font-size: 1.1rem; color: #a5b4fc;">Scanning Live Internet Job Boards...</div>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem;">Fetching and benchmarking active opportunities matching your skill vector.</p>
+        </div>
+      `;
+
       try {
-        const recs = await api.get("/skills/recommendations/me");
-        const container = document.getElementById("recommendations-container");
-        if (!recs.length) {
-          container.innerHTML = `<div class="glass-card">No opportunities posted yet.</div>`;
-          return;
+        let endpoint = "/skills/recommendations/me";
+        const params = [];
+        if (query && query.trim()) params.push(`search=${encodeURIComponent(query.trim())}`);
+        if (refresh) params.push("refresh=true");
+        if (params.length) endpoint += `?${params.join("&")}`;
+
+        const recs = await api.get(endpoint);
+        allRecsData = recs || [];
+        
+        renderRecommendationsList();
+
+        if (countBadge) {
+          countBadge.innerText = `${allRecsData.length} Real Postings Found`;
         }
-
-        container.innerHTML = recs.map(r => `
-          <div class="glass-card glass-card-interactive">
-            <div style="display: flex; justify-content: space-between; align-items: start;">
-              <div>
-                <span class="badge badge-cyan">${r.opportunity_type.toUpperCase()}</span>
-                <h3 style="font-size: 1.15rem; margin-top: 0.5rem;">${r.title}</h3>
-                <p style="color: var(--text-secondary); font-size: 0.9rem;">${r.company_name} • ${r.location || 'Remote'}</p>
-              </div>
-              <div style="text-align: right;">
-                <span style="font-size: 1.3rem; font-weight: 800; color: #10b981;">${r.match_percentage}%</span>
-                <span style="display: block; font-size: 0.7rem; color: var(--text-muted);">Match Fit</span>
-              </div>
-            </div>
-
-            <div style="margin-top: 1rem;">
-              <span style="font-size: 0.8rem; color: var(--text-muted);">Matched Skills:</span>
-              <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.3rem;">
-                ${r.matched_skills.map(m => `<span class="badge badge-emerald">${m}</span>`).join('')}
-              </div>
-            </div>
-
-            ${r.missing_skills.length ? `
-              <div style="margin-top: 0.75rem;">
-                <span style="font-size: 0.8rem; color: var(--text-muted);">Skills to Polish:</span>
-                <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.3rem;">
-                  ${r.missing_skills.map(m => `<span class="badge badge-rose">${m}</span>`).join('')}
-                </div>
-              </div>
-            ` : ''}
-
-            <div style="margin-top: 1.25rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-weight: 600; font-size: 0.9rem; color: #a5b4fc;">${r.stipend_salary || 'Stipend Disclosed Upon Apply'}</span>
-              <button class="btn btn-secondary btn-sm" onclick="applyForOpportunity(${r.id})">Apply</button>
-            </div>
-          </div>
-        `).join("");
       } catch (err) {
         console.error(err);
+        container.innerHTML = `
+          <div class="glass-card" style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: #ef4444;">
+            <p>⚠️ Error loading opportunities: ${err.message}</p>
+            <button onclick="loadRecommendations(null, false)" class="btn btn-secondary btn-sm" style="margin-top: 0.5rem;">Try Again</button>
+          </div>
+        `;
       }
     }
+
+    function renderRecommendationsList() {
+      const container = document.getElementById("recommendations-container");
+      const typeFilter = document.getElementById("recs-type-filter") ? document.getElementById("recs-type-filter").value : "all";
+      
+      let filtered = allRecsData;
+      if (typeFilter && typeFilter !== "all") {
+        filtered = filtered.filter(r => (r.opportunity_type || "").toLowerCase() === typeFilter.toLowerCase());
+      }
+
+      if (!filtered.length) {
+        container.innerHTML = `
+          <div class="glass-card" style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🔍</div>
+            <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem;">No matching opportunities found</h3>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">Try adjusting your keyword query or resetting filters.</p>
+            <button onclick="clearRecsSearch()" class="btn btn-secondary btn-sm" style="margin-top: 1rem;">Show All Opportunities</button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(r => {
+        const isInternship = (r.opportunity_type || "").toLowerCase() === "internship";
+        const typeBadge = isInternship 
+          ? `<span class="badge badge-cyan" style="font-size: 0.75rem;">🎓 INTERNSHIP</span>` 
+          : `<span class="badge badge-primary" style="font-size: 0.75rem;">💼 ${r.opportunity_type.toUpperCase()}</span>`;
+        
+        const isTracked = trackedOppIds.has(r.opportunity_id);
+        const matchFit = r.match_percentage || 75;
+        const matchColor = matchFit >= 80 ? '#10b981' : (matchFit >= 70 ? '#38bdf8' : '#fbbf24');
+        const companyInitial = (r.company_name || "T").charAt(0).toUpperCase();
+
+        return `
+          <div class="glass-card glass-card-interactive" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 3px solid ${matchColor};">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem;">
+                <div style="display: flex; gap: 0.75rem; align-items: center;">
+                  <div style="width: 42px; height: 42px; border-radius: var(--radius-md); background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.3); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; color: #a5b4fc; flex-shrink: 0;">
+                    ${companyInitial}
+                  </div>
+                  <div>
+                    <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
+                      ${typeBadge}
+                      <span class="badge badge-emerald" style="font-size: 0.7rem;">${r.source || '🌐 Live Web'}</span>
+                    </div>
+                    <h3 style="font-size: 1.1rem; margin: 0.35rem 0 0.15rem 0; line-height: 1.3;">${r.title}</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.85rem; margin: 0;">${r.company_name} • 📍 ${r.location || 'Remote'}</p>
+                  </div>
+                </div>
+                <div style="text-align: right; flex-shrink: 0; background: rgba(15, 23, 42, 0.4); padding: 0.4rem 0.65rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                  <span style="font-size: 1.35rem; font-weight: 800; color: ${matchColor};">${matchFit}%</span>
+                  <span style="display: block; font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase;">Skill Fit</span>
+                </div>
+              </div>
+
+              ${r.description ? `
+                <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0.85rem 0 0.5rem 0; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                  ${r.description}
+                </p>
+              ` : ''}
+
+              <!-- Matched Skills -->
+              <div style="margin-top: 0.75rem;">
+                <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">✓ Matched Skills:</span>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.25rem;">
+                  ${(r.matched_skills && r.matched_skills.length) ? r.matched_skills.map(m => `<span class="badge badge-emerald" style="font-size: 0.75rem;">${m}</span>`).join('') : '<span style="font-size: 0.8rem; color: var(--text-muted);">Foundational Problem Solving</span>'}
+                </div>
+              </div>
+
+              <!-- Missing Skills to polish -->
+              ${(r.missing_skills && r.missing_skills.length) ? `
+                <div style="margin-top: 0.6rem;">
+                  <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">⚡ Target Skills to Polish:</span>
+                  <div style="display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.25rem;">
+                    ${r.missing_skills.slice(0, 3).map(m => `<span class="badge badge-rose" style="font-size: 0.75rem;">${m}</span>`).join('')}
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+
+            <!-- Card Footer & Action Buttons -->
+            <div style="margin-top: 1.25rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+              <span style="font-weight: 600; font-size: 0.88rem; color: #a5b4fc;">
+                💰 ${r.stipend_salary || 'Competitive Industry Pay'}
+              </span>
+              <div style="display: flex; gap: 0.4rem; align-items: center;">
+                ${r.url ? `
+                  <a href="${r.url}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" style="display: inline-flex; align-items: center; gap: 0.25rem; text-decoration: none;">
+                    Apply on Site ↗
+                  </a>
+                  <button class="btn btn-secondary btn-sm" onclick="trackExternalOpp(${r.opportunity_id})" id="btn-track-${r.opportunity_id}" ${isTracked ? 'disabled' : ''}>
+                    ${isTracked ? '✓ Tracked' : '📌 Track in App'}
+                  </button>
+                ` : `
+                  <button class="btn btn-secondary btn-sm" onclick="applyForOpportunity(${r.opportunity_id})">Apply</button>
+                `}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    async function refreshRecommendations(force = true) {
+      const icon = document.getElementById("refresh-icon");
+      if (icon) icon.style.display = "inline-block";
+      showToast("Fetching latest real opportunities from the web...", "info");
+      const q = document.getElementById("recs-search-input") ? document.getElementById("recs-search-input").value : "";
+      await loadRecommendations(q, force);
+      showToast("Real internet opportunities synchronized!", "success");
+    }
+
+    function searchRecommendations() {
+      const input = document.getElementById("recs-search-input");
+      const q = input ? input.value : "";
+      loadRecommendations(q, false);
+    }
+
+    function quickFilterQuery(keyword) {
+      const input = document.getElementById("recs-search-input");
+      if (input) input.value = keyword;
+      loadRecommendations(keyword, false);
+    }
+
+    function clearRecsSearch() {
+      const input = document.getElementById("recs-search-input");
+      if (input) input.value = "";
+      const typeFilter = document.getElementById("recs-type-filter");
+      if (typeFilter) typeFilter.value = "all";
+      loadRecommendations(null, false);
+    }
+
+    function filterRecommendationsByType() {
+      renderRecommendationsList();
+    }
+
+    async function trackExternalOpp(oppId) {
+      const opp = allRecsData.find(r => r.opportunity_id === oppId);
+      if (!opp) return;
+
+      try {
+        const btn = document.getElementById(`btn-track-${oppId}`);
+        if (btn) btn.disabled = true;
+
+        await api.post("/opportunities/external/track", {
+          title: opp.title,
+          company_name: opp.company_name,
+          opportunity_type: opp.opportunity_type || "internship",
+          url: opp.url || "https://remotive.com",
+          location: opp.location || "Remote",
+          stipend_salary: opp.stipend_salary,
+          match_score: opp.match_percentage || 85.0,
+          cover_note: `Tracked live application to ${opp.title} at ${opp.company_name}`
+        });
+
+        trackedOppIds.add(oppId);
+        if (btn) {
+          btn.innerText = "✓ Tracked";
+          btn.classList.add("btn-emerald");
+        }
+        showToast(`Saved '${opp.title}' to your Application Tracker!`, "success");
+        loadStudentAnalytics();
+      } catch (err) {
+        showToast("Tracking error: " + err.message, "error");
+        const btn = document.getElementById(`btn-track-${oppId}`);
+        if (btn) btn.disabled = false;
+      }
+    }
+
 
     let assessmentTimerInterval;
     let currentAssessmentState = {

@@ -28,6 +28,9 @@ from app.dependencies import (
 from app.adaptive_framework import (
     MAJOR_FIELDS, generate_adaptive_questionnaire, calculate_adaptive_results
 )
+from app.services.external_jobs import (
+    get_real_internet_opportunities, compute_student_opportunity_match
+)
 
 router = APIRouter(prefix="/skills", tags=["Skill Engine & Curriculum Feedback Loop"])
 
@@ -307,33 +310,88 @@ def get_my_skill_profile(
         overall_readiness_score=readiness
     )
 
-# Task 6 & 7: Recommendation Engine (v1) & Refresh Trigger
+# Task 6 & 7: Recommendation Engine & Real Internet Opportunities Sourcing
 @router.get("/recommendations/me", response_model=List[OpportunityRecommendation])
 def get_opportunity_recommendations(
+    search: Optional[str] = None,
+    refresh: bool = False,
+    opportunity_type: Optional[str] = None,
     current_user: User = Depends(require_student),
     db: Session = Depends(get_db)
 ):
     """
-    Rule-based weighted recommendation engine:
-    Matches student skill vector against active opportunities and computes match scores.
+    Real Internet Opportunity Engine & Skill Vector Benchmark:
+    Fetches real live opportunities by searching the internet (Remotive, Arbeitnow, Jobicy & Tech Portals),
+    benchmarking each real job against the student's verified skill profile and calculating live match fit.
     """
-    user_skills = {
-        sp.skill_id: sp.proficiency_score
-        for sp in db.query(SkillProfile).filter(SkillProfile.user_id == current_user.id).all()
-    }
+    # 1. Fetch student's skill profile
+    user_skill_profiles = db.query(SkillProfile).filter(SkillProfile.user_id == current_user.id).all()
+    user_skills_by_name: Dict[str, float] = {}
+    user_skills_by_id: Dict[int, float] = {}
 
-    opportunities = db.query(Opportunity).filter(Opportunity.is_active == True).all()
-    recommendations = []
+    for sp in user_skill_profiles:
+        user_skills_by_id[sp.skill_id] = sp.proficiency_score
+        skill = db.query(Skill).filter(Skill.id == sp.skill_id).first()
+        if skill:
+            user_skills_by_name[skill.name] = sp.proficiency_score
 
-    for opp in opportunities:
+    # If student hasn't taken assessments yet, provide baseline readiness
+    if not user_skills_by_name:
+        user_skills_by_name = {
+            "Problem Solving & Critical Thinking": 75.0,
+            "Python": 70.0,
+            "Data Structures & Algorithms": 70.0,
+            "Git & CI/CD Pipelines": 65.0,
+            "Web Frontend (HTML/CSS/JS)": 65.0
+        }
+
+    recommendations: List[OpportunityRecommendation] = []
+
+    # 2. Query REAL opportunities live from the Internet
+    real_jobs = get_real_internet_opportunities(query=search, refresh=refresh)
+    for opp in real_jobs:
+        opp_type = opp.get("opportunity_type", "job")
+        if opportunity_type and opportunity_type.lower() != "all" and opportunity_type.lower() != opp_type.lower():
+            continue
+
+        match_info = compute_student_opportunity_match(user_skills_by_name, opp)
+        
+        recommendations.append(OpportunityRecommendation(
+            opportunity_id=opp["id"],
+            title=opp["title"],
+            company_name=opp["company_name"],
+            opportunity_type=opp_type,
+            location=opp.get("location", "Remote"),
+            stipend_salary=opp.get("stipend_salary"),
+            match_percentage=match_info["match_percentage"],
+            matched_skills=match_info["matched_skills"],
+            missing_skills=match_info["missing_skills"],
+            url=opp.get("url"),
+            is_external=True,
+            source=opp.get("source", "Live Internet"),
+            company_logo=opp.get("company_logo"),
+            description=opp.get("description"),
+            posted_date=opp.get("posted_date", "Live Web"),
+            tags=opp.get("tags", [])
+        ))
+
+    # 3. Also benchmark any active local enterprise opportunities if search matches
+    local_opps = db.query(Opportunity).filter(Opportunity.is_active == True).all()
+    for opp in local_opps:
+        if search:
+            s_lower = search.lower()
+            if s_lower not in opp.title.lower() and s_lower not in (opp.description or "").lower():
+                continue
+        if opportunity_type and opportunity_type.lower() != "all" and opportunity_type.lower() != opp.opportunity_type.lower():
+            continue
+
         company = db.query(Company).filter(Company.id == opp.company_id).first()
-        company_name = company.name if company else "Tech Enterprise"
+        company_name = company.name if company else "Enterprise Partner"
 
         req_skills = db.query(OpportunitySkill).filter(OpportunitySkill.opportunity_id == opp.id).all()
         if not req_skills:
-            # Default fallback match if no specific skills tagged
-            match_pct = 70.0
-            matched = ["General Problem Solving"]
+            match_pct = 75.0
+            matched = ["Problem Solving & Critical Thinking"]
             missing = []
         else:
             total_weight = sum(rs.importance_weight for rs in req_skills)
@@ -344,32 +402,40 @@ def get_opportunity_recommendations(
             for rs in req_skills:
                 skill = db.query(Skill).filter(Skill.id == rs.skill_id).first()
                 sname = skill.name if skill else f"Skill #{rs.skill_id}"
-                user_score = user_skills.get(rs.skill_id, 0.0)
+                user_score = user_skills_by_id.get(rs.skill_id, 0.0)
 
                 if user_score >= rs.min_proficiency:
                     weighted_score += rs.importance_weight * 1.0
-                    matched.append(sname)
+                    matched.append(f"{sname} ({int(user_score)}%)")
                 elif user_score > 0:
                     ratio = user_score / rs.min_proficiency
                     weighted_score += rs.importance_weight * ratio
-                    missing.append(f"{sname} (Current: {user_score}%, Need: {rs.min_proficiency}%)")
+                    missing.append(f"{sname} (Current: {int(user_score)}%, Need: {int(rs.min_proficiency)}%)")
                 else:
                     missing.append(f"{sname} (Not Assessed)")
 
-            match_pct = round((weighted_score / total_weight) * 100, 1) if total_weight > 0 else 50.0
+            match_pct = round((weighted_score / total_weight) * 100, 1) if total_weight > 0 else 60.0
 
         recommendations.append(OpportunityRecommendation(
             opportunity_id=opp.id,
             title=opp.title,
             company_name=company_name,
             opportunity_type=opp.opportunity_type,
-            location=opp.location,
+            location=opp.location or "Hybrid",
             stipend_salary=opp.stipend_salary,
             match_percentage=match_pct,
             matched_skills=matched,
-            missing_skills=missing
+            missing_skills=missing,
+            url=None,
+            is_external=False,
+            source="SkillSetu Partner",
+            company_logo=None,
+            description=opp.description,
+            posted_date="Campus Enterprise",
+            tags=[]
         ))
 
+    # Rank by match percentage
     recommendations.sort(key=lambda x: x.match_percentage, reverse=True)
     return recommendations
 

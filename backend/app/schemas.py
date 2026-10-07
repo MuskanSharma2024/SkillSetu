@@ -219,11 +219,29 @@ class OpportunityRecommendation(BaseModel):
     title: str
     company_name: str
     opportunity_type: str
-    location: Optional[str]
-    stipend_salary: Optional[str]
+    location: Optional[str] = "Remote"
+    stipend_salary: Optional[str] = None
     match_percentage: float
-    matched_skills: List[str]
-    missing_skills: List[str]
+    matched_skills: List[str] = []
+    missing_skills: List[str] = []
+    url: Optional[str] = None
+    is_external: Optional[bool] = False
+    source: Optional[str] = "SkillSetu"
+    company_logo: Optional[str] = None
+    description: Optional[str] = None
+    posted_date: Optional[str] = None
+    tags: Optional[List[str]] = []
+
+class ExternalApplicationCreate(BaseModel):
+    title: str
+    company_name: str
+    opportunity_type: str = "internship"
+    url: str
+    location: Optional[str] = "Remote"
+    stipend_salary: Optional[str] = None
+    match_score: Optional[float] = 85.0
+    cover_note: Optional[str] = None
+
 
 # --- Industry Demand Aggregation ---
 class SkillDemandItem(BaseModel):

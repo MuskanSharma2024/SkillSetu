@@ -14,7 +14,7 @@ from app.schemas import (
     OpportunityCreate, OpportunityResponse, RequiredSkillDetail,
     ApplicationCreate, ApplicationResponse, ApplicationStatusUpdate, MentorFeedbackSubmit,
     LearningProgramCreate, LearningProgramResponse, ProgramEnrollmentResponse,
-    HireOutcomeCreate, HireOutcomeResponse
+    HireOutcomeCreate, HireOutcomeResponse, ExternalApplicationCreate
 )
 from app.dependencies import (
     get_current_user, require_industry, require_student, 
@@ -326,6 +326,84 @@ def apply_to_opportunity(
         ))
         db.commit()
         
+    return _format_application(new_app, db)
+
+@router.post("/external/track", response_model=ApplicationResponse, status_code=status.HTTP_201_CREATED)
+def track_external_opportunity(
+    track_in: ExternalApplicationCreate,
+    current_user: User = Depends(require_student),
+    db: Session = Depends(get_db)
+):
+    """Student applies to real internet posting and tracks application in SkillSetu."""
+    # Find or create company
+    comp = db.query(Company).filter(Company.name == track_in.company_name).first()
+    if not comp:
+        comp = Company(
+            user_id=current_user.id,
+            name=track_in.company_name,
+            industry_sector="Technology & Software",
+            website=track_in.url,
+            location=track_in.location or "Global"
+        )
+        db.add(comp)
+        db.commit()
+        db.refresh(comp)
+
+    # Find or create opportunity
+    opp = db.query(Opportunity).filter(
+        Opportunity.title == track_in.title,
+        Opportunity.company_id == comp.id
+    ).first()
+    if not opp:
+        opp = Opportunity(
+            company_id=comp.id,
+            title=track_in.title,
+            opportunity_type=track_in.opportunity_type,
+            target_role="student",
+            description=f"External opportunity sourced live from internet: {track_in.url}",
+            location=track_in.location or "Remote",
+            stipend_salary=track_in.stipend_salary,
+            is_active=True,
+            created_at=datetime.datetime.utcnow()
+        )
+        db.add(opp)
+        db.commit()
+        db.refresh(opp)
+
+    # Check if existing application
+    existing = db.query(Application).filter(
+        Application.user_id == current_user.id,
+        Application.opportunity_id == opp.id
+    ).first()
+    if existing:
+        return _format_application(existing, db)
+
+    # Retrieve student resume
+    sp = db.query(StudentProfile).filter(StudentProfile.user_id == current_user.id).first()
+    resume_link = sp.resume_url if sp else None
+
+    new_app = Application(
+        opportunity_id=opp.id,
+        user_id=current_user.id,
+        match_score=track_in.match_score or 85.0,
+        status="applied",
+        cover_note=track_in.cover_note or f"Applied via live portal: {track_in.url}",
+        resume_link=resume_link,
+        created_at=datetime.datetime.utcnow(),
+        updated_at=datetime.datetime.utcnow()
+    )
+    db.add(new_app)
+    db.commit()
+    db.refresh(new_app)
+
+    # Audit log
+    db.add(AuditLog(
+        user_id=current_user.id,
+        action_type="external_opportunity_tracked",
+        details=f"Tracked external job application: {track_in.title} at {track_in.company_name}"
+    ))
+    db.commit()
+
     return _format_application(new_app, db)
 
 @router.get("/company/applicants", response_model=List[ApplicationResponse])
